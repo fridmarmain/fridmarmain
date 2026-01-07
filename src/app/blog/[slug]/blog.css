@@ -1,0 +1,22 @@
+.post-page {
+     padding-top: 5rem;
+}
+
+.blogImgCont {
+     height: 500px;
+     width: 100%;
+     background-size: cover;
+     border-radius: 10px;
+     background-repeat: no-repeat;
+     background-position: center;
+
+}
+
+.blogBody {
+     max-width: 90%;
+     background-color: #fff;
+     margin: auto;
+     padding: 2rem 1rem;
+     margin-top: -2rem;
+     border-radius: 10px;
+}

@@ -1,0 +1,50 @@
+.practiceAreaCont {
+     display: flex;
+     justify-content: center;
+     gap: 1rem;
+}
+
+.practiceCont {
+     display: flex;
+}
+
+.eachPractice {
+     width: 220px;
+     border-radius: .61rem;
+     padding: 2rem 1rem;
+     border: solid 1px grey;
+     overflow: hidden;
+     position: relative;
+}
+
+.LinkFloat {
+     position: absolute;
+     height: 100%;
+     width: 100%;
+     top: 0;
+     left: 0;
+}
+
+.SideHeader {
+     min-width: 200px;
+}
+
+.SideHeader h3 {
+     max-width: 50px;
+     font-size: 1rem;
+}
+
+.svgIcon {
+     width: 50px;
+}
+
+.InnerPractice {
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+     justify-content: center;
+}
+
+.practiceHeader {
+     margin-top: 2rem;
+}
