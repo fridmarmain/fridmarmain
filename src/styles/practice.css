@@ -4,12 +4,10 @@
      gap: 1rem;
 }
 
-.practiceCont {
-     display: flex;
-}
+
 
 .eachPractice {
-     width: 220px;
+     width: 280px;
      border-radius: .61rem;
      padding: 2rem 1rem;
      border: solid 1px grey;
@@ -25,13 +23,9 @@
      left: 0;
 }
 
-.SideHeader {
-     min-width: 200px;
-}
 
 .SideHeader h3 {
-     max-width: 50px;
-     font-size: 1rem;
+     font-size: .7rem;
 }
 
 .svgIcon {
@@ -42,7 +36,7 @@
      display: flex;
      flex-direction: column;
      gap: 10px;
-     justify-content: center;
+     justify-content: space-between
 }
 
 .practiceHeader {

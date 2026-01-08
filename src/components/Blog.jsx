@@ -12,27 +12,43 @@ const Blog = ({ posts }) => {
   const isInView = useInView(ref, { once: true, margin: "0px 0px -100px 0px" });
 
   return (
-    <section className="blog" ref={ref}>
+    <section className=" " ref={ref}>
       <div className="container">
-        <motion.h2
+        {/* <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8 }}
-        >
-          Latest Legal Insights & Updates
-        </motion.h2>
+        ></motion.h2> */}
+
+        <div className="SideHeader">
+          <h3 className=" "> Latest Legal Insights & Updates </h3>
+        </div>
+
+        <div className="sectionHeader">
+          <div className="sectionHeaderRight">
+            <h2 className="mainHeader">Blog</h2>
+            <h3 className=" ">Stay Informed. Stay Ahead.</h3>
+          </div>
+
+          <div className="sectionHeaderleft">
+            <p>
+              Stay informed with the latest legal updates, insights, and expert
+              article to guide you through your legal journey.
+            </p>
+          </div>
+        </div>
 
         <div className="blog-container">
           <motion.div
-            className="blog-featured"
+            className="blogCont"
             initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.8 }}
           >
             {posts?.map((post) => (
-              <div key={post.slug.current} className="itemBlog">
+              <div key={post.slug.current} className="eachBlog ">
                 <div
-                  className="eachBlog"
+                  className="eachBlog "
                   style={{
                     // 2. Use urlFor for Sanity images
                     backgroundImage: `url(${post.mainImage ? urlFor(post.mainImage).url() : "/fallback.jpg"})`,

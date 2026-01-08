@@ -87,6 +87,48 @@ export async function getPracticeArea(slug) {
   );
 }
 
+export async function getAboutSection() {
+  // We search for the document with the type 'aboutComponent'
+  // The [0] ensures we only get one result
+  const query = `*[_type == "aboutComponent"][0]{
+    subtitle,
+    title,
+    bio
+  }`;
+  return await client.fetch(query);
+}
+
 export async function getSettings() {
   return await client.fetch(`*[_type == "siteSettings"][0]`);
+}
+
+export async function getTeamMembers() {
+  const query = `*[_type == "team"] | order(name asc) {
+    name,
+    role,
+    "slug": slug.current,
+    image,
+    phone,
+    email,
+    languages,
+    education,
+    memberships,
+    bio,
+    linkedin,
+    tiktokVideo
+  }`;
+  return await client.fetch(query);
+}
+export async function getReviews() {
+  const query = `*[_type == "review"] | order(_createdAt desc) {
+    _id,
+    clientName,
+    clientImage,
+    reviewType,
+    content,
+    videoUrl,
+    reviewImage,
+    rating
+  }`;
+  return await client.fetch(query);
 }

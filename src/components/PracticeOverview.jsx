@@ -9,14 +9,21 @@ const PracticeOverview = ({ practices }) => {
   console.log(practices);
   return (
     <section className=" container practiceCont">
-      <div className="SideHeader">
-        <h3 className=" ">Our Services</h3>
-      </div>
-      <div className=" ">
-        <div className=" ">
-          <div>
-            <h2 className=" ">Expertise</h2>
+      <div className="">
+        <div className="SideHeader">
+          <h3 className=" ">Our Services</h3>
+        </div>
+        <div className="sectionHeader">
+          <div className="sectionHeaderRight">
+            <h2 className="mainHeader">Expertise</h2>
             <h3 className=" ">Practice Areas</h3>
+          </div>
+
+          <div className="sectionHeaderleft">
+            <p>
+              Our team of lawyers are dedicated to offering comprehensive legal
+              solutions across multiple practice areas.
+            </p>
           </div>
         </div>
 

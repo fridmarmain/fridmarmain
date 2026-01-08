@@ -49,8 +49,6 @@ const TrustRibbon = ({ logos }) => {
   return (
     <section className="ribbon-section">
       <div className="inner-container">
-        <p className="ribbon-label">Recognized & Accredited By</p>
-
         <div className="ribbon-mask">
           <motion.div
             className="logo-track"

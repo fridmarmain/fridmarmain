@@ -1,5 +1,5 @@
 import { client } from "@/lib/sanity";
-import ReviewCard from "@/components/ReviewCard";
+import ReviewCard from "@/components/ReviewGrid";
 import "../../styles/reviews.css";
 
 async function getReviews() {

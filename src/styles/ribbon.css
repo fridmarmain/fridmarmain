@@ -2,6 +2,7 @@
      padding: 60px 0;
      overflow: hidden;
      width: 100%;
+     background-color: TRANSPARENT;
 }
 
 .ribbon-label {
@@ -17,6 +18,8 @@
 .ribbon-mask {
      width: 100%;
      overflow: hidden;
+     max-width: 1200px;
+     margin: auto;
      cursor: grab;
      /* Visual fade effect on sides */
      mask-image: linear-gradient(to right,

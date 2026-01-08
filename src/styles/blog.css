@@ -3,6 +3,11 @@
      background-color: var(--accent-light);
 }
 
+.blogCont {
+     display: flex;
+     gap: 1rem;
+}
+
 @media (min-width: 768px) {
      .blog {
           padding: 4rem 2rem;
@@ -133,20 +138,16 @@
 }
 
 .eachBlog {
-     height: 200px;
      width: 100%;
-     max-width: 230px;
+     min-height: 300px;
+     max-width: 280px;
      background-color: var(--primary-light);
      background-size: cover;
      position: relative;
      border-radius: 10px;
 }
 
-@media (min-width: 768px) {
-     .eachBlog {
-          height: 250px;
-     }
-}
+@media (min-width: 768px) {}
 
 .iconItem {
      height: 34px;

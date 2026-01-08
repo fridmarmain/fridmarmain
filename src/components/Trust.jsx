@@ -93,7 +93,7 @@ helps our clients stay informed`,
               </div>
             </div>
           </div>
-          <div className="OtherSide">
+          {/* <div className="OtherSide">
             {sideItems.map((item) => (
               <Link href={item.Link} key={item.id} className="sideContainer">
                 <div
@@ -111,7 +111,7 @@ helps our clients stay informed`,
                 </div>
               </Link>
             ))}
-          </div>
+          </div> */}
         </motion.div>
       </div>
     </section>

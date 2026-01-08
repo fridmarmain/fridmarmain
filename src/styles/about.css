@@ -1,0 +1,46 @@
+.aboutSection {
+     display: flex;
+
+}
+
+
+
+
+.aboutPart {
+     padding: 6rem 1rem;
+}
+
+.about-p {
+     color: grey;
+}
+
+.about-p strong {
+     font-weight: bolder !important;
+     color: rgb(0, 0, 0);
+}
+
+
+
+.aboutSideText {
+     display: flex;
+     flex-direction: column;
+     gap: 2rem;
+}
+
+.about-header {
+     width: 50%;
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+}
+
+
+.about-header h2 {
+     font-size: 6rem;
+     font-weight: 800;
+     color: rgba(128, 128, 128, 0.309);
+}
+
+.aboutContainer {
+     width: 45%;
+}
