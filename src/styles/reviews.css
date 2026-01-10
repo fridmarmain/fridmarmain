@@ -1,31 +1,68 @@
 /* Layout Wrapper */
 .reviews-container {
-     max-width: 1200px;
      margin: 0 auto;
-     padding: 40px 20px;
+     /* padding: 40px 20px; */
+     /* background-color: red; */
+     position: relative;
+
 }
+
+.reviews-container::after {
+     content: "";
+     height: 80%;
+
+     width: 100%;
+     /* max-width: 900px; */
+     position: absolute;
+     background-color: rgba(134, 121, 81, 0.174);
+
+     bottom: 0;
+     margin: auto;
+     left: 0;
+     right: 0;
+     border-radius: 100%;
+     filter: blur(100px);
+     z-index: -1;
+}
+
+
 
 /* The Masonry Engine */
 .masonry-grid {
-     display: grid-lanes;
+     /* column-count: 3; */
+     column-width: 300px;
+     column-gap: 2.5rem;
 }
 
 /* Individual Card Styling */
 .review-card {
-     display: inline-block;
-     /* Crucial: Prevents card from breaking across columns */
-     width: 300px;
-     margin-bottom: 20px;
-     background: #ffffff;
-     border-radius: 12px;
-     border: 1px solid #eaeaea;
-     overflow: hidden;
-     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+     width: 100%;
+     margin-bottom: 3rem;
+     break-inside: avoid;
+     /* box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px; */
+     background-color: #fff;
+
+     border-radius: 1rem;
+     padding: 0rem 0rem;
      transition: transform 0.3s ease;
+
 }
 
 .review-card:hover {
      transform: translateY(-5px);
+}
+
+
+.reviewCardInner {
+     flex-direction: column;
+     gap: 4rem;
+     display: flex;
+     /* box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px; */
+
+     padding: 3rem 1rem;
+     border-radius: 1rem;
+
 }
 
 /* Media Content */
@@ -53,29 +90,25 @@
 }
 
 /* Text Content */
-.card-body {
-     padding: 24px;
-}
+
 
 .stars {
      display: flex;
      gap: 4px;
-     margin-bottom: 12px;
 }
 
 .review-text {
      font-size: 0.95rem;
      line-height: 1.6;
      color: #333;
-     font-style: italic;
      margin-bottom: 16px;
 }
 
 .client-name {
      font-size: 0.85rem;
      font-weight: 700;
-     color: #c5a059;
-     text-transform: uppercase;
+     color: #000000;
+     font-weight: bold;
      letter-spacing: 1px;
 }
 
@@ -93,6 +126,9 @@
      display: flex;
      align-items: center;
      gap: 12px;
+     border-radius: 1rem;
+     /* box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px; */
+
      margin-bottom: 15px;
 }
 
@@ -129,4 +165,338 @@
           column-count: 1;
           /* 1 column for mobile */
      }
+}
+
+
+.thumbnail-bg {
+     height: 400px;
+     width: 100%;
+
+     background-size: cover;
+     border-radius: 1rem;
+     background-position: center;
+}
+
+/* --- THE MODAL SYSTEM --- */
+
+/* 1. The Backdrop (Glassmorphism) */
+.modal-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background: rgba(0, 0, 0, 0.85);
+     /* Deep dark for focus */
+     backdrop-filter: blur(12px);
+     /* Luxury blur effect */
+     -webkit-backdrop-filter: blur(12px);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 10000;
+     /* Ensure it stays above everything */
+     padding: 20px;
+     cursor: zoom-out;
+}
+
+/* 2. The Container & Animation */
+.modal-content {
+     position: relative;
+     width: 100%;
+     max-width: 1000px;
+     /* Cinematic width */
+     background: #000;
+     border-radius: 16px;
+     box-shadow: 0 0 50px rgba(197, 160, 89, 0.15);
+     /* Subtle gold glow */
+     overflow: hidden;
+     cursor: default;
+     animation: modalScaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScaleUp {
+     from {
+          opacity: 0;
+          transform: scale(0.92) translateY(20px);
+     }
+
+     to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+     }
+}
+
+/* 3. The Aspect Ratio Box (Prevents Layout Shift) */
+
+
+.video-viewport {
+     position: relative;
+     width: 100%;
+     padding-bottom: 56.25%;
+     /* 16:9 Ratio */
+     height: 0;
+     background: #000;
+}
+
+.video-viewport iframe {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     border: 0;
+     height: 105%;
+     /* Make it taller than the container */
+     top: -5%;
+     /* Pull it up to hide the top header */
+     position: absolute;
+
+}
+
+/* 4. The Close Button */
+.modal-close {
+     position: absolute;
+     top: -60px;
+     /* Positions it above the video box */
+     right: 0;
+     background: none;
+     border: none;
+     color: #ffffff;
+     cursor: pointer;
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     font-family: inherit;
+     font-size: 14px;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+     transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+     color: #c5a059;
+     /* Your Brand Gold */
+     transform: translateY(-2px);
+}
+
+/* --- THE INLINE MUX TWEAKS --- */
+
+.inline-mux-container {
+     width: 100%;
+
+     background: #000;
+     border-radius: 1rem;
+     /* Match card top corners */
+     overflow: hidden;
+}
+
+/* Force Mux to fill the container perfectly */
+mux-player {
+     width: 100%;
+     height: 100%;
+
+     display: block;
+}
+
+.muxPlayer {
+     min-height: 250px;
+     border-radius: 1rem;
+     overflow: hidden;
+}
+
+.modal-content.vertical-modal {
+     max-width: 400px;
+     /* Slim for phone shape */
+}
+
+.modal-content.vertical-modal .video-viewport {
+     padding-bottom: 177%;
+     overflow-y: hidden;
+     /* 9:16 Ratio */
+}
+
+mux-player.minimal-player {
+     /* Hide the seek bar / progress bar */
+     --seek-live-button: none;
+     --seek-backward-button: none;
+     --seek-forward-button: none;
+
+     /* Hide Volume and Time */
+     --volume-range: none;
+     --time-display: none;
+     --duration-display: none;
+     --mute-button: none;
+
+     /* Hide Playback speed and Quality selector */
+     --playback-rate-button: none;
+
+     /* Hide the top-bar title if you don't want it */
+     --title-display: none;
+
+     /* Keep only what you want */
+
+     object-fit: cover;
+     --play-button: inline-flex;
+     --fullscreen-button: inline-flex;
+
+     /* Styling the play button to match your gold */
+     --media-button-hover-background: rgba(197, 160, 89, 0.2);
+}
+
+/* Optional: Hide the progress bar (the line at the bottom) */
+
+
+.video-section {
+     border-radius: 1rem;
+     overflow: hidden;
+}
+
+.video-stack-container {
+     position: relative;
+     width: 100%;
+     height: 650px;
+     /* Define your 'perfect' height here. 
+     aspect-ratio is the most modern way to do this. */
+     aspect-ratio: 16 / 9;
+     background: #ffffff00;
+     /* Dark background so it looks premium while loading */
+     border-radius: 12px 12px 0 0;
+}
+
+
+.url-variant {
+     height: 450px;
+}
+
+/* 2. Make the Player fill the box exactly */
+.mux-player-wrapper {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: 10;
+     transition: opacity 0.4s ease;
+}
+
+/* 3. Force Mux to use "Cover" mode so it fills the div */
+
+
+/* 4. The Thumbnail - Must match the video exactly */
+.video-facade {
+     position: absolute;
+
+     width: 100%;
+     height: 100%;
+     transition: opacity 0.4s ease;
+}
+
+.thumbnail-bg {
+     width: 100%;
+     height: 100%;
+     background-size: cover;
+     background-position: center;
+}
+
+/* Fullscreen transparent layer */
+.mux-reset-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100vw;
+     height: 100vh;
+     background: transparent;
+     /* Slight dimming effect */
+     z-index: 900;
+     /* High, but lower than the active card */
+     cursor: pointer;
+}
+
+/* The card that is currently playing */
+.review-card.playing-active {
+     z-index: 1000 !important;
+     /* Higher than the overlay */
+     position: relative;
+}
+
+/* Ensure the video container looks solid */
+.video-stack-container {
+     position: relative;
+     z-index: 1001;
+     /* Content inside the card stays on top */
+     background: transparent;
+     overflow: hidden;
+}
+
+.play-btn-overlay {
+     z-index: 9999;
+     position: absolute;
+     top: 0;
+     left: 0;
+     right: 0;
+     bottom: 0;
+     border-radius: 100%;
+     margin: auto;
+     height: 100px;
+     width: 100px;
+     display: flex;
+     justify-content: center;
+     background-color: rgba(0, 0, 0, 0.369);
+     backdrop-filter: blur(10px);
+     align-items: center;
+
+
+
+     color: #fff;
+}
+
+.play-btn-overlay:hover {
+     transform: scale(1.1);
+     cursor: pointer;
+}
+
+.hidePlay {
+     opacity: 0;
+     display: none;
+}
+
+
+.videoMeta {
+     position: absolute;
+     z-index: 99999;
+     width: 100%;
+     backdrop-filter: blur(4px);
+     /* background-color: #00000047; */
+     background-image: linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0));
+     color: #fff;
+     padding: 1rem;
+     bottom: 0;
+}
+
+
+
+.videoMeta .client-name {
+     font-size: 1rem;
+     font-weight: 700;
+     color: #ffffff;
+}
+
+.client-role {
+     color: #a2a2a2;
+     font-size: .8rem;
+
+}
+
+.text-variant {
+     padding: 2rem;
+}
+
+.text-variant .review-text {
+     padding-top: 2rem;
+}
+
+.quote-icon {
+     color: #9d9d9d;
+     margin-top: 4rem;
 }

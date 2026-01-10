@@ -121,14 +121,19 @@ export async function getTeamMembers() {
 }
 export async function getReviews() {
   const query = `*[_type == "review"] | order(_createdAt desc) {
-    _id,
+_id,
     clientName,
+    clientRole,
     clientImage,
     reviewType,
+    videoSource,
     content,
+    rating,
     videoUrl,
-    reviewImage,
-    rating
+    videoThumbnail,
+    
+    "muxPlaybackId": videoUpload.asset->playbackId, 
+    "videoAspect": videoUpload.asset->data.aspect_ratio
   }`;
   return await client.fetch(query);
 }
