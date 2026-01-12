@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-geist-sans);
+  padding-top: 1rem;
   background-color: var(--background);
 }
 

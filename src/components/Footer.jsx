@@ -1,8 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 
-import * as Icon from "lucide-react";
-
 const Footer = () => {
   return (
     <footer className="footer">
@@ -15,9 +13,7 @@ const Footer = () => {
       >
         <div className="footer-section">
           <div className="footer-logo">
-            <span className="logo-icon">
-              <Icon.Scale />
-            </span>
+            <span className="logo-icon"></span>
             <span>Fridmar</span>
           </div>
           <p>Experience modern legal services tailored to your needs.</p>

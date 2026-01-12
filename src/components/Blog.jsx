@@ -6,6 +6,7 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 import * as Icon from "lucide-react";
 import { urlFor } from "@/lib/sanity";
+import BlogCard from "./BlogCard";
 
 const Blog = ({ posts }) => {
   const ref = useRef(null);
@@ -39,36 +40,23 @@ const Blog = ({ posts }) => {
         </div>
 
         <div className="blog-container">
-          <motion.div
-            className="blogCont"
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.8 }}
-          >
-            {posts?.map((post) => (
-              <div key={post.slug.current} className="eachBlog ">
-                <div
-                  className="eachBlog "
-                  style={{
-                    // 2. Use urlFor for Sanity images
-                    backgroundImage: `url(${post.mainImage ? urlFor(post.mainImage).url() : "/fallback.jpg"})`,
-                  }}
-                >
-                  <Link
-                    href={`/blog/${post.slug.current}`}
-                    className="iconItem"
-                    style={{ color: "black" }}
-                  >
-                    <Icon.ArrowUpRight />
-                  </Link>
-                </div>
+          {posts.map((post) => {
+            // 1. Resolve the slug safely (handles string or object)
+            const postSlug =
+              typeof post.slug === "string" ? post.slug : post.slug?.current;
 
-                <h3 className="titleCont">{post.title}</h3>
-                {/* 3. Using description from Sanity */}
-                <p>{post.description || "Read our latest legal update..."}</p>
-              </div>
-            ))}
-          </motion.div>
+            const safeKey = postSlug || post._id || index;
+
+            return (
+              <BlogCard
+                key={safeKey}
+                post={{
+                  ...post,
+                  slug: postSlug, // Ensure BlogCard receives the string version
+                }}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

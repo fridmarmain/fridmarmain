@@ -18,43 +18,82 @@ export function urlFor(source) {
 
 export async function getPosts() {
   return await client.fetch(`*[_type == "post"] | order(publishedAt desc){
+
     title, 
     slug, 
     publishedAt, 
+      format,
     mainImage,
     description,
     podcastUrl,  
+      excerpt,
   }`);
+}
+
+export async function getPaginatedPosts(
+  lastPublishedAt = null,
+  categorySlug = null,
+  searchTerm = "",
+  order = "desc"
+) {
+  let filter = `_type == "post"`;
+  if (categorySlug)
+    filter += ` && "${categorySlug}" in categories[]->slug.current`;
+  if (searchTerm)
+    filter += ` && (title match "*${searchTerm}*" || excerpt match "*${searchTerm}*")`;
+
+  // Use the order for pagination: if desc, we want < date; if asc, we want > date
+  if (lastPublishedAt) {
+    const comparison = order === "desc" ? "<" : ">";
+    filter += ` && publishedAt ${comparison} "${lastPublishedAt}"`;
+  }
+
+  const query = `*[${filter}] | order(publishedAt ${order}) [0...6] {
+    title,
+    "slug": slug.current,
+    format,
+    mainImage,
+    publishedAt,
+    excerpt,
+    "categoryTitles": categories[]->title
+  }`;
+
+  return await client.fetch(query);
 }
 
 export async function getSinglePost(slug) {
   return await client.fetch(
-    `
-    *[_type == "post" && slug.current == $slug][0]{
-      title,
-      body,
-      mainImage,
-      podcastUrl,
-      publishedAt,
-      "categories": categories[]->{
-        title,
-        "slug": slug
-      }
-    }`,
+    `*[_type == "post" && slug.current == $slug][0]{
+    ...,
+    "categories": categories[]->{title, "slug": slug.current}
+  }`,
     { slug }
   );
 }
 
-export async function getCategories() {
-  return await client.fetch(`*[_type == "category"]{
+export async function getRelatedPosts(format, currentSlug) {
+  const query = `*[_type == "post" && format == $format && slug.current != $currentSlug] | order(publishedAt desc) [0...4] {
     title,
     "slug": slug.current,
-    description
-  }`);
+    format,
+    mainImage,
+    publishedAt,
+    excerpt,
+    "categoryTitles": categories[]->title
+  }`;
+  return await client.fetch(query, { format, currentSlug });
+}
+
+export async function getCategories() {
+  const query = `*[_type == "category"] | order(title asc) {
+    title,
+    "slug": slug.current
+  }`;
+  return await client.fetch(query);
 }
 export async function getMainPractices() {
   // We look for practiceAreas that DON'T have a parent (Umbrellas)
-  return await client.fetch(`*[_type == "practiceArea" && !defined(parentArea)]{
+  return await client.fetch(`*[_type == "practiceArea" && !defined(parentArea)] | order(title asc){
     title,
     "slug": slug.current,
     description,
@@ -64,6 +103,15 @@ export async function getMainPractices() {
     customSvg   
   }`);
 }
+
+export async function getPostBySlug(slug) {
+  const query = `*[_type == "post" && slug.current == $slug][0] {
+    ...,
+    "categories": categories[]->title
+  }`;
+  return await client.fetch(query, { slug });
+}
+
 export async function getPracticeArea(slug) {
   return await client.fetch(
     `
@@ -119,8 +167,9 @@ export async function getTeamMembers() {
   }`;
   return await client.fetch(query);
 }
-export async function getReviews() {
-  const query = `*[_type == "review"] | order(_createdAt desc) {
+export async function getReviews(limit = null) {
+  const range = limit ? `[0...${limit}]` : "";
+  const query = `*[_type == "review"] | order(_createdAt desc) ${range} {
 _id,
     clientName,
     clientRole,

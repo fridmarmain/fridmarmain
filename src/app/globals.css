@@ -134,3 +134,20 @@ section {
           padding: 2rem var(--small);
      }
 }
+
+/* global.css */
+#nprogress {
+     pointer-events: none;
+}
+
+#nprogress .bar {
+     background: #C49B66 !important;
+     /* Use a bright color like gold/orange to test */
+     position: fixed;
+     z-index: 99999 !important;
+     /* Ensure it is higher than your Navbar */
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 4px !important;
+}

@@ -168,3 +168,45 @@
           align-items: center;
      }
 }
+
+/* 1. The Container */
+.dropdown {
+     position: relative;
+     display: inline-block;
+}
+
+/* 2. The Hidden Content */
+.dropdown-content {
+     display: none;
+     /* Hide by default */
+     position: absolute;
+     top: 100%;
+     /* Position it right below the link */
+     left: 0;
+     background-color: #000000f6;
+     backdrop-filter: blur(4px);
+     /* min-width: 120px; */
+     width: max-content;
+     z-index: 10;
+     border-radius: 4px;
+
+}
+
+/* 3. The Hover Logic */
+.dropdown:hover .dropdown-content {
+     display: block;
+     /* Show on hover */
+}
+
+/* 4. Styling the links inside the dropdown */
+.dropdown-content a {
+     color: rgb(207, 207, 207);
+     padding: 8px 10px;
+     font-size: .81rem;
+     text-decoration: none;
+     display: block;
+}
+
+.dropdown-content a:hover {
+     background-color: #f1f1f1;
+}

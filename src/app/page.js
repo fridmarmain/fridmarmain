@@ -24,6 +24,7 @@ import TrustRibbon from "@/components/TrustRibbon";
 import AboutSection from "@/components/AboutSection";
 import TeamGrid from "@/components/TeamGrid";
 import ReviewGrid from "@/components/ReviewGrid";
+import ResourceGrid from "@/components/ResourceGrid";
 
 export default async function HomePage() {
   const posts = await getPosts();
@@ -32,7 +33,7 @@ export default async function HomePage() {
   const settings = await getSettings();
   const aboutData = await getAboutSection();
   const members = await getTeamMembers();
-  const reviewsData = await getReviews();
+  const reviewsData = await getReviews(4);
   return (
     <>
       <Hero />
@@ -47,6 +48,7 @@ export default async function HomePage() {
       {/* <Questionnaire /> */}
       <ReviewGrid reviews={reviewsData} />
       <Blog posts={latestPosts} />
+      {/* <ResourceGrid posts{post}/> */}
       <Announcement settings={settings} />
       <CTA />
     </>

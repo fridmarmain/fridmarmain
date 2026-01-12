@@ -1,0 +1,213 @@
+.bodyInner {
+     background-color: rgb(255, 255, 255);
+     margin-top: -100px;
+     border-radius: 1rem;
+     z-index: 99;
+}
+
+.resourceGrid {
+     /* background-color: red; */
+     display: flex;
+     gap: 1rem;
+
+     flex-wrap: wrap;
+     overflow: visible;
+}
+
+/* resourceGrid.css */
+
+
+
+.resource-container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 20px;
+}
+
+/* Controls Layout */
+/* Previous styles remain, adding/updating these: */
+
+.filter-controls {
+     display: flex;
+     flex-wrap: wrap;
+     align-items: center;
+     gap: 1.5rem;
+     margin-bottom: 2rem;
+}
+
+/* Sort Segmented Control */
+.sort-toggle-group {
+     display: flex;
+     background: #f5f5f4;
+     padding: 4px;
+     border-radius: 12px;
+     border: 1px solid #e7e5e4;
+}
+
+.sort-btn {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     padding: 8px 16px;
+     border: none;
+     background: transparent;
+     font-size: 13px;
+     font-weight: 500;
+     color: #78716c;
+     cursor: pointer;
+     border-radius: 8px;
+     transition: all 0.2s ease;
+}
+
+.sort-btn.active {
+     background: white;
+     color: #000;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Updated Search for better alignment */
+.search-wrapper input {
+     width: 100%;
+     padding: 12px 12px 12px 40px;
+     border-radius: 12px;
+     border: 1px solid #e7e5e4;
+     outline: none;
+     font-size: 14px;
+}
+
+
+
+.search-wrapper {
+     position: relative;
+     flex: 1;
+     min-width: 250px;
+}
+
+.search-icon {
+     position: absolute;
+     left: 12px;
+     top: 50%;
+     transform: translateY(-50%);
+     color: #a8a29e;
+}
+
+
+
+.search-wrapper input:focus {
+     border-color: #d4af37;
+     /* Gold */
+}
+
+.sort-wrapper {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     padding: 0 16px;
+     background: #f5f5f4;
+     border: 1px solid #e7e5e4;
+     border-radius: 12px;
+}
+
+.sort-wrapper select {
+     background: transparent;
+     border: none;
+     padding: 12px 0;
+     font-size: 14px;
+     outline: none;
+     cursor: pointer;
+}
+
+/* Tabs Styling */
+.category-tabs {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 10px;
+     margin-bottom: 3rem;
+     /* border-bottom: 1px solid #e7e5e4; */
+     padding-bottom: 1rem;
+}
+
+.tab {
+     padding: 8px 16px;
+     border-radius: 20px;
+     border: 1px solid #e7e5e4;
+     background: white;
+     font-size: 14px;
+     cursor: pointer;
+     transition: all 0.2s ease;
+     color: #57534e;
+}
+
+.tab:hover {
+     border-color: #d4af37;
+     color: #d4af37;
+}
+
+.tab.active {
+     background: #000;
+     color: #fff;
+     border-color: #000;
+}
+
+/* Grid Layout */
+.resource-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+     gap: 2rem;
+}
+
+/* Status & Buttons */
+.status-message {
+     text-align: center;
+     padding: 3rem 0;
+}
+
+.spinner {
+     width: 32px;
+     height: 32px;
+     border: 3px solid #f3f3f3;
+     border-top: 3px solid #d4af37;
+     border-radius: 50%;
+     margin: 0 auto 1rem;
+     animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+     0% {
+          transform: rotate(0deg);
+     }
+
+     100% {
+          transform: rotate(360deg);
+     }
+}
+
+.load-more-wrapper {
+     display: flex;
+     justify-content: center;
+     margin-top: 3rem;
+}
+
+.btn-load-more {
+     padding: 12px 32px;
+     background: #000;
+     color: white;
+     border: none;
+     border-radius: 50px;
+     cursor: pointer;
+     transition: transform 0.2s;
+}
+
+.btn-load-more:hover {
+     transform: scale(1.05);
+     background: #d4af37;
+}
+
+.empty-state {
+     text-align: center;
+     padding: 5rem 0;
+     background: #f5f5f4;
+     border: 2px dashed #e7e5e4;
+     border-radius: 16px;
+     color: #a8a29e;
+}

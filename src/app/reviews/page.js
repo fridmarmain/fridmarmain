@@ -11,23 +11,14 @@ export default async function ReviewsPage() {
   const reviews = await getReviews();
 
   return (
-    <main className="reviews-page">
-      <section className="reviews-header">
-        <div className="inner-container">
-          <h1>Client Success Stories</h1>
-          <p>
-            Real experiences from the people weve represented across Ontario.
-          </p>
-        </div>
-      </section>
-
-      <section className="reviews-grid-container">
-        <div className="inner-container masonry-grid">
-          {reviews.map((rev, index) => (
-            <ReviewGrid key={rev._id} review={rev} index={index} />
-          ))}
-        </div>
-      </section>
+    <main className="page">
+      <ReviewGrid reviews={reviews} />
+      <a
+        href="https://search.google.com/local/writereview?placeid=ChIJcekZwOovK4gR-EYjvQOz6jM"
+        target="_blank"
+      >
+        Leave us a Google Review
+      </a>
     </main>
   );
 }

@@ -15,8 +15,6 @@ export default async function PostPage({ params }) {
     return <div className="container">Post not found</div>;
   }
 
-  console.log(post);
-
   return (
     <article className="post-page py-20">
       <div className="container mx-auto px-4">
