@@ -10,7 +10,10 @@ import Link from "next/link";
 const NavbarClient = ({ categories, practices }) => {
   //   const pathname = navigation.usePathname();
   const pathname = usePathname();
-  const isNotHome = pathname !== "/" || "/about";
+  const isNotHome = !(
+    ["/", "/about", "/resources", "/services"].includes(pathname) ||
+    pathname.startsWith("/practice")
+  );
 
   const [scrolled, setScrolled] = useState(false);
   const [atTop50, setAtTop50] = useState(false);

@@ -5,6 +5,10 @@
      z-index: 99;
 }
 
+.categoryInner {
+     padding-top: 5rem;
+}
+
 .resourceGrid {
      /* background-color: red; */
      display: flex;
@@ -153,7 +157,12 @@
 .resource-grid {
      display: grid;
      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-     gap: 2rem;
+     gap: 1rem;
+     /* Centers the grid tracks horizontally */
+     justify-content: center;
+
+     /* Ensures the items inside the cells are centered if they have a max-width */
+     justify-items: center;
 }
 
 /* Status & Buttons */

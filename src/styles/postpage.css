@@ -1,0 +1,155 @@
+/* Hero Section */
+.hero-section {
+     position: relative;
+     height: 55vh;
+     min-height: 450px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+     /* Background Image Setup */
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+     background-attachment: scroll;
+     /* Use 'fixed' for a parallax effect */
+
+     color: white;
+     text-align: center;
+     z-index: 1;
+}
+
+.hero-content {
+     max-width: 900px;
+     padding: 0 24px;
+     margin-top: -50px;
+     /* Slight offset to account for the content overlap */
+}
+
+.hero-content h1 {
+     font-size: clamp(1rem, 2vw, 2.5rem);
+     line-height: 1;
+     font-weight: 800;
+     margin-bottom: 1rem;
+}
+
+.hero-date {
+     font-size: 1rem;
+     color: #cbd5e1;
+     letter-spacing: 0.5px;
+}
+
+/* Ensure the content container sits properly over the background image */
+.content-container {
+     max-width: 1300px;
+     margin: -100px auto 0;
+     /* Pulls container up over hero */
+     padding: 60px 40px;
+     background-color: #ffffff;
+     border-radius: 16px;
+     width: 90%;
+     position: relative;
+     z-index: 10;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Related Grid Alignment */
+.related-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+     gap: 2rem;
+     justify-content: center;
+}
+
+
+/* Media Components */
+.video-wrapper {
+     position: relative;
+     aspect-ratio: 16 / 9;
+     background: #000;
+     border-radius: 16px;
+     overflow: hidden;
+     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.video-wrapper iframe {
+     width: 100%;
+     height: 100%;
+     border: none;
+}
+
+.podcast-box {
+     background: #f8fafc;
+     padding: 24px;
+     border-radius: 16px;
+     border: 1px solid #e2e8f0;
+}
+
+.podcast-label {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     font-size: 12px;
+     text-transform: uppercase;
+     letter-spacing: 1px;
+     color: #64748b;
+     margin-bottom: 16px;
+     font-weight: 700;
+}
+
+/* Rich Text Styling (PortableText) */
+.rich-text-content {
+     font-size: 1.125rem;
+     line-height: 1.8;
+     color: #334155;
+}
+
+.rich-text-content h2 {
+     font-size: 1.8rem;
+     margin: 2.5rem 0 1rem;
+     color: #0f172a;
+}
+
+.rich-text-content p {
+     margin-bottom: 1.5rem;
+}
+
+/* Related Content */
+.related-section {
+     margin-top: 80px;
+     padding-top: 40px;
+     border-top: 1px solid #e2e8f0;
+}
+
+.section-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 32px;
+}
+
+.related-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+     gap: 24px;
+}
+
+/* Badges */
+.badge {
+     background: rgba(212, 175, 55, 0.2);
+     color: #d4af37;
+     padding: 4px 12px;
+     border-radius: 4px;
+     font-size: 12px;
+     font-weight: bold;
+     text-transform: uppercase;
+}
+
+.flex-center {
+     display: flex;
+     justify-content: center;
+}
+
+.text-gold {
+     color: #d4af37;
+}
