@@ -43,7 +43,6 @@
      /* slate-900 */
      color: white;
      overflow: hidden;
-     z-index: 1;
 }
 
 .hero-bg-image {
@@ -53,6 +52,7 @@
      height: 100%;
      object-fit: cover;
      opacity: 0.4;
+     display: none;
 }
 
 .hero-content {
@@ -61,6 +61,7 @@
      text-align: center;
      max-width: 800px;
      padding: 0 20px;
+     z-index: 99999999999;
 }
 
 .hero-content h1 {

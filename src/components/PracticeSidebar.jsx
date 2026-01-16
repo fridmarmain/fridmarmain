@@ -1,34 +1,57 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Hook to get current URL
-import "../styles/sidebar.css";
+import { usePathname } from "next/navigation";
 
-const PracticeSidebar = ({ practices }) => {
+export default function PracticeSidebar({ tree }) {
   const pathname = usePathname();
 
   return (
-    <aside className="practice-sidebar">
-      <h3 className="sidebar-title">Our Expertise</h3>
-      <nav className="sidebar-nav">
-        {practices.map((item) => {
-          const href = `/practice/${item.slug}`;
-          // Check if current URL matches the link's destination
-          const isActive = pathname === href;
-
-          return (
+    <div className="practice-sidebar">
+      <h3 className="sidebar-header">Explore Services</h3>
+      <div className="sidebar-nav-tree">
+        {tree.map((umbrella) => (
+          <div key={umbrella.slug} className="sidebar-group">
+            {/* Level 1: Umbrella */}
             <Link
-              key={item.slug}
-              href={href}
-              className={`sidebar-link ${isActive ? "active" : ""}`}
+              href={`/practice/${umbrella.slug}`}
+              className={`sidebar-link level-1 ${pathname.includes(umbrella.slug) ? "active" : ""}`}
             >
-              {item.name}
-              {isActive && <span className="active-dot" />}
+              {umbrella.title}
             </Link>
-          );
-        })}
-      </nav>
-    </aside>
-  );
-};
 
-export default PracticeSidebar;
+            {/* Level 2: Categories (Only show if umbrella is part of current path) */}
+            {pathname.includes(umbrella.slug) && (
+              <div className="sidebar-sub-levels">
+                {umbrella.categories?.map((cat) => (
+                  <div key={cat.slug}>
+                    <Link
+                      href={`/practice/${umbrella.slug}/${cat.slug}`}
+                      className={`sidebar-link level-2 ${pathname.includes(cat.slug) ? "active" : ""}`}
+                    >
+                      {cat.title}
+                    </Link>
+
+                    {/* Level 3: Services */}
+                    {pathname.includes(cat.slug) && (
+                      <div className="sidebar-deep-levels">
+                        {cat.services?.map((service) => (
+                          <Link
+                            key={service.slug}
+                            href={`/practice/${umbrella.slug}/${cat.slug}/${service.slug}`}
+                            className={`sidebar-link level-3 ${pathname.includes(service.slug) ? "active" : ""}`}
+                          >
+                            • {service.title}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

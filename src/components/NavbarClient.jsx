@@ -4,11 +4,9 @@ import "../styles/navbar.css";
 import * as Icon from "lucide-react";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-// import * as navigation from "next/navigation";
 import Link from "next/link";
 
 const NavbarClient = ({ categories, practices }) => {
-  //   const pathname = navigation.usePathname();
   const pathname = usePathname();
   const isNotHome = !(
     ["/", "/about", "/resources", "/services"].includes(pathname) ||
@@ -50,25 +48,49 @@ const NavbarClient = ({ categories, practices }) => {
           <span className="logo-icon"></span>
         </Link>
         <div className="navbar-links">
-          <Link href="/about">About</Link>
-          <div className="dropdown">
-            <Link href="/practice-areas">Practice Areas</Link>
-            <div className="dropdown-content">
-              {practices &&
-                practices.map((practice, index) => (
-                  <Link
-                    key={practice.slug || index}
-                    href={`/practice/${practice.slug}`}
-                  >
-                    {practice.title}
-                  </Link>
-                ))}
-            </div>
-          </div>
+          {/* 1. Map through the top-level Umbrella categories first */}
+          {practices &&
+            practices.map((umbrella) => (
+              <div key={umbrella.slug} className="nav-item-wrapper dropdown">
+                <Link href={`/practice/${umbrella.slug}`} className="nav-link">
+                  {umbrella.title}
+                </Link>
+
+                {/* 2. Mega Menu Content for each Umbrella */}
+
+                {umbrella.categories.length > 0 && (
+                  <div className="mega-menu-content">
+                    <div className="  container megaContInner">
+                      {umbrella.categories?.map((cat) => (
+                        <div key={cat.slug} className="megaEachCont">
+                          <Link
+                            href={`/practice/${umbrella.slug}/${cat.slug}`}
+                            className=" "
+                          >
+                            <h4 className=" ">{cat.title}</h4>
+                          </Link>
+                          <div className=" ">
+                            {cat.services?.map((service) => (
+                              <Link
+                                key={service.slug}
+                                href={`/practice/${umbrella.slug}/${cat.slug}/${service.slug}`}
+                                className="sub-link"
+                              >
+                                {service.title}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+
           <div className="dropdown">
             <Link href="/resources">Resources</Link>
             <div className="dropdown-content">
-              {/* This now works because categories is a prop! */}
               {categories &&
                 categories.map((cat, index) => (
                   <Link
@@ -81,7 +103,6 @@ const NavbarClient = ({ categories, practices }) => {
             </div>
           </div>
           <Link href="/reviews">Reviews</Link>
-          <Link href="/contact">Contact</Link>
         </div>
 
         <div className="flexCont">

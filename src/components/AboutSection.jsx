@@ -1,14 +1,17 @@
 "use client";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { usePathname } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import * as Icon from "lucide-react";
 import "../styles/about.css";
+import AboutInner from "./AboutInner";
 
 const AboutSection = ({ data }) => {
+  const pathname = usePathname();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -100px 0px" });
-
+  const isAboutPage = pathname === "/about";
   if (!data || !data.bio) return null;
 
   // Custom components for PortableText
@@ -58,15 +61,18 @@ const AboutSection = ({ data }) => {
               {/* This replaces the old <p> tag */}
               <PortableText value={data.bio} components={components} />
             </div>
-            <button className="secondaryBtn">
-              <div>Learn More</div>
-              <div className="iconBall">
-                <Icon.ArrowUpRight />
-              </div>
-            </button>
+            {!isAboutPage && (
+              <button className="secondaryBtn">
+                <div>Learn More</div>
+                <div className="iconBall">
+                  <Icon.ArrowUpRight />
+                </div>
+              </button>
+            )}
           </div>
         </motion.div>
       </div>
+      {isAboutPage && <AboutInner />}
     </section>
   );
 };

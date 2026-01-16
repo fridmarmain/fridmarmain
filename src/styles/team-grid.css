@@ -96,3 +96,60 @@
      align-items: center;
      justify-content: center;
 }
+
+
+
+
+/* Ensure the Swiper buttons are visible and styled */
+.teamSwiper {
+     padding: 20px 0 50px 0 !important;
+     /* Space for pagination dots */
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+     color: #000;
+     /* Change to your brand color */
+     transform: scale(0.7);
+}
+
+.swiper-pagination-bullet-active {
+     background: #000;
+     /* Change to your brand color */
+}
+
+/* Ensure cards take full height of the slide */
+.swiper-slide {
+     height: auto;
+     display: flex;
+     justify-content: center;
+}
+
+
+/* Add this to your team-grid.css */
+.swiper-wrapper {
+     display: flex;
+     align-items: stretch;
+     /* Makes all slides the same height */
+}
+
+.swiper-slide {
+     height: auto !important;
+     /* Overrides default Swiper height issues */
+}
+
+
+.swiper-pagination-bullet {
+     border: 20px !important;
+}
+
+.swiper-pagination-bullet-active {
+     width: 25px !important;
+     border-radius: 10px !important;
+     background-color: goldenrod !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+     display: none !important;
+}

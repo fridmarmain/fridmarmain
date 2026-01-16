@@ -91,6 +91,34 @@ export async function getCategories() {
   }`;
   return await client.fetch(query);
 }
+export async function getMegaMenuList() {
+  return await client.fetch(`
+    *[_type == "practiceArea" && level == "umbrella"]
+    | order(title asc) {
+      _id,
+      title,
+      "slug": slug.current,
+
+      "categories": *[
+        _type == "practiceArea" &&
+        parentArea._ref == ^._id
+      ] | order(title asc) {
+        _id,
+        title,
+        "slug": slug.current,
+
+        "services": *[
+          _type == "practiceArea" &&
+          parentArea._ref == ^._id
+        ] | order(title asc) {
+          title,
+          "slug": slug.current
+        }
+      }
+    }
+  `);
+}
+
 export async function getMainPractices() {
   // We look for practiceAreas that DON'T have a parent (Umbrellas)
   return await client.fetch(`*[_type == "practiceArea" && !defined(parentArea)] | order(title asc){
@@ -117,18 +145,34 @@ export async function getPracticeArea(slug) {
     `
     *[_type == "practiceArea" && slug.current == $slug][0]{
       title,
+      level,
       description,
       mainImage,
       body,
       faqs,
-      "subAreas": *[_type == "practiceArea" && references(^._id)]{
+      // Fetch the parent's slug to help build the breadcrumb path logic
+      "parent": parentArea->{ 
+        title, 
+        "slug": slug.current,
+        "parent": parentArea->{ title, "slug": slug.current } 
+      },
+      // Fetch children (Categories if this is an Umbrella, Services if this is a Category)
+      "subAreas": *[_type == "practiceArea" && references(^._id)] | order(title asc) {
         title,
         "slug": slug.current,
         description,
-        icon, // <--- AND THIS LINE
+        icon,
+        iconType,
+        customSvg
       },
       icon,
-      "reviews": *[_type == "review" && isFeatured == true][0...3]
+      iconType,
+      customSvg,
+      "reviews": *[_type == "review" && isFeatured == true][0...3] {
+        clientName,
+        content,
+        rating
+      }
     }
   `,
     { slug }
@@ -150,8 +194,9 @@ export async function getSettings() {
   return await client.fetch(`*[_type == "siteSettings"][0]`);
 }
 
-export async function getTeamMembers() {
-  const query = `*[_type == "team"] | order(name asc) {
+export async function getTeamMembers(limit = 100) {
+  // Use [0...limit] for slicing
+  const query = `*[_type == "team"] | order(name asc) [0...$limit] {
     name,
     role,
     "slug": slug.current,
@@ -165,7 +210,8 @@ export async function getTeamMembers() {
     linkedin,
     tiktokVideo
   }`;
-  return await client.fetch(query);
+
+  return await client.fetch(query, { limit });
 }
 export async function getReviews(limit = null) {
   const range = limit ? `[0...${limit}]` : "";

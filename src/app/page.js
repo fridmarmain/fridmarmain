@@ -32,7 +32,7 @@ export default async function HomePage() {
   const latestPosts = posts?.slice(0, 4);
   const settings = await getSettings();
   const aboutData = await getAboutSection();
-  const members = await getTeamMembers();
+  const members = await getTeamMembers(4);
   const reviewsData = await getReviews(4);
   return (
     <>

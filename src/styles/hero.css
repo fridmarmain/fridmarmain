@@ -13,6 +13,8 @@
      max-height: 1000px;
      position: relative;
      overflow: hidden;
+     z-index: 1;
+
 
 }
 
@@ -234,9 +236,10 @@
 .heroBottom {
      display: flex;
      position: absolute;
-     bottom: 0;
+     bottom: 2rem;
      align-items: center;
      cursor: pointer;
+     max-width: 1200px;
      justify-content: space-between;
      width: 100%;
 
@@ -246,6 +249,7 @@
 .heroBottom p {
      color: var(--primary-light);
      font-weight: 100 !important;
+     font-size: .7rem;
 }
 
 .bottItem {

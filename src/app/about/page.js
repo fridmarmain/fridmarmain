@@ -11,16 +11,13 @@ import "../../styles/trust.css";
 import "../../styles/blog.css";
 import "../../styles/cta.css";
 import "../../styles/ContactSection.css";
-import PracticeOverview from "@/components/PracticeOverview";
-import TrustRibbon from "@/components/TrustRibbon";
 import AboutSection from "@/components/AboutSection";
-import TeamGrid from "@/components/TeamGrid";
 import ReviewGrid from "@/components/ReviewGrid";
 import CTA from "@/components/CTA";
 import ContactSection from "@/components/ContactSection";
-import Hero from "@/components/Hero";
 import PageHero from "@/components/pageHero";
 import aboutBg from "@/styles/assets/about.jpg";
+import TeamSlider from "@/components/TeamSlider";
 
 export default async function AboutPage() {
   const posts = await getPosts();
@@ -38,10 +35,9 @@ export default async function AboutPage() {
       />
 
       <AboutSection data={aboutData} />
-      <PracticeOverview practices={practices} />
       {/* <Trust /> */}
 
-      <TeamGrid members={members} title="Who We Are" />
+      <TeamSlider members={members} title="Who We Are" />
 
       {/* <Questionnaire /> */}
       <ReviewGrid reviews={reviewsData} />

@@ -1,4 +1,9 @@
-import { getPracticeArea, urlFor, getMainPractices } from "@/lib/sanity";
+import {
+  getPracticeArea,
+  urlFor,
+  getMainPractices,
+  getMegaMenuList,
+} from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import * as Icon from "lucide-react";
@@ -7,35 +12,65 @@ import "../../../styles/practiceArea.css"; // Ensure you create this file
 
 export default async function PracticeAreaPage({ params }) {
   const { slug } = await params;
-  const [data, allPractices] = await Promise.all([
-    getPracticeArea(slug),
-    getMainPractices(),
-  ]);
+  if (!slug || slug.length === 0) {
+    // You can fetch a specific "Main Practice" doc or show all umbrellas
+    return <div>Main Practice Landing Page Content</div>;
+  }
+  const currentSlug = slug[slug.length - 1];
 
-  const sidebarLinks = allPractices.map((p) => ({
-    name: p.title,
-    slug: p.slug,
-  }));
+  const [data, fullTree] = await Promise.all([
+    getPracticeArea(currentSlug),
+    getMegaMenuList(),
+  ]);
 
   if (!data) return <div className="error-state">Practice Area Not Found</div>;
 
+  const breadcrumbItems = slug.map((segment, index) => {
+    const path = `/practice/${slug.slice(0, index + 1).join("/")}`;
+    return {
+      label: segment.replace(/-/g, " "),
+      path,
+    };
+  });
   return (
     <main className="practice-area-page">
       {/* HERO SECTION */}
-      <section className="hero-section">
-        {data.mainImage && (
-          <img
-            src={urlFor(data.mainImage).url()}
-            className="hero-bg-image"
-            alt={data.title}
-          />
-        )}
-        <div className="hero-content">
-          <h1>{data.title}</h1>
-          <p>{data.description}</p>
-          {/* <button className="btn-primary">
-            Book a Consultation <Icon.Calendar size={20} />
-          </button> */}
+      <section
+        className="hero-section"
+        style={{
+          backgroundImage: data.mainImage
+            ? `url(${urlFor(data.mainImage).url()})`
+            : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          position: "relative", // Required for the content to sit on top
+        }}
+      >
+        {/* Optional: Dark overlay to make white text pop */}
+        <div className="hero-overlay"></div>
+
+        <div className="hero-container">
+          <nav className="breadcrumb-nav">
+            <Link href="/">Home</Link>
+            {breadcrumbItems.map((item, i) => (
+              <span key={item.path}>
+                <Icon.ChevronRight size={14} className="mx-2 opacity-50" />
+                <Link
+                  href={item.path}
+                  className={
+                    i === breadcrumbItems.length - 1 ? "active-breadcrumb" : ""
+                  }
+                >
+                  {item.label}
+                </Link>
+              </span>
+            ))}
+          </nav>
+
+          <div className="hero-content">
+            <h1>{data.title}</h1>
+            <p>{data.description}</p>
+          </div>
         </div>
       </section>
 
@@ -90,14 +125,14 @@ export default async function PracticeAreaPage({ params }) {
           {/* SIDEBAR (Right) */}
           <aside className="sidebar">
             <div className="sticky-sidebar">
-              <PracticeSidebar practices={sidebarLinks} />
+              <PracticeSidebar tree={fullTree} activeSlug={currentSlug} />
 
               {/* REVIEWS */}
               <div className="reviews-card">
                 <h3>Client Testimonials</h3>
                 {data.reviews?.map((rev, i) => (
                   <div key={i} className="testimonial">
-                    <p className="quote">"{rev.content}"</p>
+                    <p className="quote">{rev.content}</p>
                     <p className="author">- {rev.clientName}</p>
                   </div>
                 ))}
