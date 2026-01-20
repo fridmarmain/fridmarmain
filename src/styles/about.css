@@ -1,5 +1,6 @@
 .aboutSection {
      display: flex;
+     flex-wrap: wrap;
 
 }
 
@@ -29,6 +30,7 @@
 
 .about-header {
      width: 50%;
+     min-width: 250px;
      display: flex;
      flex-direction: column;
      justify-content: space-between;
@@ -36,13 +38,16 @@
 
 
 .about-header h2 {
-     font-size: 6rem;
+     /* min-size: 2.5rem, fluid-size: 8vw, max-size: 6rem */
+     font-size: clamp(2.5rem, 8vw, 6rem);
      font-weight: 800;
      color: rgba(128, 128, 128, 0.309);
 }
 
 .aboutContainer {
      width: 45%;
+     min-width: 350px;
+     /* background-color: red; */
 }
 
 

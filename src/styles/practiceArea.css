@@ -45,6 +45,26 @@
      overflow: hidden;
 }
 
+
+.hero-container {
+     position: relative;
+     z-index: 99;
+}
+
+.breadcrumb-nav {
+     position: relative;
+     z-index: 99999;
+}
+
+.hero-section::after {
+     content: "";
+     height: 100%;
+     z-index: 1;
+     width: 100%;
+     background-color: rgba(0, 0, 0, 0.64);
+     position: absolute;
+}
+
 .hero-bg-image {
      position: absolute;
      inset: 0;
@@ -61,7 +81,7 @@
      text-align: center;
      max-width: 800px;
      padding: 0 20px;
-     z-index: 99999999999;
+     z-index: 99
 }
 
 .hero-content h1 {
@@ -244,4 +264,61 @@
 .cta-icon {
      color: #d4af37;
      margin: 0 auto 16px;
+}
+
+
+.practice-sidebar {
+     background: var(--bg-dark);
+     padding: 1.5rem;
+     border-radius: 8px;
+}
+
+.sidebar-item-row {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+}
+
+.sidebar-link {
+     display: block;
+     padding: 8px 0;
+     transition: color 0.2s;
+     color: rgba(0, 0, 0, 0.7);
+     text-decoration: none;
+}
+
+.sidebar-link.active {
+     color: #c5a059;
+     /* Brand Gold */
+     font-weight: 700;
+}
+
+/* Indentation Logic */
+.sidebar-sub-levels {
+     padding-left: 1.2rem;
+     border-left: 1px solid #333;
+     margin-left: 0.5rem;
+}
+
+.sidebar-deep-levels {
+     padding-left: 1.2rem;
+     border-left: 1px dotted #444;
+}
+
+.toggle-btn {
+     background: none;
+     border: none;
+     color: #666;
+     cursor: pointer;
+     padding: 5px;
+}
+
+.toggle-btn:hover {
+     color: #8e8e8e;
+}
+
+.sidebar-sub-levels,
+.sidebar-deep-levels {
+     overflow: hidden;
+     transition: all 0.3s ease-in-out;
 }
