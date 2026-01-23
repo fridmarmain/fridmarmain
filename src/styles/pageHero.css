@@ -41,11 +41,11 @@
      text-transform: uppercase;
      letter-spacing: 2px;
      margin-bottom: 20px;
-     color: rgba(255, 255, 255, 0.7);
+     color: rgb(255, 255, 255);
 }
 
 .breadcrumb .current {
-     color: #c5a059;
+     color: #efefefe4;
      /* Your Brand Gold */
      font-weight: bold;
 }
@@ -58,8 +58,13 @@
 }
 
 .page-subtitle {
-     font-size: 1.2rem;
+     font-size: 1rem;
      max-width: 600px;
-     line-height: 1.6;
+     line-height: 1.1;
+     margin: auto;
      color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-text-box {
+     text-align: center;
 }

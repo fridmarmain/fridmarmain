@@ -18,6 +18,8 @@ import ContactSection from "@/components/ContactSection";
 import PageHero from "@/components/pageHero";
 import aboutBg from "@/styles/assets/about.jpg";
 import TeamSlider from "@/components/TeamSlider";
+import CEOSection from "@/components/CEOSection";
+import Memoriam from "@/components/Memoriam";
 
 export default async function AboutPage() {
   const posts = await getPosts();
@@ -37,11 +39,15 @@ export default async function AboutPage() {
       <AboutSection data={aboutData} />
       {/* <Trust /> */}
 
+      <CEOSection />
+
       <TeamSlider members={members} title="Who We Are" />
 
       {/* <Questionnaire /> */}
       <ReviewGrid reviews={reviewsData} />
       <ContactSection />
+
+      <Memoriam />
       <CTA />
     </>
   );

@@ -32,7 +32,7 @@ const PageHero = ({
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <nav className="breadcrumb">
-            <span>Home</span> / <span className="current">{title}</span>
+            <span>Home</span> &gt; <span className="current">{title}</span>
           </nav>
           <h1 className="page-title">{title}</h1>
           {subtitle && <p className="page-subtitle">{subtitle}</p>}

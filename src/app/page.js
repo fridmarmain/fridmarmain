@@ -45,7 +45,7 @@ export default async function HomePage() {
 
       <TeamGrid members={members} title="Who We Are" />
       <ContactSection />
-      {/* <Questionnaire /> */}
+      <Questionnaire />
       <ReviewGrid reviews={reviewsData} />
       <Blog posts={latestPosts} />
       {/* <ResourceGrid posts{post}/> */}

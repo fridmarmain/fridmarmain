@@ -23,7 +23,7 @@ const Footer = () => {
           <h4>About us</h4>
           <ul>
             <li>
-              <a href="#about">About LexPoint</a>
+              <a href="#about">About </a>
             </li>
             <li>
               <a href="#team">Our Team</a>
