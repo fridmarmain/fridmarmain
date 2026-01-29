@@ -1,5 +1,8 @@
 "use client";
+import React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import { Facebook, Linkedin, Instagram, Youtube, Twitter } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -11,89 +14,144 @@ const Footer = () => {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
+        {/* Column 1: Branding & Social */}
         <div className="footer-section">
           <div className="footer-logo">
-            <span className="logo-icon"></span>
             <span>Fridmar</span>
           </div>
-          <p>Experience modern legal services tailored to your needs.</p>
+          <p>
+            Professional Legal Solutions for the Construction Industry and
+            Beyond.
+          </p>
+          <div className="social-links">
+            <a href="#" aria-label="LinkedIn">
+              <Linkedin size={20} />
+            </a>
+            <a href="#" aria-label="Instagram">
+              <Instagram size={20} />
+            </a>
+            <a href="#" aria-label="TikTok">
+              <Twitter size={20} />
+            </a>{" "}
+            {/* Using Twitter icon as placeholder for TikTok */}
+            <a href="#" aria-label="YouTube">
+              <Youtube size={20} />
+            </a>
+          </div>
+          <Link href="/contact" className="footer-cta-btn">
+            Easy Contact Us
+          </Link>
         </div>
 
+        {/* Column 2: 5 Areas of Focus */}
         <div className="footer-section">
-          <h4>About us</h4>
+          <h4>Practice Areas</h4>
           <ul>
             <li>
-              <a href="#about">About </a>
+              <Link href="/construction">Construction Law</Link>
             </li>
             <li>
-              <a href="#team">Our Team</a>
+              <Link href="/civil">Civil Litigation</Link>
             </li>
             <li>
-              <a href="#careers">Careers</a>
+              <Link href="/commercial">Commercial Disputes</Link>
             </li>
             <li>
-              <a href="#news">News</a>
+              <Link href="/real-estate">Real Estate Litigation</Link>
+            </li>
+            <li>
+              <Link href="/more">More Practice Areas</Link>
+            </li>
+            <li>
+              <Link href="/sitemap">Site Map</Link>
             </li>
           </ul>
         </div>
 
+        {/* Column 3: Company & Community */}
         <div className="footer-section">
-          <h4>Sustainability</h4>
+          <h4>About FPC</h4>
           <ul>
             <li>
-              <a href="#env">Environment</a>
+              <Link href="/about">About Us</Link>
             </li>
             <li>
-              <a href="#social">Social</a>
+              <Link href="/reviews">Reviews & Testimonials</Link>
             </li>
             <li>
-              <a href="#gov">Governance</a>
+              <Link href="/events">Events & Announcements</Link>
             </li>
             <li>
-              <a href="#report">Report</a>
+              <Link href="/partner">Partner With Us</Link>
+            </li>
+            <li>
+              <Link href="/volunteer">Volunteer Opportunities</Link>
+            </li>
+            <li>
+              <Link href="/coop">Co-op Placements</Link>
             </li>
           </ul>
         </div>
 
+        {/* Column 4: Resources */}
         <div className="footer-section">
           <h4>Resources</h4>
           <ul>
             <li>
-              <a href="#contact">Contact us</a>
+              <Link href="/resources/blog">Legal Blog</Link>
             </li>
             <li>
-              <a href="#partner">Partners</a>
+              <Link href="/resources/vlog">Vlog & Video</Link>
             </li>
             <li>
-              <a href="#blog">Blog</a>
+              <Link href="/resources/podcast">Podcast</Link>
             </li>
             <li>
-              <a href="#support">Support</a>
+              <Link href="/resources/youtube">YouTube Channel</Link>
+            </li>
+            <li>
+              <Link href="/terms">Terms of Use</Link>
             </li>
           </ul>
         </div>
 
+        {/* Column 5: Geography */}
         <div className="footer-section">
-          <h4>Legal</h4>
+          <h4>Areas We Serve</h4>
+          <p className="footer-subtext">
+            Providing representation across Ontario.
+          </p>
           <ul>
             <li>
-              <a href="#terms">Terms of Use</a>
+              <Link href="/areas-we-serve">Interactive Map</Link>
             </li>
             <li>
-              <a href="#privacy">Privacy Policy</a>
+              <Link href="/areas-we-serve/toronto">Toronto</Link>
             </li>
             <li>
-              <a href="#cookies">Cookie Policy</a>
+              <Link href="/areas-we-serve/ottawa">Ottawa</Link>
             </li>
             <li>
-              <a href="#disclaimer">Disclaimer</a>
+              <Link href="/areas-we-serve/hamilton">Hamilton</Link>
+            </li>
+            <li>
+              <Link href="/areas-we-serve/mississauga">Mississauga</Link>
             </li>
           </ul>
         </div>
       </motion.div>
 
       <div className="footer-bottom">
-        <p>&copy; 2025 Fridmar. All rights reserved.</p>
+        <div className="footer-bottom-container">
+          <p>
+            &copy; {new Date().getFullYear()} Fridmar Professional Corporation.
+            All rights reserved.
+          </p>
+          <div className="footer-legal-links">
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/disclaimer">Disclaimer</Link>
+          </div>
+        </div>
       </div>
     </footer>
   );

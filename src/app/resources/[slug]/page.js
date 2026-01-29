@@ -3,6 +3,7 @@ import { PortableText } from "@portabletext/react";
 import * as Icon from "lucide-react";
 import BlogCard from "@/components/BlogCard";
 import "../../../styles/postpage.css";
+import VideoPlayer from "@/components/VideoPlayer";
 
 export default async function PostPage({ params }) {
   const { slug } = await params;
@@ -49,12 +50,12 @@ export default async function PostPage({ params }) {
             {(post.videoUrl || post.podcastUrl) && (
               <div className="media-container mb-12">
                 {post.format === "video" && post.videoUrl && (
-                  <div className="video-wrapper">
-                    <iframe
-                      src={post.videoUrl.replace("watch?v=", "embed/")}
-                      allowFullScreen
-                    />
-                  </div>
+                  /* Use our new Client Component here */
+
+                  <VideoPlayer
+                    videoUrl={post.videoUrl}
+                    coverImage={post.videoCover}
+                  />
                 )}
 
                 {post.format === "podcast" && post.podcastUrl && (
