@@ -3,12 +3,12 @@ import { createClient } from "next-sanity";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
 export const client = createClient({
-  projectId: "regpiees",
-  dataset: "production",
+  // This looks for the variable we just made in .env.local
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "regpiees",
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2026-01-07",
   useCdn: true,
 });
-
 // 2. Use the specific named builder function
 const builder = createImageUrlBuilder(client);
 
