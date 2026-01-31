@@ -1,83 +1,75 @@
-import React from "react";
+import { client, GET_CITY_PAGE_QUERY } from "@/lib/sanity";
 import Link from "next/link";
-import { MapPin, Shield, Gavel, ArrowRight } from "lucide-react";
+import { Shield, Gavel, MapPin } from "lucide-react";
+import CTA from "@/components/CTA";
 
-// This function tells Next.js what the "slug" is
-export default function CityServicePage({ params }) {
-  // Turn "north-york" into "North York" for the UI
-  const cityName = params.city
+export default async function CityServicePage({ params }) {
+  const { city } = await params;
+
+  // Format slug back to name for the query: "north-york" -> "north york"
+  const cityNameQuery = city.replace(/-/g, " ");
+
+  const { customData, regionData } = await client.fetch(GET_CITY_PAGE_QUERY, {
+    citySlug: city,
+    cityName: cityNameQuery,
+  });
+
+  // Display Name formatting: "vaughan" -> "Vaughan"
+  const displayName = city
     .replace(/-/g, " ")
     .replace(/\b\w/g, (l) => l.toUpperCase());
 
   return (
     <main className="city-service-page">
-      {/* Dynamic SEO Hero */}
       <section className="city-hero">
         <div className="container">
           <nav className="breadcrumb">
-            <Link href="/areas-we-serve">Areas We Serve</Link> / {cityName}
+            <Link href="/areas-we-serve">Areas We Serve</Link> / {displayName}
           </nav>
-          <h1>Construction & Civil Litigation Lawyers in {cityName}</h1>
+
+          <h1>
+            {customData?.customHeadline ||
+              `Construction & Civil Litigation Lawyers in ${displayName}`}
+          </h1>
+
           <p className="city-intro">
-            Providing expert legal counsel for contractors, developers, and
-            homeowners in the **{cityName}** area. We specialize in resolving
-            complex construction disputes and commercial litigation.
+            {customData?.customIntro ||
+              `Expert legal counsel for construction and commercial disputes in ${displayName}. ${regionData?.intro || ""}`}
           </p>
+
           <Link href="/contact" className="gold-btn">
-            Schedule a Consultation in {cityName}
+            Schedule a Consultation in {displayName}
           </Link>
         </div>
       </section>
 
-      {/* Localized Expertise Section */}
       <section className="city-expertise">
         <div className="container">
           <div className="expertise-grid">
             <div className="expertise-content">
-              <h2>Legal Services for the {cityName} Construction Industry</h2>
+              <h2>Legal Services for the {displayName} Industry</h2>
               <p>
-                From lien registrations to contract disputes, our firm
-                understands the specific regulatory and business landscape of{" "}
-                {cityName}. We ensure your projects stay on track and your legal
-                rights are protected.
+                {customData?.localInsights ||
+                  `We understand the specific regulatory landscape of ${displayName}. Our firm ensures your projects stay on track.`}
               </p>
               <ul className="service-checklist">
                 <li>
-                  <Shield size={18} /> Construction Lien Matters in {cityName}
+                  <Shield size={18} /> Construction Liens in {displayName}
                 </li>
                 <li>
                   <Gavel size={18} /> Breach of Contract Litigation
                 </li>
                 <li>
-                  <MapPin size={18} /> Serving all of {cityName} and surrounding
-                  areas
+                  <MapPin size={18} /> Serving all of{" "}
+                  {regionData?.title || displayName}
                 </li>
               </ul>
-            </div>
-
-            <div className="local-cta-box">
-              <h3>Facing a Dispute in {cityName}?</h3>
-              <p>
-                Don't let legal hurdles stall your progress. Speak with a
-                specialist today.
-              </p>
-              <Link href="/contact" className="white-btn">
-                Contact Our Office <ArrowRight size={16} />
-              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Internal Link Strategy: Back to Hub */}
-      <section className="back-to-hub">
-        <div className="container">
-          <p>
-            We serve all of Ontario. View our{" "}
-            <Link href="/areas-we-serve">full list of service areas</Link>.
-          </p>
-        </div>
-      </section>
+      <CTA />
     </main>
   );
 }

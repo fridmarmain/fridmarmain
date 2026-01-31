@@ -76,7 +76,7 @@
 }
 
 .navbar-cta {
-     background-color: var(--blur);
+     background-color: var(--blurDark);
      display: flex;
      color: var(--primary-light);
      gap: .5rem;

@@ -34,7 +34,7 @@ export async function getPaginatedPosts(
   lastPublishedAt = null,
   categorySlug = null,
   searchTerm = "",
-  order = "desc"
+  order = "desc",
 ) {
   let filter = `_type == "post"`;
   if (categorySlug)
@@ -67,7 +67,7 @@ export async function getSinglePost(slug) {
     ...,
     "categories": categories[]->{title, "slug": slug.current}
   }`,
-    { slug }
+    { slug },
   );
 }
 
@@ -175,7 +175,7 @@ export async function getPracticeArea(slug) {
       }
     }
   `,
-    { slug }
+    { slug },
   );
 }
 
@@ -232,3 +232,24 @@ _id,
   }`;
   return await client.fetch(query);
 }
+
+// Query for the main Hub page (gets all regions)
+export const GET_REGIONS_QUERY = `*[_type == "region"] | order(_createdAt asc) {
+  title,
+  intro,
+  groups[]{
+    groupName,
+    cities
+  }
+}`;
+// Query for the individual city page
+// It looks for a custom cityPage first, then finds the region info as a fallback
+export const GET_CITY_PAGE_QUERY = `
+  {
+    "customData": *[_type == "cityPage" && slug.current == $citySlug][0],
+    "regionData": *[_type == "region" && cityList match $cityName][0]{
+      title,
+      intro
+    }
+  }
+`;
