@@ -1,0 +1,121 @@
+.blog-card {
+     border-radius: 1rem;
+     transition: transform 0.3s ease;
+     width: 300px;
+     position: relative;
+}
+
+.blog-card:hover {
+     transform: translateY(-8px);
+}
+
+.blogRedir {
+     height: 50px;
+     width: 50px;
+     border-radius: 1rem;
+     position: absolute;
+     top: .6rem;
+     right: .6rem;
+     background-color: rgba(36, 36, 36, 0.438);
+     backdrop-filter: blur(4px);
+     color: #fff;
+     padding: .8rem;
+}
+
+.card-image-wrapper {
+     position: relative;
+     width: 100%;
+     height: 300px;
+
+     /* aspect-ratio: 16 / 10; */
+     overflow: hidden;
+     background-size: cover;
+     background-position: center;
+     transition: scale 0.5s ease;
+     border-radius: 1rem;
+}
+
+.card-image {
+     width: 100%;
+     height: 100%;
+
+}
+
+.blog-card:hover .card-image {
+     scale: 1.05;
+}
+
+.category-badge {
+     position: absolute;
+     top: 15px;
+     left: 15px;
+     background: #c5a059;
+     /* Your Brand Gold */
+     color: white;
+     padding: 4px 12px;
+     border-radius: 20px;
+     font-size: 0.7rem;
+     font-weight: bold;
+     letter-spacing: 1px;
+}
+
+.card-content {
+     padding: 1rem;
+     background-color: rgba(254, 254, 254, 0.732);
+     width: 95%;
+     margin: auto;
+     border: solid 1px rgb(243, 243, 243);
+     z-index: 999;
+     left: 0;
+
+     right: 0;
+     margin: auto;
+     margin-top: -100px;
+     position: relative;
+     backdrop-filter: blur(4px);
+     border-radius: 1rem;
+}
+
+.card-meta {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 12px;
+     font-size: 0.75rem;
+     color: #888;
+}
+
+.format-indicator {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     font-weight: 700;
+     color: #333;
+}
+
+.card-title {
+     font-size: .9rem;
+     font-weight: 700;
+     line-height: 1.4;
+     color: #111;
+}
+
+.card-excerpt {
+     font-size: 0.9rem;
+     color: #666;
+     line-height: 1.6;
+     display: -webkit-box;
+     -webkit-line-clamp: 2;
+     -webkit-box-orient: vertical;
+     overflow: hidden;
+     margin-bottom: 15px;
+}
+
+.read-more {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     color: #c5a059;
+     font-weight: 700;
+     font-size: 0.85rem;
+}

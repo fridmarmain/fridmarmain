@@ -1,8 +1,8 @@
-import Hero from "../components/Hero";
-import Trust from "../components/Trust";
-import ContactSection from "../components/ContactSection";
-import Blog from "../components/Blog.jsx";
-import CTA from "../components/CTA";
+import Hero from "@/components/Hero";
+import Trust from "@/components/Trust";
+import ContactSection from "@/components/ContactSection";
+import Blog from "@/components/Blog.jsx";
+import CTA from "@/components/CTA";
 import {
   getPosts,
   getMainPractices,

@@ -1,0 +1,141 @@
+/* Intake Funnel Container */
+.intake-funnel-section {
+     background-color: #0f172a;
+     /* Slate 900 */
+     color: #ffffff;
+}
+
+/* Typography */
+.funnel-title {
+
+     /* Or your chosen brand serif */
+     font-size: 2.25rem;
+     margin-bottom: 0.5rem;
+     color: #f8fafc;
+}
+
+.funnel-description {
+     color: #94a3b8;
+     margin-bottom: 2rem;
+     font-size: 1rem;
+}
+
+/* Input Styles */
+.field-group {
+     margin-bottom: 1.5rem;
+}
+
+.field-label {
+     display: block;
+     font-size: 0.75rem;
+     text-transform: uppercase;
+     letter-spacing: 0.1em;
+     color: #64748b;
+     margin-bottom: 0.5rem;
+}
+
+.required {
+     color: #c5a059;
+     /* Gold */
+}
+
+.funnel-input {
+     width: 100%;
+     background-color: #1e293b;
+     border: 1px solid #334155;
+     border-radius: 0.75rem;
+     padding: 1rem;
+     color: #f8fafc;
+     outline: none;
+     transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.funnel-input:focus {
+     border-color: #c5a059;
+     box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.2);
+}
+
+.funnel-textarea {
+     min-height: 100px;
+     resize: vertical;
+}
+
+/* Checkbox Items */
+.checkbox-grid {
+     display: flex;
+     flex-direction: column;
+     gap: 0.75rem;
+}
+
+.checkbox-item {
+     display: flex;
+     align-items: center;
+     gap: 1rem;
+     padding: 1rem;
+     background-color: #1e293b;
+     border: 1px solid #334155;
+     border-radius: 0.75rem;
+     cursor: pointer;
+     transition: all 0.2s;
+}
+
+.checkbox-item:hover {
+     background-color: #334155;
+}
+
+.checkbox-item.checked {
+     border-color: #c5a059;
+     background-color: rgba(197, 160, 89, 0.05);
+}
+
+.checkbox-item input[type="checkbox"] {
+     accent-color: #c5a059;
+     width: 18px;
+     height: 18px;
+}
+
+/* Buttons */
+.funnel-submit-btn {
+     width: 100%;
+     background-color: #c5a059;
+     color: #000000;
+     font-weight: 700;
+     padding: 1.25rem;
+     border-radius: 0.75rem;
+     border: none;
+     cursor: pointer;
+     margin-top: 1.5rem;
+     transition: transform 0.2s, background-color 0.2s;
+}
+
+.funnel-submit-btn:hover:not(.disabled) {
+     background-color: #e2c286;
+     transform: translateY(-2px);
+}
+
+.funnel-submit-btn.disabled {
+     background-color: #334155;
+     color: #64748b;
+     cursor: not-allowed;
+}
+
+/* Option Buttons (First few levels) */
+.option-btn {
+     width: 100%;
+     padding: 1.25rem;
+     background-color: transparent;
+     border: 1px solid #334155;
+     border-radius: 0.75rem;
+     color: #f8fafc;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     cursor: pointer;
+     margin-bottom: 0.75rem;
+     transition: all 0.2s;
+}
+
+.option-btn:hover {
+     border-color: #c5a059;
+     background-color: #1e293b;
+}

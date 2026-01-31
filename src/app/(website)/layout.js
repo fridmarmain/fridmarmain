@@ -2,8 +2,8 @@
 import { Bricolage_Grotesque, Google_Sans_Flex } from "next/font/google";
 import "../styles/global.css";
 import "../styles/footer.css";
-import Navbar from "../components/Navbar"; // Now you can import it!
-import Footer from "../components/Footer";
+import Navbar from "@/components/Navbar"; // Now you can import it!
+import Footer from "@/components/Footer";
 import Providers from "./Providers"; // We will move the progress bar here
 
 const bricolage = Bricolage_Grotesque({

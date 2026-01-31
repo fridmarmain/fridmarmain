@@ -1,0 +1,270 @@
+/* Container & Layout */
+.ceo-section {
+     padding: 120px 0;
+     background-color: #041c2d;
+     overflow: hidden;
+     color: #ffffff;
+}
+
+.ceo-container {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 0 2rem;
+     display: grid;
+     grid-template-columns: 1fr 1.2fr;
+     gap: 100px;
+     align-items: center;
+}
+
+/* Image Styling */
+.ceo-image-wrapper {
+     position: relative;
+     min-height: 600px;
+     /* Essential since the img tag is gone */
+}
+
+.ceo-bg-decoration {
+     position: absolute;
+     top: 10%;
+     left: -15%;
+     width: 100%;
+     height: 80%;
+     background-size: cover;
+     background-position: center;
+     opacity: 0.1;
+     filter: grayscale(100%);
+     z-index: 0;
+}
+
+.image-frame {
+     position: relative;
+     z-index: 1;
+     width: 100%;
+     height: 600px;
+     /* Matches the wrapper */
+}
+
+/* This now holds the main portrait */
+.image-frame::after {
+     content: "";
+     position: absolute;
+     top: 40px;
+     right: -20px;
+     width: 100%;
+     height: 100%;
+     border: 2px solid #c5a059;
+     background-image: url("/fridmar.jpg");
+     /* Path to your public folder */
+     background-size: cover;
+     background-position: center;
+     z-index: -1;
+     border-radius: 4px;
+     filter: brightness(0.9);
+}
+
+/* Content Styling */
+.ceo-subtitle {
+     display: block;
+     color: #c5a059;
+     text-transform: uppercase;
+     letter-spacing: 0.2em;
+     font-size: 0.875rem;
+     font-weight: 600;
+     margin-bottom: 1rem;
+}
+
+.ceo-quote {
+     font-size: 3rem;
+     line-height: 1.1;
+     margin-bottom: 2.5rem;
+     /* Adding a fallback for luxury feel */
+}
+
+.gold-text {
+     color: #c5a059;
+}
+
+.ceo-description p {
+     color: #94a3b8;
+     line-height: 1.8;
+     font-size: 1.125rem;
+     margin-bottom: 1.5rem;
+}
+
+/* Button */
+.ceo-btn {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.75rem;
+     background-color: #c5a059;
+     color: #000000;
+     padding: 1.25rem 2.5rem;
+     border-radius: 9999px;
+     font-weight: 700;
+     text-decoration: none;
+     margin-top: 1.5rem;
+     transition: all 0.3s ease;
+}
+
+.ceo-btn:hover {
+     background-color: #ffffff;
+     transform: translateY(-3px);
+}
+
+.btn-icon {
+     transition: transform 0.3s ease;
+}
+
+.ceo-btn:hover .btn-icon {
+     transform: translateX(4px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 968px) {
+     .ceo-container {
+          grid-template-columns: 1fr;
+          gap: 60px;
+          text-align: center;
+     }
+
+     .ceo-image-wrapper {
+          min-height: 450px;
+     }
+
+     .image-frame {
+          height: 450px;
+     }
+
+     .ceo-quote {
+          font-size: 2.25rem;
+     }
+
+     .image-frame::after {
+          right: 0;
+          left: 20px;
+     }
+
+     .ceo-btn {
+          width: 100%;
+          justify-content: center;
+     }
+}
+
+
+
+
+
+
+
+.memoriam-section {
+     padding: 100px 0;
+     background-color: #f9f9f9;
+     /* Very light grey */
+     color: #1a1a1a;
+     display: flex;
+     justify-content: center;
+}
+
+.memoriam-container {
+     max-width: 800px;
+     margin: 0 auto;
+     padding: 0 20px;
+     text-align: center;
+}
+
+/* Header */
+.memoriam-subtitle {
+     display: block;
+     font-family: serif;
+     color: #c5a059;
+     font-style: italic;
+     font-size: 1.2rem;
+     margin-bottom: 10px;
+}
+
+.memoriam-title {
+     font-size: 1.5rem;
+     font-weight: 300;
+     letter-spacing: 1px;
+     margin-bottom: 50px;
+     text-transform: uppercase;
+     color: #333;
+}
+
+/* Image Block */
+.memoriam-image-block {
+     margin-bottom: 50px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+}
+
+.memoriam-frame {
+     width: 260px;
+     height: 260px;
+     border-radius: 50%;
+     padding: 10px;
+     border: 1px solid #c5a059;
+     /* Gold ring */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     background: white;
+     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+     margin-bottom: 15px;
+}
+
+.memoriam-portrait {
+     border-radius: 50%;
+     object-fit: cover;
+     filter: grayscale(40%);
+     /* Subtle respectful tone */
+}
+
+.image-note {
+     font-size: 0.9rem;
+     color: #666;
+     font-style: italic;
+}
+
+/* Content Area */
+.memoriam-content {
+     text-align: left;
+     line-height: 1.8;
+}
+
+.bio-title {
+     font-family: serif;
+     font-size: 1.1rem;
+     letter-spacing: 2px;
+     color: #111;
+     margin-bottom: 25px;
+     border-bottom: 1px solid #e0e0e0;
+     padding-bottom: 10px;
+     display: inline-block;
+}
+
+.bio-text p {
+     margin-bottom: 20px;
+     color: #444;
+     font-size: 1.05rem;
+}
+
+.final-tribute {
+     font-weight: 600;
+     color: #111 !important;
+     margin-top: 30px;
+     font-style: italic;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+     .memoriam-section {
+          padding: 60px 0;
+     }
+
+     .memoriam-frame {
+          width: 200px;
+          height: 200px;
+     }
+}

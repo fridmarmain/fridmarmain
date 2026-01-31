@@ -1,0 +1,78 @@
+.profile-wrapper {
+     padding: 120px 0;
+     background: #fff;
+}
+
+.profile-grid {
+     display: grid;
+     grid-template-columns: 350px 1fr;
+     gap: 60px;
+}
+
+.profile-img {
+     width: 100%;
+     border-radius: 4px;
+     filter: grayscale(0.2);
+     transition: 0.4s;
+}
+
+.profile-img:hover {
+     filter: grayscale(0);
+}
+
+.contact-card,
+.education-box,
+.memberships-section {
+     margin-top: 30px;
+     border-top: 1px solid #eee;
+     padding-top: 20px;
+}
+
+.contact-card p {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+     margin-bottom: 10px;
+     font-size: 0.9rem;
+}
+
+.role-tag {
+     color: #c5a059;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 2px;
+}
+
+.bio-content h2 {
+     /* font-family: serif; */
+     font-size: 2rem;
+     margin-bottom: 20px;
+     border-bottom: 2px solid #c5a059;
+     display: inline-block;
+}
+
+.bio-content p {
+     margin-bottom: 1.5rem;
+     line-height: 1.8;
+     color: #444;
+}
+
+.memberships-section ul,
+.education-box ul {
+     list-style: none;
+     padding: 0;
+}
+
+.memberships-section li,
+.education-box li {
+     margin-bottom: 12px;
+     padding-left: 15px;
+     border-left: 2px solid #c5a059;
+     font-size: 0.95rem;
+}
+
+@media (max-width: 992px) {
+     .profile-grid {
+          grid-template-columns: 1fr;
+     }
+}

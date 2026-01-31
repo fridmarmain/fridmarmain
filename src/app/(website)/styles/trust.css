@@ -1,0 +1,440 @@
+ .trust-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+ }
+
+ .paraCont {
+      max-width: 500px;
+ }
+
+ .trust-header h2 {
+      font-size: 2rem;
+      margin-bottom: var(--small);
+      max-width: 600px;
+      margin: auto;
+      color: var(--text-dark);
+ }
+
+ .trust-header p {
+      font-size: var(--small);
+      color: var(--text-light);
+      margin: 0 auto;
+ }
+
+
+ .aboutCeoCont {
+      display: flex;
+      gap: 1rem;
+
+      width: 100%;
+ }
+
+
+ .aboutCeo {
+      display: flex;
+      gap: .75rem;
+      justify-content: center;
+ }
+
+
+
+
+ .ceoBio {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      max-width: 350px;
+ }
+
+
+ .ceoCot {
+      height: 350px;
+      width: 350px !important;
+      border-radius: 12px;
+      display: flex;
+      background-image: url(./assets/ceo.jpg);
+      background-size: cover;
+      background-position: top;
+      background-color: var(--primary-light);
+
+ }
+
+ .aboutCeoBio {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+ }
+
+ .secondaryBtn {
+      max-width: 200px;
+      width: fit-content;
+
+ }
+
+ .trust-container {
+      display: flex;
+      justify-content: space-between;
+ }
+
+
+ .OtherSide {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+ }
+
+ .sideContainer {
+      background-color: var(--primary-light);
+      display: flex;
+      width: 350px;
+      border-radius: 10px;
+      /* box-shadow: 0 0 60px rgba(128, 128, 128, 0.144); */
+      padding: 8px;
+      gap: 10px;
+
+ }
+
+ .iconFixed {
+      border-radius: 20px;
+      background-color: var(--accent-light);
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+ }
+
+ .sideImage {
+      height: 85px;
+      width: 85px;
+      background-color: rgb(223, 223, 223);
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+ }
+
+ .textCont {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 80%;
+      /* background-color: red; */
+      width: 57%;
+      align-self: center;
+ }
+
+ .textCont p {
+      font-size: 12px;
+ }
+
+ .practiceArea {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+ }
+
+ .eachPracticeArea {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+ }
+
+ .practiceIcon {
+      background-color: black;
+      color: var(--primary-light);
+      height: 32px;
+      width: 32px;
+      color: var(--primary-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 29px;
+ }
+
+
+
+
+ @media (max-width: 768px) {
+      .trust {
+           padding: 2rem 1rem;
+      }
+
+      .trust-header {
+           margin-bottom: 2rem;
+      }
+
+      .aboutCeo {
+           flex-direction: column;
+           align-items: center;
+      }
+
+      .ceoCot {
+           height: 280px;
+      }
+
+      .ceoBio {
+           max-width: 100%;
+      }
+
+      .trust-container {
+           flex-direction: column;
+           align-items: center;
+      }
+
+      .sideContainer {
+           max-width: 100%;
+      }
+ }
+
+ @media (max-width: 480px) {
+      .trust {
+           padding: 1.5rem 1rem;
+      }
+
+      .trust-header h2 {
+           font-size: 1.25rem;
+      }
+
+      .ceoCot {
+           height: 200px;
+           max-width: 100%;
+      }
+
+      .sideImage {
+           height: 60px;
+           width: 60px;
+      }
+
+      .practiceArea {
+           gap: 1rem;
+           margin-bottom: 30px;
+           flex-wrap: wrap;
+      }
+ }
+
+ .trust {
+
+      padding: 3rem 2rem;
+ }
+
+ .trust-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+ }
+
+ .paraCont {
+      max-width: 500px;
+ }
+
+ .trust-header h2 {
+      font-size: 2rem;
+      margin-bottom: var(--small);
+      max-width: 600px;
+      margin: auto;
+      color: var(--text-dark);
+ }
+
+ .trust-header p {
+      font-size: var(--small);
+      color: var(--text-light);
+      margin: 0 auto;
+ }
+
+
+ .aboutCeoCont {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+ }
+
+
+ .aboutCeo {
+      display: flex;
+      gap: .75rem;
+ }
+
+
+
+
+ .ceoBio {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      max-width: 350px;
+ }
+
+
+ .ceoCot {
+      height: 350px;
+      width: 350px !important;
+      border-radius: 12px;
+      display: flex;
+      background-image: url(./assets/ceo.jpg);
+      background-size: cover;
+      background-position: top;
+      background-color: var(--primary-light);
+
+ }
+
+ .aboutCeoBio {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+ }
+
+ .secondaryBtn {
+      max-width: 200px;
+      width: fit-content;
+
+ }
+
+ .trust-container {
+      display: flex;
+      justify-content: space-between;
+ }
+
+
+ .OtherSide {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+ }
+
+ .sideContainer {
+      background-color: var(--primary-light);
+      display: flex;
+      width: 350px;
+      border-radius: 10px;
+      /* box-shadow: 0 0 60px rgba(128, 128, 128, 0.144); */
+      padding: 8px;
+      gap: 10px;
+
+ }
+
+ .iconFixed {
+      border-radius: 20px;
+      background-color: var(--accent-light);
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+ }
+
+ .sideImage {
+      height: 85px;
+      width: 85px;
+      background-color: rgb(223, 223, 223);
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+ }
+
+ .textCont {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 80%;
+      /* background-color: red; */
+      width: 57%;
+      align-self: center;
+ }
+
+ .textCont p {
+      font-size: 12px;
+ }
+
+ .practiceArea {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+ }
+
+ .eachPracticeArea {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+ }
+
+ .practiceIcon {
+      background-color: black;
+      color: var(--primary-light);
+      height: 32px;
+      width: 32px;
+      color: var(--primary-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 29px;
+ }
+
+
+
+
+ @media (max-width: 768px) {
+      .trust {
+           padding: 2rem 1rem;
+      }
+
+      .trust-header {
+           margin-bottom: 2rem;
+      }
+
+      .aboutCeo {
+           flex-direction: column;
+           align-items: center;
+      }
+
+      .ceoCot {
+           height: 280px;
+      }
+
+      .ceoBio {
+           max-width: 100%;
+      }
+
+      .trust-container {
+           flex-direction: column;
+           align-items: center;
+      }
+
+      .sideContainer {
+           max-width: 100%;
+      }
+ }
+
+ @media (max-width: 480px) {
+      .trust {
+           padding: 1.5rem 1rem;
+      }
+
+      .trust-header h2 {
+           font-size: 1.25rem;
+      }
+
+      .ceoCot {
+           height: 200px;
+           max-width: 100%;
+      }
+
+      .sideImage {
+           height: 60px;
+           width: 60px;
+      }
+
+      .practiceArea {
+           gap: 1rem;
+           margin-bottom: 30px;
+           flex-wrap: wrap;
+      }
+ }

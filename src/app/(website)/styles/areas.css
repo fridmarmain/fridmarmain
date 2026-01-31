@@ -1,0 +1,48 @@
+.region-card {
+     display: block;
+     max-width: 400px;
+}
+
+.region-header {
+     max-width: 600px;
+     margin-top: 1rem;
+
+}
+
+.region-header h2 {
+     font-size: large;
+}
+
+.region-header p {
+     font-size: small;
+}
+
+.city-lists {
+     gap: 2rem;
+     display: flex;
+     margin-top: 2rem;
+     max-width: 400px;
+     flex-wrap: wrap;
+}
+
+
+.regionalCont {
+     display: flex;
+     gap: 2rem;
+
+     flex-wrap: wrap;
+}
+
+.gold-text {
+     font-size: small;
+     color: rgb(0, 0, 0);
+}
+
+.goldfont {
+     font-size: small;
+     color: rgb(61, 61, 61);
+}
+
+.cityHeader {
+     font-size: large;
+}
