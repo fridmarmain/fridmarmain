@@ -1,122 +1,3 @@
-// const REGIONS = [
-//   {
-//     id: "gta",
-//     title: "Toronto & the Greater Toronto Area (GTA)",
-//     intro:
-//       "We regularly act for clients across Toronto and the GTA, where construction activity, redevelopment, and commercial disputes are most concentrated.",
-//     groups: [
-//       {
-//         name: "Toronto",
-//         cities: [
-//           "Toronto",
-//           "Downtown Toronto",
-//           "North York",
-//           "Etobicoke",
-//           "Scarborough",
-//           "East York",
-//           "York",
-//         ],
-//       },
-//       {
-//         name: "York Region",
-//         cities: [
-//           "Vaughan (Concord)",
-//           "Woodbridge",
-//           "Richmond Hill",
-//           "Markham",
-//           "Newmarket",
-//           "Aurora",
-//           "King",
-//           "Stouffville",
-//         ],
-//       },
-//       {
-//         name: "Peel & Durham",
-//         cities: [
-//           "Mississauga",
-//           "Brampton",
-//           "Caledon",
-//           "Ajax",
-//           "Pickering",
-//           "Whitby",
-//           "Oshawa",
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     id: "simcoe",
-//     title: "Simcoe County & South Georgian Bay",
-//     intro:
-//       "These areas see strong residential development, resort construction, and renovation-related disputes.",
-//     groups: [
-//       {
-//         name: "Key Hubs",
-//         cities: [
-//           "Barrie",
-//           "Innisfil",
-//           "Orillia",
-//           "Collingwood",
-//           "Wasaga Beach",
-//           "The Blue Mountains",
-//           "Midland",
-//           "Alliston",
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     id: "southwest",
-//     title: "Southwestern Ontario",
-//     intro:
-//       "Serving Windsor-Essex and London with ongoing residential, agricultural, and industrial construction activity.",
-//     groups: [
-//       {
-//         name: "Windsor-Essex",
-//         cities: [
-//           "Windsor",
-//           "LaSalle",
-//           "Tecumseh",
-//           "Lakeshore",
-//           "Amherstburg",
-//           "Kingsville",
-//           "Leamington",
-//         ],
-//       },
-//       {
-//         name: "London & Area",
-//         cities: [
-//           "London",
-//           "Woodstock",
-//           "St. Thomas",
-//           "Stratford",
-//           "Ingersoll",
-//           "Tillsonburg",
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     id: "eastern",
-//     title: "Eastern Ontario",
-//     intro:
-//       "Serving clients across Eastern Ontario, including border communities and older housing markets.",
-//     groups: [
-//       {
-//         name: "Main Hubs",
-//         cities: [
-//           "Ottawa",
-//           "Cornwall",
-//           "Kingston",
-//           "Belleville",
-//           "Brockville",
-//           "Perth",
-//           "Smiths Falls",
-//         ],
-//       },
-//     ],
-//   },
-// ];
 import React from "react";
 import Link from "next/link";
 import { Globe, CheckCircle } from "lucide-react";
@@ -125,6 +6,8 @@ import CTA from "@/components/CTA";
 import { client, GET_REGIONS_QUERY } from "@/lib/sanity";
 import RegionNav from "@/components/RegionNav"; // Import the client part
 import MapWrapper from "@/components/MapWrapper";
+import PageHero from "@/components/pageHero";
+import map from "@/styles/assets/map.jpg";
 
 export default async function AreasWeServe() {
   const regions = await client.fetch(GET_REGIONS_QUERY);
@@ -132,6 +15,17 @@ export default async function AreasWeServe() {
   return (
     <main className="areas-hub">
       {/* HERO SECTION - Updated to use standard anchor or separate client button if needed */}
+
+      <PageHero
+        pageTitle="areas-we-serve"
+        title="Serving Toronto, the GTA, and Communities Across Ontario"
+        subtitle="Based in Concord (Vaughan), Fridmar Law represents clients across Ontario."
+        backgroundImage={map.src}
+        primaryCtaText="Our Service Areas"
+        primaryCtaLink="#map-anchor" // This will handle the scroll
+      />
+
+      {/* MAP SECTION */}
       <section className="areas-hero">
         <div className="container">
           <span className="gold-subtitle">Province-Wide Representation</span>
@@ -151,9 +45,7 @@ export default async function AreasWeServe() {
           </div>
         </div>
       </section>
-
-      {/* MAP SECTION */}
-      <section id="map-anchor" className="map-section">
+      {/* <section id="map-anchor" className="map-section">
         <div className="container">
           <div className="map-grid">
             <div className="map-visual">
@@ -165,15 +57,12 @@ export default async function AreasWeServe() {
             <div className="map-content">
               <h2>Explore Our Hub</h2>
               <p>Select a region below to view cities within that area.</p>
-
-              {/* WE USE THE CLIENT COMPONENT HERE */}
+ 
               <RegionNav regions={regions} />
             </div>
           </div>
         </div>
-      </section>
-
-      <MapWrapper regions={regions} />
+      </section> */}
 
       {/* REGIONAL BREAKDOWN */}
       <section className="regional-breakdown">
@@ -217,7 +106,7 @@ export default async function AreasWeServe() {
           ))}
         </div>
       </section>
-
+      <MapWrapper regions={regions} />
       <CTA />
     </main>
   );

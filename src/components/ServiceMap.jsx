@@ -47,9 +47,14 @@ export default function ServiceMap({ regions }) {
     <div
       style={{
         height: "500px",
-        width: "100%",
+        width: "90%",
+        maxWidth: "1200px",
+
         borderRadius: "12px",
         overflow: "hidden",
+
+        margin: "auto",
+        marginTop: "60px",
       }}
     >
       <MapContainer

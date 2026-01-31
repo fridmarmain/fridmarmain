@@ -68,3 +68,27 @@
 .hero-text-box {
      text-align: center;
 }
+
+.hero-ctas {
+     display: flex;
+     margin: auto;
+     align-items: center;
+     justify-content: center;
+}
+
+.btn-main {
+     background: #000;
+     /* Change to your brand color */
+     color: white;
+     padding: 14px 40px;
+     border-radius: 50px;
+     text-decoration: none;
+     font-weight: 600;
+     width: 100%;
+     max-width: 250px;
+     transition: transform 0.2s;
+}
+
+.btn-main:hover {
+     transform: translateY(-2px);
+}
