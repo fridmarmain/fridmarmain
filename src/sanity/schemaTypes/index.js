@@ -8,7 +8,7 @@ import author from "./author";
 import siteSettings from "./siteSettings";
 import region from "./region";
 import aboutComponent from "./aboutComponent.js";
-import areas from "./areas.js";
+// import areas from "./areas.js";
 import cityPages from "./cityPages";
 
 export const schemaTypes = [
@@ -22,6 +22,6 @@ export const schemaTypes = [
   region,
   aboutComponent,
   blockContent,
-  areas,
+  // areas,
   cityPages,
 ];
