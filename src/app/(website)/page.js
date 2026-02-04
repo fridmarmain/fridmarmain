@@ -39,7 +39,7 @@ export default async function HomePage() {
       <Hero />
 
       <AboutSection data={aboutData} />
-      <TrustRibbon logos={settings?.trustLogos} />
+      {/* <TrustRibbon logos={settings?.trustLogos} /> */}
       <PracticeOverview practices={practices} />
       {/* <Trust /> */}
 
