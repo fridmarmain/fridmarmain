@@ -48,23 +48,23 @@ const Footer = () => {
           <h4>Practice Areas</h4>
           <ul>
             <li>
-              <Link href="/construction">Construction Law</Link>
+              <Link href="/prctice/construction">Construction Law</Link>
             </li>
             <li>
-              <Link href="/civil">Civil Litigation</Link>
+              <Link href="/practice/dispute">Dispute</Link>
             </li>
             <li>
-              <Link href="/commercial">Commercial Disputes</Link>
+              <Link href="/practice/litigation">Litigation</Link>
             </li>
             <li>
-              <Link href="/real-estate">Real Estate Litigation</Link>
+              <Link href="/practice/more">More</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/more">More Practice Areas</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/sitemap">Site Map</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -78,18 +78,18 @@ const Footer = () => {
             <li>
               <Link href="/reviews">Reviews & Testimonials</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/events">Events & Announcements</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/partner">Partner With Us</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/volunteer">Volunteer Opportunities</Link>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link href="/coop">Co-op Placements</Link>
-            </li>
+            </li> */}
           </ul>
         </div>
 
@@ -108,9 +108,6 @@ const Footer = () => {
             </li>
             <li>
               <Link href="/resources/youtube">YouTube Channel</Link>
-            </li>
-            <li>
-              <Link href="/terms">Terms of Use</Link>
             </li>
           </ul>
         </div>
