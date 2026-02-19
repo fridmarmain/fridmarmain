@@ -29,6 +29,7 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
       {practices?.map((umbrella) => {
         const hasCategories = umbrella.categories?.length > 0;
         const isL1Open = openSubMenu === umbrella.slug;
+        const hasContent = umbrella.categories?.length > 0;
 
         return (
           <div
@@ -53,62 +54,65 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
             </div>
 
             {/* --- LEVEL 2 (Categories) --- */}
-            <div
-              className={`${isMobile ? "mobile-accordion" : "mega-menu-content"} ${isL1Open ? "open" : ""}`}
-            >
+
+            {hasContent && (
               <div
-                className={
-                  isMobile ? "mobile-inner-list" : "container megaContInner"
-                }
+                className={`${isMobile ? "mobile-accordion" : "mega-menu-content"} ${isL1Open ? "open" : ""}`}
               >
-                {umbrella.categories.map((cat) => {
-                  const hasServices = cat.services?.length > 0;
-                  const isL2Open = openInnerMenu === cat.slug;
+                <div
+                  className={
+                    isMobile ? "mobile-inner-list" : "container megaContInner"
+                  }
+                >
+                  {umbrella.categories.map((cat) => {
+                    const hasServices = cat.services?.length > 0;
+                    const isL2Open = openInnerMenu === cat.slug;
 
-                  return (
-                    <div
-                      key={cat.slug}
-                      className={
-                        isMobile ? "mobile-nested-wrapper" : "megaEachCont"
-                      }
-                    >
-                      <div className="nav-link-flex">
-                        <Link
-                          href={`/practice/${umbrella.slug}/${cat.slug}`}
-                          className={isMobile ? "mobile-sub-link" : ""}
-                          onClick={handleLinkClick}
-                        >
-                          <h4 style={{ margin: 0 }}>{cat.title}</h4>
-                        </Link>
-                        {isMobile && hasServices && (
-                          <Icon.ChevronDown
-                            size={16}
-                            className={`drop-icon ${isL2Open ? "rotated" : ""}`}
-                            onClick={() => toggleLevel2(cat.slug)}
-                          />
-                        )}
-                      </div>
-
-                      {/* --- LEVEL 3 (Services) --- */}
+                    return (
                       <div
-                        className={`${isMobile ? "mobile-accordion nested" : "services-list"} ${isL2Open || !isMobile ? "open" : ""}`}
+                        key={cat.slug}
+                        className={
+                          isMobile ? "mobile-nested-wrapper" : "megaEachCont"
+                        }
                       >
-                        {cat.services?.map((service) => (
+                        <div className="nav-link-flex">
                           <Link
-                            key={service.slug}
-                            href={`/practice/${umbrella.slug}/${cat.slug}/${service.slug}`}
-                            className="sub-link"
+                            href={`/practice/${umbrella.slug}/${cat.slug}`}
+                            className={isMobile ? "mobile-sub-link" : ""}
                             onClick={handleLinkClick}
                           >
-                            {service.title}
+                            <h4 style={{ margin: 0 }}>{cat.title}</h4>
                           </Link>
-                        ))}
+                          {isMobile && hasServices && (
+                            <Icon.ChevronDown
+                              size={16}
+                              className={`drop-icon ${isL2Open ? "rotated" : ""}`}
+                              onClick={() => toggleLevel2(cat.slug)}
+                            />
+                          )}
+                        </div>
+
+                        {/* --- LEVEL 3 (Services) --- */}
+                        <div
+                          className={`${isMobile ? "mobile-accordion nested" : "services-list"} ${isL2Open || !isMobile ? "open" : ""}`}
+                        >
+                          {cat.services?.map((service) => (
+                            <Link
+                              key={service.slug}
+                              href={`/practice/${umbrella.slug}/${cat.slug}/${service.slug}`}
+                              className="sub-link"
+                              onClick={handleLinkClick}
+                            >
+                              {service.title}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       })}

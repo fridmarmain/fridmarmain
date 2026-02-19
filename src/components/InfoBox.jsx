@@ -1,5 +1,6 @@
 import React from "react";
 import * as Icon from "lucide-react";
+import Link from "next/link";
 
 function InfoBox() {
   return (
@@ -14,7 +15,8 @@ function InfoBox() {
 
           <Icon.ArrowUpRight className="midIcon" />
         </div>
-        <div className="  infoInnerMid">
+
+        <Link href="" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.File size={18} />
@@ -23,9 +25,9 @@ function InfoBox() {
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
-        </div>
+        </Link>
 
-        <div className="  infoInnerMidActive">
+        <Link href="#contactSection" className="  infoInnerMidActive">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.UserPlus size={18} />
@@ -34,9 +36,9 @@ function InfoBox() {
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
-        </div>
+        </Link>
 
-        <div className="  infoInnerMid">
+        <Link href="" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.Headphones size={18} />
@@ -45,7 +47,7 @@ function InfoBox() {
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
-        </div>
+        </Link>
         <div className="infoInner">
           <div className="innerPic"></div>
           <div className="innerTextCont">

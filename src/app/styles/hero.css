@@ -263,6 +263,7 @@
      border: solid .1rem rgb(116, 116, 116);
      padding: .3rem .5rem;
      border-radius: 20px;
+     justify-content: space-between;
      gap: .2rem;
 
 }

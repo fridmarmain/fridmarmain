@@ -47,7 +47,7 @@ const Hero = () => {
                 ))}
               </div>
               <div className="numbersC">
-                <div className="numbers">2.5k+</div>
+                {/* <div className="numbers">2.5k+</div> */}
                 <div className="numbers">(4.8)</div>
               </div>
             </div>

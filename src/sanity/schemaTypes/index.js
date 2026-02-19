@@ -10,6 +10,8 @@ import region from "./region";
 import aboutComponent from "./aboutComponent.js";
 // import areas from "./areas.js";
 import cityPages from "./cityPages";
+import contact from "./contact";
+import intakesubmission from "./intakesubmission";
 
 export const schemaTypes = [
   post,
@@ -22,6 +24,8 @@ export const schemaTypes = [
   region,
   aboutComponent,
   blockContent,
+  intakesubmission,
   // areas,
+  contact,
   cityPages,
 ];

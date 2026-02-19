@@ -95,12 +95,14 @@
      background-position: right 20px center;
      background-size: 20px;
      padding-right: 50px;
+     width: 100%;
      cursor: pointer;
 }
 
 .form-textarea {
      resize: vertical;
      min-height: 140px;
+     width: 100%;
 
 }
 

@@ -4,8 +4,8 @@ import { createImageUrlBuilder } from "@sanity/image-url";
 
 export const client = createClient({
   // This looks for the variable we just made in .env.local
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "regpiees",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   apiVersion: "2026-01-07",
   useCdn: true,
 });
