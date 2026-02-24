@@ -11,10 +11,29 @@
 }
 
 .members-wrapper {
-     display: flex;
-     justify-content: center;
+     display: grid;
+     grid-template-columns: repeat(4, 1fr);
      gap: 1rem;
-     flex-wrap: wrap;
+     padding: 0 2rem;
+}
+
+@media (max-width: 1024px) {
+     .members-wrapper {
+          grid-template-columns: repeat(2, 1fr);
+     }
+}
+
+@media (max-width: 540px) {
+     .members-wrapper {
+          grid-template-columns: 1fr;
+          padding: 0 1rem;
+     }
+}
+
+@media (max-width: 390px) {
+     .members-wrapper {
+          grid-template-columns: 1fr;
+     }
 }
 
 .member-link {
@@ -25,7 +44,8 @@
 .image-container {
      position: relative;
      height: 330px;
-     width: 280px;
+     width: 100%;
+     min-width: 250px;
      /* Keeps all cards uniform height */
      overflow: hidden;
      border-radius: 1rem;

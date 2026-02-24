@@ -2,6 +2,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import * as Icon from "lucide-react";
 import "../styles/about.css";
@@ -62,12 +63,12 @@ const AboutSection = ({ data }) => {
               <PortableText value={data.bio} components={components} />
             </div>
             {!isAboutPage && (
-              <button className="secondaryBtn">
+              <Link href="/about" className="secondaryBtn">
                 <div>Learn More</div>
                 <div className="iconBall">
                   <Icon.ArrowUpRight />
                 </div>
-              </button>
+              </Link>
             )}
           </div>
         </motion.div>

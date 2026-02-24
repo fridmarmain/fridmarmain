@@ -14,7 +14,8 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1>Construction Industry Lawyers, Experts Help Anytime.</h1>
+          <div>Contracts, liens & Legal Disputes</div>
+          <h1>Ontario Construction Law Expert</h1>
         </motion.div>
 
         <motion.div
