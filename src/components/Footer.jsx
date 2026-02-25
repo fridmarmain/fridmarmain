@@ -123,16 +123,16 @@ const Footer = () => {
               <Link href="/areas-we-serve">Interactive Map</Link>
             </li>
             <li>
-              <Link href="/areas-we-serve/toronto">Toronto</Link>
+              <Link href="/areas-we-serve">Toronto</Link>
             </li>
             <li>
-              <Link href="/areas-we-serve/ottawa">Ottawa</Link>
+              <Link href="/areas-we-serve ">Ottawa</Link>
             </li>
             <li>
-              <Link href="/areas-we-serve/hamilton">Hamilton</Link>
+              <Link href="/areas-we-serve ">Hamilton</Link>
             </li>
             <li>
-              <Link href="/areas-we-serve/mississauga">Mississauga</Link>
+              <Link href="/areas-we-serve ">Mississauga</Link>
             </li>
           </ul>
         </div>

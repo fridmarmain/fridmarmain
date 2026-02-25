@@ -59,7 +59,7 @@ const ReviewCard = ({ review, index }) => {
   const clientMeta = (
     <div>
       <div className="client-meta">
-        {review.clientImage && (
+        {review.clientImage?.asset && (
           <div
             className="headshot-bg-circle"
             style={{
@@ -130,7 +130,11 @@ const ReviewCard = ({ review, index }) => {
                 <div
                   className={`thumbnail-bg`}
                   style={{
-                    backgroundImage: `url(${urlFor(review.videoThumbnail).width(800).auto("format").url()})`,
+                    // Add optional chaining and a fallback empty string or placeholder
+                    backgroundImage: review.videoThumbnail?.asset
+                      ? `url(${urlFor(review.videoThumbnail).width(800).auto("format").url()})`
+                      : "none",
+                    backgroundColor: "#1a1a1a", // Fallback color
                   }}
                 />
                 <div
@@ -151,12 +155,24 @@ const ReviewCard = ({ review, index }) => {
             <div
               className="review-bg-img"
               style={{
-                backgroundImage: `url(${urlFor(review.reviewImage).width(600).url()})`,
+                backgroundImage: review.reviewImage?.asset
+                  ? `url(${urlFor(review.reviewImage).width(600).url()})`
+                  : "none",
+                backgroundColor: "#2a2a2a", // Fallback color if image is null
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
-            />
+            >
+              {!review.reviewImage?.asset && (
+                <Icon.ImageOff size={40} color="#555" /> // Optional: show icon if image is missing
+              )}
+            </div>
             <div className="card-body">
               {clientMeta}
-              <p className="review-text">"{review.content}"</p>
+              {review.content && (
+                <p className="review-text">"{review.content}"</p>
+              )}
             </div>
           </div>
         )}
