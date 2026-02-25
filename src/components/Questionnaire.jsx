@@ -79,7 +79,10 @@ export default function IntakeFunnel() {
   const currentIndex = Math.min(history.length, totalSteps);
 
   return (
-    <section className="intake-funnel-section py-24 min-h-screen relative">
+    <section
+      id="intake"
+      className="intake-funnel-section py-24 min-h-screen relative"
+    >
       {/* Loading Overlay */}
       {submitStatus === "loading" && (
         <div className="funnel-loading-overlay">

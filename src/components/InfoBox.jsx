@@ -16,7 +16,7 @@ function InfoBox() {
           <Icon.ArrowUpRight className="midIcon" />
         </div>
 
-        <Link href="" className="  infoInnerMid">
+        <Link href="/practice" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.File size={18} />
@@ -27,7 +27,7 @@ function InfoBox() {
           <Icon.ArrowUpRight className="midIcon" />
         </Link>
 
-        <Link href="#contactSection" className="  infoInnerMidActive">
+        <a href="#contactSection" className="  infoInnerMidActive">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.UserPlus size={18} />
@@ -36,9 +36,9 @@ function InfoBox() {
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
-        </Link>
+        </a>
 
-        <Link href="" className="  infoInnerMid">
+        <a href="#intake" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.Headphones size={18} />
@@ -47,7 +47,7 @@ function InfoBox() {
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
-        </Link>
+        </a>
         <div className="infoInner">
           <div className="innerPic"></div>
           <div className="innerTextCont">
