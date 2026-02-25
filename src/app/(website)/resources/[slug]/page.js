@@ -64,11 +64,19 @@ export default async function PostPage({ params }) {
                       <Icon.Mic size={18} /> Listen to Episode
                     </h3>
                     <iframe
-                      src={post.podcastUrl}
+                      // This logic converts the standard URL to the player URL
+                      src={
+                        post.podcastUrl.replace(
+                          "rss.com/podcasts/",
+                          "player.rss.com/",
+                        ) + "?theme=light"
+                      }
                       title="Podcast Player"
                       width="100%"
-                      height="160px"
+                      height="202px" // Increased to 202px to match the RSS player design
                       frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      scrolling="no"
                     ></iframe>
                   </div>
                 )}
@@ -112,3 +120,5 @@ export default async function PostPage({ params }) {
     </article>
   );
 }
+
+//rss.com/podcasts/lawntrepreneurs/1302454/
