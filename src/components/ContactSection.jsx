@@ -112,9 +112,11 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contactSection" className="contact-section">
-      <h1>REQUEST A CONSULTATION</h1>
-      <p>
+    <section id="contactSection" className="contact-section container">
+      <h1 style={{ textAlign: "left", width: "100%" }}>
+        REQUEST A CONSULTATION
+      </h1>
+      <p style={{ textAlign: "left", width: "100%" }}>
         Fill out the form below to schedule a confidential initial consultation.
       </p>
 

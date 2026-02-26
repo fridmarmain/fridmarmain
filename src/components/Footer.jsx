@@ -24,17 +24,26 @@ const Footer = () => {
             Beyond.
           </p>
           <div className="social-links">
-            <a href="#" aria-label="LinkedIn">
+            <a
+              href="https://ca.linkedin.com/company/fridmar-professional-corporation"
+              aria-label="LinkedIn"
+            >
               <Linkedin size={20} />
             </a>
-            <a href="#" aria-label="Instagram">
+            <a
+              href="https://www.instagram.com/fridmarlaw/"
+              aria-label="Instagram"
+            >
               <Instagram size={20} />
             </a>
-            <a href="#" aria-label="TikTok">
-              <Twitter size={20} />
+            <a
+              href="https://www.facebook.com/profile.php?id=61575084998241"
+              aria-label="facebook"
+            >
+              <Facebook size={20} />
             </a>{" "}
             {/* Using Twitter icon as placeholder for TikTok */}
-            <a href="#" aria-label="YouTube">
+            <a href="https://www.youtube.com/@FridmarLaw" aria-label="YouTube">
               <Youtube size={20} />
             </a>
           </div>

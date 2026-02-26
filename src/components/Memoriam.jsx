@@ -25,7 +25,7 @@ const Memoriam = () => {
               className="memoriam-portrait"
             />
           </div>
-          <p className="image-note">Julia Fridmar (1945 – 2023)</p>
+          {/* <p className="image-note">Julia Fridmar (1945 – 2023)</p> */}
         </div>
 
         {/* Biography Content */}

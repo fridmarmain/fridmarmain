@@ -73,6 +73,10 @@ const AboutSection = ({ data }) => {
           </div>
         </motion.div>
       </div>
+      <div className="dualImgs container">
+        <div className="img1"></div>
+        <div className="img2"></div>
+      </div>
       {isAboutPage && <AboutInner />}
     </section>
   );

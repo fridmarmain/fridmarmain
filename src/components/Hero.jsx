@@ -53,8 +53,8 @@ const Hero = () => {
               </div>
             </div>
             <p>
-              "excellent service! The team handled my case smoothly and kept me
-              updated"
+              "Aggressive advocacy and total transparency. If you have a
+              commercial dispute in Ontario, don’t go anywhere else"
             </p>
           </div>
         </div>

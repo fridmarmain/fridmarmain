@@ -118,3 +118,47 @@
           /* All cards go full width on small screens */
      }
 }
+
+.dualImgs {
+     display: flex;
+     justify-content: center;
+}
+
+.dualImgs .img1 {
+     height: 300px;
+     width: 420px;
+     border-radius: .9rem;
+     margin-right: -120px;
+     background-image: url(/about/about1.jpg);
+     background-size: cover;
+}
+
+.dualImgs .img2 {
+     height: 300px;
+     width: 390px;
+     border-radius: .9rem;
+     background-color: green;
+     margin-top: 250px;
+     background-image: url(/about/about2.jpg);
+     background-size: cover;
+}
+
+@media (max-width: 768px) {
+     .dualImgs {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+     }
+
+     .dualImgs .img1 {
+          width: 100%;
+          height: 250px;
+          margin-right: 0;
+     }
+
+     .dualImgs .img2 {
+          width: 100%;
+          height: 250px;
+          margin-top: 0;
+     }
+}
