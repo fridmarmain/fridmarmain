@@ -37,6 +37,8 @@
 }
 
 .image-frame {
+     background-color: #c5a059;
+     border-radius: .31rem;
      position: relative;
      z-index: 1;
      width: 100%;
