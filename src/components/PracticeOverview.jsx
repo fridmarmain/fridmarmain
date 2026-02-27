@@ -6,7 +6,6 @@ import { urlFor } from "@/lib/sanity";
 import "../styles/practice.css";
 
 const PracticeOverview = ({ practices }) => {
-  console.log(practices);
   return (
     <section className=" container practiceCont">
       <div className="">

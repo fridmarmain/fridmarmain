@@ -31,6 +31,10 @@
      }
 }
 
+.rich-text h3 {
+     margin-top: 20px;
+}
+
 /* Hero Section */
 .hero-section {
      position: relative;
