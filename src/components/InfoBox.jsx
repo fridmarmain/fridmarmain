@@ -21,7 +21,7 @@ function InfoBox() {
             <div className="innerPic">
               <Icon.File size={18} />
             </div>
-            <div className="innerTextCont">Know Your Legal Right</div>
+            <div className="innerTextCont">Know Your Legal Rights</div>
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
