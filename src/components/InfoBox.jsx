@@ -16,7 +16,7 @@ function InfoBox() {
           <Icon.ArrowUpRight className="midIcon" />
         </div>
 
-        <Link href="/practice" className="  infoInnerMid">
+        <Link href="/practice/construction" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.File size={18} />
