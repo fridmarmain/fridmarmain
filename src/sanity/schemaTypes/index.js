@@ -12,6 +12,7 @@ import aboutComponent from "./aboutComponent.js";
 import cityPages from "./cityPages";
 import contact from "./contact";
 import intakesubmission from "./intakesubmission";
+import terms from "./terms";
 
 export const schemaTypes = [
   post,
@@ -27,5 +28,6 @@ export const schemaTypes = [
   intakesubmission,
   // areas,
   contact,
+  terms,
   cityPages,
 ];

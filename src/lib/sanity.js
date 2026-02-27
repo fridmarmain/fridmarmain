@@ -30,6 +30,18 @@ export async function getPosts() {
   }`);
 }
 
+export async function getTermsOfUse() {
+  const query = `*[_type == "termsOfUse"][0] {
+    title,
+    lastUpdated,
+    sections[] {
+      heading,
+      body
+    }
+  }`;
+  return await client.fetch(query);
+}
+
 export async function getPaginatedPosts(
   lastPublishedAt = null,
   categorySlug = null,

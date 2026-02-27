@@ -1,35 +1,112 @@
-import { client } from "@/lib/sanity";
-import ReviewCard from "@/components/ReviewGrid";
-import "../../styles/reviews.css";
-import ReviewGrid from "@/components/ReviewGrid";
+import { getTermsOfUse } from "@/lib/sanity";
+import { PortableText } from "@portabletext/react";
+import Link from "next/link";
+import * as Icon from "lucide-react";
+import "../styles/terms.css";
 
-async function getReviews() {
-  return await client.fetch(`*[_type == "review"] | order(_createdAt desc)`);
-}
+// ─── Portable Text Components ─────────────────────────────────────────────────
+const portableTextComponents = {
+  marks: {
+    link: ({ children, value }) => (
+      <a
+        href={value.href}
+        target={value.blank ? "_blank" : "_self"}
+        rel={value.blank ? "noopener noreferrer" : undefined}
+        className="terms-link"
+      >
+        {children}
+      </a>
+    ),
+    underline: ({ children }) => <u>{children}</u>,
+  },
+  list: {
+    bullet: ({ children }) => <ul className="terms-list bullet">{children}</ul>,
+    number: ({ children }) => <ol className="terms-list number">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => <li>{children}</li>,
+    number: ({ children }) => <li>{children}</li>,
+  },
+};
 
-export default async function ReviewsPage() {
-  const reviews = await getReviews();
+// ─── Page ─────────────────────────────────────────────────────────────────────
+export default async function TermsPage() {
+  const data = await getTermsOfUse();
+
+  if (!data) return <div className="error-state">Terms of Use not found.</div>;
+
+  const formattedDate = data.lastUpdated
+    ? new Date(data.lastUpdated).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null;
 
   return (
-    <main className="page">
-      <ReviewGrid reviews={reviews} />
-      <a
-        className="primarybtn"
-        href="https://search.google.com/local/writereview?placeid=ChIJcekZwOovK4gR-EYjvQOz6jM"
-        target="_blank"
-      >
-        <svg
-          role="img"
-          fill="#fff"
-          viewBox="0 0 24 24"
-          height="20px"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <title>Google</title>
-          <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" />
-        </svg>
-        Leave us a Google Review
-      </a>
+    <main className="terms-page">
+      {/* HERO — matches practiceArea pattern */}
+      <section className="hero-section terms-hero">
+        <div className="hero-overlay" />
+        <div className="hero-container">
+          <nav className="breadcrumb-nav">
+            <Link href="/">Home</Link>
+            <span>
+              <Icon.ChevronRight size={14} className="mx-2 opacity-50" />
+              <span className="active-breadcrumb">Terms of Use</span>
+            </span>
+          </nav>
+
+          <div className="hero-content">
+            <h1>{data.title || "Terms of Use"}</h1>
+            {formattedDate && (
+              <p className="terms-last-updated">
+                Last Updated: {formattedDate}
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTENT */}
+      <div className="content-container">
+        <div className="terms-layout">
+          {/* TABLE OF CONTENTS */}
+          {data.sections?.length > 0 && (
+            <aside className="terms-toc">
+              <div className="sticky-sidebar">
+                <h3 className="toc-heading">Contents</h3>
+                <ul className="toc-list">
+                  {data.sections.map((section, i) => (
+                    <li key={i}>
+                      <a href={`#section-${i}`} className="toc-link">
+                        {section.heading}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </aside>
+          )}
+
+          {/* MAIN CONTENT */}
+          <article className="terms-content">
+            {data.sections?.map((section, i) => (
+              <div key={i} id={`section-${i}`} className="terms-section">
+                <h3 className="terms-section-heading">{section.heading}</h3>
+                {section.body && (
+                  <div className="terms-rich-text">
+                    <PortableText
+                      value={section.body}
+                      components={portableTextComponents}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
+          </article>
+        </div>
+      </div>
     </main>
   );
 }
