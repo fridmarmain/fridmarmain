@@ -30,8 +30,8 @@ const Hero = () => {
         <div className="heroBottom">
           <div className="bottomLeft bottItem">
             <p>
-              defend any case with a solid understanding of the facts and
-              evidence
+              Defend your case with a solid understanding of the facts and
+              evidence (TBD)
             </p>
           </div>
 

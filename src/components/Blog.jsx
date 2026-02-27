@@ -27,7 +27,7 @@ const Blog = ({ posts }) => {
 
         <div className="sectionHeader">
           <div className="sectionHeaderRight">
-            <h2 className="mainHeader">Blog</h2>
+            <h2 className="mainHeader">Resources</h2>
             <h3 className=" ">Stay Informed. Stay Ahead.</h3>
           </div>
 

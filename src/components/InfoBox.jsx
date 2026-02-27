@@ -32,7 +32,7 @@ function InfoBox() {
             <div className="innerPic">
               <Icon.UserPlus size={18} />
             </div>
-            <div className="innerTextCont">Access Emergency Consultation</div>
+            <div className="innerTextCont">Access a lawyer</div>
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
