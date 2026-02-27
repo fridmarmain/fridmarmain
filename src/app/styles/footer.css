@@ -2,8 +2,9 @@
      background-color: #0a314d;
      /* Matching your CEO section */
      padding: 80px 40px 20px 40px;
-     border-top: 1px solid #222;
+     overflow: hidden;
      color: #ffffff;
+     position: relative;
 }
 
 .footer-content {
@@ -96,8 +97,9 @@
 
 /* Bottom Bar */
 .footer-bottom {
-     border-top: 1px solid #222;
      padding-top: 2rem;
+     z-index: 9;
+     position: relative;
 }
 
 .footer-bottom-container {
@@ -138,4 +140,24 @@
      .footer-content {
           grid-template-columns: 1fr;
      }
+}
+
+
+.fridmarFootText {
+     font-size: 100vw;
+}
+
+.fridmarFootText {
+     /* (Minimum size, Preferred size, Maximum size) */
+     font-size: clamp(3rem, 40vw, 24rem);
+     width: 100%;
+     white-space: nowrap;
+     color: #ffd9002a;
+     line-height: .1;
+     position: absolute;
+     bottom: 0;
+     /* Prevents text from breaking into two lines */
+     text-align: center;
+     display: block;
+     z-index: 1;
 }

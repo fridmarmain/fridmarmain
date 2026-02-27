@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { getPaginatedPosts } from "@/lib/sanity";
 import BlogCard from "@/components/BlogCard";
 import * as Icon from "lucide-react";
@@ -15,30 +15,37 @@ export default function ResourceGrid({
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("desc");
   const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const postsRef = useRef(posts);
+
+  // Keep ref in sync so loadMore can read latest posts without stale closure
+  useEffect(() => {
+    postsRef.current = posts;
+  }, [posts]);
 
   const loadPosts = useCallback(
     async (reset = false) => {
       setLoading(true);
-      setPosts((currentPosts) => {
-        const lastDate = reset
-          ? null
-          : currentPosts[currentPosts.length - 1]?.publishedAt;
 
-        getPaginatedPosts(lastDate, activeCategory, search, sortBy)
-          .then((newPosts) => {
-            setHasMore(newPosts.length >= 6);
-            setPosts(reset ? newPosts : [...currentPosts, ...newPosts]);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.error(err);
-            setLoading(false);
-          });
+      const currentPosts = reset ? [] : postsRef.current;
+      const lastDate =
+        currentPosts[currentPosts.length - 1]?.publishedAt ?? null;
 
-        return reset ? [] : currentPosts;
-      });
+      try {
+        const newPosts = await getPaginatedPosts(
+          lastDate,
+          activeCategory,
+          search,
+          sortBy,
+        );
+        setHasMore(newPosts.length >= 6);
+        setPosts(reset ? newPosts : [...currentPosts, ...newPosts]);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     },
-    [search, activeCategory, sortBy]
+    [search, activeCategory, sortBy],
   );
 
   useEffect(() => {
@@ -50,7 +57,6 @@ export default function ResourceGrid({
 
   return (
     <div className="resource-container">
-      {/* Search and Sort Row */}
       <div className="filter-controls">
         <div className="search-wrapper">
           <Icon.Search className="search-icon" size={18} />
@@ -62,7 +68,6 @@ export default function ResourceGrid({
           />
         </div>
 
-        {/* Custom Div-based Sort Toggle */}
         <div className="sort-toggle-group">
           <button
             className={`sort-btn ${sortBy === "desc" ? "active" : ""}`}
@@ -79,7 +84,6 @@ export default function ResourceGrid({
         </div>
       </div>
 
-      {/* Category Tabs */}
       {!initialCategory && (
         <div className="category-tabs">
           <button
@@ -100,7 +104,6 @@ export default function ResourceGrid({
         </div>
       )}
 
-      {/* Result Grid and Status logic remains same... */}
       <div className="resource-grid">
         {posts.map((post) => (
           <BlogCard key={post.slug} post={post} />

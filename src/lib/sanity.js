@@ -233,6 +233,49 @@ _id,
   return await client.fetch(query);
 }
 
+export async function getHomepageReviews() {
+  const query = `{
+    "videoReviews": *[_type == "review" && reviewType == "video"] | order(_createdAt desc) {
+      _id,
+      clientName,
+      clientRole,
+      clientImage,
+      reviewType,
+      videoSource,
+      content,
+      rating,
+      videoUrl,
+      videoThumbnail,
+      "muxPlaybackId": videoUpload.asset->playbackId,
+      "videoAspect": videoUpload.asset->data.aspect_ratio
+    },
+    "textReviews": *[_type == "review" && reviewType == "text"] | order(_createdAt desc) {
+      _id,
+      clientName,
+      clientRole,
+      clientImage,
+      reviewType,
+      videoSource,
+      content,
+      rating,
+      videoUrl,
+      videoThumbnail,
+      "muxPlaybackId": videoUpload.asset->playbackId,
+      "videoAspect": videoUpload.asset->data.aspect_ratio
+    }
+  }`;
+
+  const { videoReviews, textReviews } = await client.fetch(query);
+
+  const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
+
+  const videos = shuffle(videoReviews).slice(0, 2);
+  const texts = shuffle(textReviews).slice(0, 2);
+
+  // interleave: video, text, video, text
+  return [videos[0], texts[0], videos[1], texts[1]].filter(Boolean);
+}
+
 // Query for the main Hub page (gets all regions)
 export const GET_REGIONS_QUERY = `*[_type == "region"] | order(_createdAt asc) {
   title,

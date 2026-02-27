@@ -9,7 +9,7 @@ import {
   getSettings,
   getAboutSection,
   getTeamMembers,
-  getReviews,
+  getHomepageReviews,
 } from "@/lib/sanity";
 
 import "../styles/hero.css";
@@ -33,7 +33,7 @@ export default async function HomePage() {
   const settings = await getSettings();
   const aboutData = await getAboutSection();
   const members = await getTeamMembers(4);
-  const reviewsData = await getReviews(4);
+  const reviewsData = await getHomepageReviews();
   return (
     <>
       <Hero />

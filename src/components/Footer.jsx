@@ -47,9 +47,9 @@ const Footer = () => {
               <Youtube size={20} />
             </a>
           </div>
-          <Link href="/contact" className="footer-cta-btn">
+          {/* <Link href="/contact" className="footer-cta-btn">
             Easy Contact Us
-          </Link>
+          </Link> */}
         </div>
 
         {/* Column 2: 5 Areas of Focus */}
@@ -107,16 +107,18 @@ const Footer = () => {
           <h4>Resources</h4>
           <ul>
             <li>
-              <Link href="/resources/blog">Legal Blog</Link>
+              <Link href="/resources/category/blog">Legal Blog</Link>
             </li>
             <li>
-              <Link href="/resources/vlog">Vlog & Video</Link>
+              <Link href="/resources/category/vlog">Vlog & Video</Link>
             </li>
             <li>
-              <Link href="/resources/podcast">Podcast</Link>
+              <Link href="/resources/category/podcast">Podcast</Link>
             </li>
             <li>
-              <Link href="/resources/youtube">YouTube Channel</Link>
+              <Link href="/resources/category/measure-twice">
+                Measure Twice
+              </Link>
             </li>
           </ul>
         </div>
@@ -147,6 +149,8 @@ const Footer = () => {
         </div>
       </motion.div>
 
+      <div className="fridmarFootText">Fridmar</div>
+
       <div className="footer-bottom">
         <div className="footer-bottom-container">
           <p>
@@ -154,8 +158,7 @@ const Footer = () => {
             All rights reserved.
           </p>
           <div className="footer-legal-links">
-            <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/disclaimer">Disclaimer</Link>
+            <Link href="/terms">Terms of use</Link>
           </div>
         </div>
       </div>

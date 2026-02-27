@@ -6,6 +6,9 @@ import * as Icon from "lucide-react";
 import MuxPlayer from "@mux/mux-player-react";
 import "../styles/reviews.css";
 
+const INITIAL_COUNT = 6;
+const LOAD_MORE_COUNT = 6;
+
 const ReviewCard = ({ review, index }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMuxPlaying, setIsMuxPlaying] = useState(false);
@@ -22,20 +25,18 @@ const ReviewCard = ({ review, index }) => {
     }
     if (url.includes("tiktok.com")) {
       const id = url.split("/video/")[1]?.split("?")[0];
-      // Using the 'v2' embed is standard, but we will crop it with CSS
       return `https://www.tiktok.com/embed/v2/${id}`;
     }
     return url;
   };
 
-  // Update this line
   const isVertical =
     review.videoAspect === "9:16" ||
     review.videoUrl?.includes("shorts") ||
-    review.videoUrl?.includes("tiktok.com"); // <--- ADD THIS
+    review.videoUrl?.includes("tiktok.com");
 
   const handlePlayAction = (e) => {
-    e.stopPropagation(); // Prevents the click from bubbling
+    e.stopPropagation();
     if (review.videoSource === "upload") {
       setIsMuxPlaying(true);
     } else {
@@ -74,14 +75,12 @@ const ReviewCard = ({ review, index }) => {
           )}
         </div>
       </div>
-
       <div>{renderStars(review.rating)}</div>
     </div>
   );
 
   return (
     <>
-      {/* GLOBAL CLICK-AWAY OVERLAY (Closes Mux if you click anywhere outside) */}
       <AnimatePresence>
         {isMuxPlaying && (
           <motion.div
@@ -89,7 +88,7 @@ const ReviewCard = ({ review, index }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="mux-reset-overlay"
-            onClick={() => setIsMuxPlaying(false)} // This UNMOUNTS the video
+            onClick={() => setIsMuxPlaying(false)}
           />
         )}
       </AnimatePresence>
@@ -106,7 +105,6 @@ const ReviewCard = ({ review, index }) => {
             <div
               className={`video-stack-container ${review.videoSource === "upload" ? "upload-variant" : "url-variant"}`}
             >
-              {/* 1. MUX PLAYER LAYER */}
               <div
                 className={`mux-player-wrapper ${isMuxPlaying ? "visible" : "hidden"}`}
               >
@@ -128,28 +126,25 @@ const ReviewCard = ({ review, index }) => {
                 onClick={handlePlayAction}
               >
                 <div
-                  className={`thumbnail-bg`}
+                  className="thumbnail-bg"
                   style={{
-                    // Add optional chaining and a fallback empty string or placeholder
                     backgroundImage: review.videoThumbnail?.asset
                       ? `url(${urlFor(review.videoThumbnail).width(800).auto("format").url()})`
                       : "none",
-                    backgroundColor: "#1a1a1a", // Fallback color
+                    backgroundColor: "#1a1a1a",
                   }}
                 />
                 <div
-                  className={`play-btn-overlay ${isMuxPlaying ? "hidePlay" : " "}`}
+                  className={`play-btn-overlay ${isMuxPlaying ? "hidePlay" : ""}`}
                 >
                   <Icon.Play size={60} />
                 </div>
-
-                <div className=" videoMeta">{clientMeta}</div>
+                <div className="videoMeta">{clientMeta}</div>
               </div>
             </div>
           </div>
         )}
 
-        {/* ... (Keep Image and Text types as they are) ... */}
         {review.reviewType === "image" && (
           <div className="image-variant">
             <div
@@ -158,14 +153,14 @@ const ReviewCard = ({ review, index }) => {
                 backgroundImage: review.reviewImage?.asset
                   ? `url(${urlFor(review.reviewImage).width(600).url()})`
                   : "none",
-                backgroundColor: "#2a2a2a", // Fallback color if image is null
+                backgroundColor: "#2a2a2a",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               {!review.reviewImage?.asset && (
-                <Icon.ImageOff size={40} color="#555" /> // Optional: show icon if image is missing
+                <Icon.ImageOff size={40} color="#555" />
               )}
             </div>
             <div className="card-body">
@@ -186,7 +181,6 @@ const ReviewCard = ({ review, index }) => {
         )}
       </motion.div>
 
-      {/* YOUTUBE/SOCIAL MODAL */}
       {isModalOpen && review.videoSource === "url" && (
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div
@@ -215,19 +209,28 @@ const ReviewCard = ({ review, index }) => {
 };
 
 export default function ReviewGrid({ reviews }) {
+  const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
+
   if (!reviews) return null;
+
+  const visibleReviews = reviews.slice(0, visibleCount);
+  const hasMore = visibleCount < reviews.length;
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + LOAD_MORE_COUNT);
+  };
+
   return (
     <section className="reviews-container">
       <div className="container">
         <div className="SideHeader">
-          <h3 className=""> What Our Clients Say </h3>
+          <h3>What Our Clients Say</h3>
         </div>
         <div className="sectionHeader">
           <div className="sectionHeaderRight">
             <h2 className="mainHeader">Reviews</h2>
-            <h3 className="">Client Trust</h3>
+            <h3>Client Trust</h3>
           </div>
-
           <div className="sectionHeaderleft">
             <p>
               Discover how our commitment to excellence has helped clients
@@ -237,7 +240,7 @@ export default function ReviewGrid({ reviews }) {
         </div>
 
         <div className="masonry-grid">
-          {reviews.map((review, index) => (
+          {visibleReviews.map((review, index) => (
             <ReviewCard
               key={review._id || index}
               review={review}
@@ -245,6 +248,14 @@ export default function ReviewGrid({ reviews }) {
             />
           ))}
         </div>
+
+        {hasMore && (
+          <div className="load-more-wrapper">
+            <button className="btn-load-more" onClick={handleLoadMore}>
+              Load More Reviews
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
