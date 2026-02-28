@@ -221,7 +221,12 @@ const NavbarClient = ({ categories, practices }) => {
           </div>
 
           <div className="flexCont">
-            <button className="navbar-cta desktop-only">Book a call</button>
+            <Link
+              href="https://calendly.com/fridmar/meet-with-mey"
+              className="navbar-cta desktop-only"
+            >
+              Book a call
+            </Link>
             <div
               className={`hamBurger ${isOpen ? "active" : ""}`}
               onClick={() => setIsOpen(!isOpen)}

@@ -8,7 +8,7 @@ export default async function TeamProfilePage({ params }) {
   const { slug } = await params;
   const member = await client.fetch(
     `*[_type == "team" && slug.current == $slug][0]`,
-    { slug }
+    { slug },
   );
 
   if (!member) return <div>Member not found</div>;
@@ -68,6 +68,7 @@ export default async function TeamProfilePage({ params }) {
             <div className="video-section">
               {/* Embed TikTok or Video here */}
               <h3>Video Feature</h3>
+
               <iframe className="tiktok-embed" src={member.tiktokVideo} />
             </div>
           )}
@@ -81,15 +82,30 @@ export default async function TeamProfilePage({ params }) {
             </ul>
           </div>
         </section>
-
-        <section className="reels-visibility-block">
-          <h3>Featured Insights</h3>
-          <p className="reels-subtitle">
-            Watch Dan discuss recent trends in Construction Law.
-          </p>
-          <TikTokGallery urls={member.tiktokReels} />
-        </section>
       </div>
+
+      <section className="reels-visibility-block">
+        <h3>Featured Insights</h3>
+        <p className="reels-subtitle">
+          Watch {member.name.split(" ")[0]} discuss recent trends in
+          Construction Law.
+        </p>
+
+        <div className="tikTokContainer">
+          <TikTokGallery urls={member.tiktokReels} />
+        </div>
+
+        {/* {member.tiktokReels?.length > 0 && (
+          <section className="tikTokContainer">
+            <h3>Featured Insights</h3>
+            <p className="reels-subtitle">
+              Watch {member.name.split(" ")[0]} discuss recent trends in
+              Construction Law.
+            </p>
+            <TikTokGallery urls={member.tiktokReels} />
+          </section>
+        )} */}
+      </section>
     </main>
   );
 }

@@ -7,10 +7,8 @@ const TikTokGallery = ({ urls }) => {
   return (
     <div className="reels-grid">
       {urls.map((url, index) => {
-        // TikTok URLs usually look like: tiktok.com/@user/video/ID
-        // We need to convert them to embed URLs
         const videoId = url.split("/video/")[1]?.split("?")[0];
-        const embedUrl = `https://www.tiktok.com/embed/v2/${videoId}`;
+        const embedUrl = `https://www.tiktok.com/embed/v2/${videoId}?autoplay=0`;
 
         return (
           <div key={index} className="reel-card">
@@ -19,7 +17,7 @@ const TikTokGallery = ({ urls }) => {
               className="tiktok-iframe"
               allowFullScreen
               scrolling="no"
-              allow="autoplay; encrypted-media; picture-in-picture"
+              allow="encrypted-media; picture-in-picture"
             ></iframe>
           </div>
         );

@@ -39,7 +39,10 @@ export default async function AreasWeServe() {
             <a href="#map-anchor" className="gold-btn">
               Explore Our Service Areas
             </a>
-            <Link href="/contact" className="outline-btn">
+            <Link
+              href="https://calendly.com/fridmar/meet-with-mey"
+              className="outline-btn"
+            >
               Contact Us
             </Link>
           </div>

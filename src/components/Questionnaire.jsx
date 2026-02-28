@@ -487,6 +487,7 @@ export default function IntakeFunnel() {
                     name: "opposing",
                     label: "Opposing party / company",
                     type: "text",
+                    optional: true,
                   },
                   {
                     name: "lender",
@@ -496,7 +497,7 @@ export default function IntakeFunnel() {
                   },
                   {
                     name: "others",
-                    label: "Other parties",
+                    label: "Other parties involved",
                     type: "text",
                     optional: true,
                   },

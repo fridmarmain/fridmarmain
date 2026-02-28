@@ -146,7 +146,10 @@ export default async function PracticeAreaPage({ params }) {
                 <Icon.PhoneCall className="cta-icon" size={40} />
                 <h3>Need Immediate Help?</h3>
                 <p>Our experts are ready to assist with your case.</p>
-                <Link href="/contact" className="btn-black">
+                <Link
+                  href="https://calendly.com/fridmar/meet-with-mey"
+                  className="btn-black"
+                >
                   Contact Us Now
                 </Link>
               </div>

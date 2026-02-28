@@ -30,7 +30,7 @@ helps our clients stay informed`,
       title: "Community Impact",
       text: "Contact us to get started on your custom legal strategy.",
       image: "/professional-handshake-legal.jpg",
-      Link: "/contact",
+      Link: "https://calendly.com/fridmar/meet-with-mey",
     },
   ];
 

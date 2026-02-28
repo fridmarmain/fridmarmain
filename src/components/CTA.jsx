@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 import "../styles/cta.css";
 
 const CTA = () => {
@@ -26,9 +27,12 @@ const CTA = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           whileHover={{ scale: 1.05 }}
+          style={{ borderRadius: ".7rem" }}
           whileTap={{ scale: 0.95 }}
         >
-          Book a Consultation
+          <Link href="https://calendly.com/fridmar/meet-with-mey">
+            Book a Consultation
+          </Link>
         </motion.button>
       </div>
       {/* 

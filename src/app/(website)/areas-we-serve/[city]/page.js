@@ -37,7 +37,10 @@ export default async function CityServicePage({ params }) {
               `Expert legal counsel for construction and commercial disputes in ${displayName}. ${regionData?.intro || ""}`}
           </p>
 
-          <Link href="/contact" className="gold-btn">
+          <Link
+            href="https://calendly.com/fridmar/meet-with-mey"
+            className="gold-btn"
+          >
             Schedule a Consultation in {displayName}
           </Link>
         </div>

@@ -61,9 +61,9 @@ export default function PracticeSidebar({ tree }) {
                   className="toggle-btn"
                 >
                   {isOpen ? (
-                    <ChevronDown size={18} />
-                  ) : (
                     <ChevronRight size={18} />
+                  ) : (
+                    <ChevronDown size={18} />
                   )}
                 </button>
               </div>
@@ -86,9 +86,9 @@ export default function PracticeSidebar({ tree }) {
                             className="toggle-btn"
                           >
                             {isCatOpen ? (
-                              <ChevronDown size={14} />
-                            ) : (
                               <ChevronRight size={14} />
+                            ) : (
+                              <ChevronDown size={14} />
                             )}
                           </button>
                         </div>
