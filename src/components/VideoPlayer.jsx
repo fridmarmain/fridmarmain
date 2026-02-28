@@ -4,12 +4,49 @@ import { useState } from "react";
 import { urlFor } from "@/lib/sanity";
 import * as Icon from "lucide-react";
 
+/**
+ * Extracts the YouTube video ID from any YouTube URL format:
+ *  - https://www.youtube.com/watch?v=ID
+ *  - https://youtu.be/ID
+ *  - https://youtube.com/shorts/ID?si=...
+ *  - https://www.youtube.com/embed/ID
+ */
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+
+  // Match shorts: /shorts/ID
+  const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+  if (shortsMatch) {
+    return `https://www.youtube.com/embed/${shortsMatch[1]}?autoplay=1`;
+  }
+
+  // Match standard watch?v=ID
+  const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+  if (watchMatch) {
+    return `https://www.youtube.com/embed/${watchMatch[1]}?autoplay=1`;
+  }
+
+  // Match youtu.be/ID
+  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (shortMatch) {
+    return `https://www.youtube.com/embed/${shortMatch[1]}?autoplay=1`;
+  }
+
+  // Match already-embed URLs
+  const embedMatch = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/);
+  if (embedMatch) {
+    return `https://www.youtube.com/embed/${embedMatch[1]}?autoplay=1`;
+  }
+
+  return null;
+}
+
 export default function VideoPlayer({ videoUrl, coverImage }) {
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const embedUrl = videoUrl?.replace("watch?v=", "embed/") + "?autoplay=1";
+  const embedUrl = getYouTubeEmbedUrl(videoUrl);
 
-  if (isPlaying) {
+  if (isPlaying && embedUrl) {
     return (
       <div className="video-wrapper">
         <iframe
@@ -27,7 +64,6 @@ export default function VideoPlayer({ videoUrl, coverImage }) {
     );
   }
 
-  // Generate the image URL if it exists
   const imageUrl = coverImage ? urlFor(coverImage).url() : null;
 
   return (
@@ -41,7 +77,6 @@ export default function VideoPlayer({ videoUrl, coverImage }) {
         aspectRatio: "16/9",
         borderRadius: "8px",
         overflow: "hidden",
-        /* Background Image Logic */
         backgroundColor: "#000",
         backgroundImage: imageUrl ? `url(${imageUrl})` : "none",
         backgroundSize: "cover",
@@ -49,7 +84,7 @@ export default function VideoPlayer({ videoUrl, coverImage }) {
         backgroundRepeat: "no-repeat",
       }}
     >
-      {/* Overlay to darken image slightly so play button pops */}
+      {/* Subtle darkening overlay */}
       <div
         style={{
           position: "absolute",
@@ -60,7 +95,7 @@ export default function VideoPlayer({ videoUrl, coverImage }) {
         className="overlay-hover"
       />
 
-      {/* Play Button Overlay */}
+      {/* Play Button */}
       <div
         style={{
           position: "absolute",

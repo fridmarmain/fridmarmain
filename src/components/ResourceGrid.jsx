@@ -119,7 +119,7 @@ export default function ResourceGrid({
 
       {hasMore && !loading && posts.length > 0 && (
         <div className="load-more-wrapper">
-          <button className="btn-load-more" onClick={() => loadPosts(false)}>
+          <button className="btn-load-more " onClick={() => loadPosts(false)}>
             Load More Content
           </button>
         </div>

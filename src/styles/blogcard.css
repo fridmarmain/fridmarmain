@@ -1,7 +1,7 @@
 .blog-card {
      border-radius: 1rem;
      transition: transform 0.3s ease;
-     width: 300px;
+     width: 260px;
      position: relative;
 }
 

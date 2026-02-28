@@ -103,7 +103,7 @@ export default async function PostPage({ params }) {
             )}
           </main>
 
-          <aside className="sidebar">
+          {/* <aside className="sidebar">
             <div className="sticky-sidebar">
               <div className="contact-cta">
                 <Icon.Mail className="cta-icon" size={40} />
@@ -114,7 +114,7 @@ export default async function PostPage({ params }) {
                 </a>
               </div>
             </div>
-          </aside>
+          </aside> */}
         </div>
       </div>
     </article>

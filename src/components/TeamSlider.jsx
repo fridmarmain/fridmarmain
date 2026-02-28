@@ -12,7 +12,11 @@ const TeamSlider = ({ members }) => {
   if (!members || members.length === 0) return null;
 
   return (
-    <section className="team-slider-section" style={{ padding: "80px 0" }}>
+    <section
+      id="team"
+      className="team-slider-section"
+      style={{ padding: "80px 0" }}
+    >
       <div
         className="container"
         style={{ maxWidth: "1200px", margin: "0 auto", overflow: "hidden" }}

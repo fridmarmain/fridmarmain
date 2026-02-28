@@ -3,7 +3,7 @@ import {
   getMainPractices,
   getAboutSection,
   getTeamMembers,
-  getReviews,
+  getHomepageReviews,
 } from "@/lib/sanity";
 
 import "../../styles/hero.css";
@@ -27,7 +27,7 @@ export default async function AboutPage() {
   const latestPosts = posts?.slice(0, 4);
   const aboutData = await getAboutSection();
   const members = await getTeamMembers();
-  const reviewsData = await getReviews(4);
+  const reviewsData = await getHomepageReviews();
   return (
     <>
       <PageHero
