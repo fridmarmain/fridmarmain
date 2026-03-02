@@ -129,7 +129,7 @@ const ContactSection = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <img
-            src="https://images.pexels.com/photos/3777557/pexels-photo-3777557.jpeg?auto=compress&cs=tinysrgb&w=800"
+            src="./about/dan.png"
             alt="Professional businessman"
             className="contact-image"
           />
