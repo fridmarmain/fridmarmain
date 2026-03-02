@@ -7,17 +7,6 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Link from "next/link";
 
-// Fix Leaflet default icon paths
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
-
 const customIcon = new L.Icon({
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -25,10 +14,8 @@ const customIcon = new L.Icon({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
 });
 
-// ── Defined OUTSIDE component so reference never changes between renders ──
 const ontarioGeoJSON = {
   type: "Feature",
   properties: { name: "Ontario" },
@@ -82,7 +69,6 @@ const ontarioGeoJSON = {
   },
 };
 
-// ── Also outside — stable function reference ──
 const ontarioStyle = () => ({
   color: "#c5a059",
   weight: 3,
@@ -91,17 +77,11 @@ const ontarioStyle = () => ({
   fillOpacity: 0.08,
 });
 
-// ── SVG renderer instance — created once at module level ──
-// This is the core fix: a single stable SVG renderer instead of
-// Leaflet recreating a canvas renderer on every map interaction
-const svgRenderer =
-  typeof window !== "undefined" ? L.svg({ padding: 0.5 }) : null;
-
 export default function ServiceMap({ regions, coordsMap = {} }) {
   const ontarioCenter = [44.5, -79.5];
 
   const markers = useMemo(() => {
-    const seen = new Set();
+    const seen = new Set(); // prevent duplicate pins for same city name
 
     return regions.flatMap((region, rIdx) =>
       (region.groups ?? []).flatMap((group, gIdx) =>
@@ -117,15 +97,14 @@ export default function ServiceMap({ regions, coordsMap = {} }) {
               .replace(/\s+/g, "-")
               .replace(/[()]/g, "");
 
+            // Skip if this city name already has a pin
             if (seen.has(slug)) return null;
             seen.add(slug);
 
-            return {
-              trimmedCity,
-              position,
-              slug,
-              uniqueKey: `${rIdx}-${gIdx}-${cIdx}-${slug}`,
-            };
+            // Key is unique: region index + group index + city index
+            const uniqueKey = `${rIdx}-${gIdx}-${cIdx}-${slug}`;
+
+            return { trimmedCity, position, slug, uniqueKey };
           })
           .filter(Boolean),
       ),
@@ -135,49 +114,36 @@ export default function ServiceMap({ regions, coordsMap = {} }) {
   return (
     <div
       style={{
-        height: "520px",
+        height: "500px",
         width: "90%",
         maxWidth: "1200px",
         borderRadius: "12px",
         overflow: "hidden",
-        margin: "60px auto 0",
-        boxShadow: "0 4px 32px rgba(197, 160, 89, 0.1)",
-        border: "1px solid rgba(197, 160, 89, 0.2)",
+        margin: "auto",
+        marginTop: "60px",
       }}
     >
       <MapContainer
         center={ontarioCenter}
         zoom={6}
         style={{ height: "100%", width: "100%" }}
-        renderer={svgRenderer}
-        preferCanvas={false}
       >
         <TileLayer
           attribution='&copy; <a href="https://carto.com/">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        <GeoJSON
-          key="ontario-border"
-          data={ontarioGeoJSON}
-          style={ontarioStyle}
-        />
+        <GeoJSON key="ontario" data={ontarioGeoJSON} style={ontarioStyle} />
 
         {markers.map(({ trimmedCity, position, slug, uniqueKey }) => (
           <Marker key={uniqueKey} position={position} icon={customIcon}>
             <Popup>
-              <div style={{ padding: "4px 2px" }}>
-                <strong style={{ color: "#c5a059", fontSize: "13px" }}>
-                  {trimmedCity}
-                </strong>
+              <div className="popup-content">
+                <strong style={{ color: "#c5a059" }}>{trimmedCity}</strong>
                 <br />
                 <Link
                   href={`/areas-we-serve/${slug}`}
-                  style={{
-                    fontSize: "11px",
-                    color: "#6b6259",
-                    textDecoration: "underline",
-                  }}
+                  style={{ fontSize: "12px", textDecoration: "underline" }}
                 >
                   View Local Legal Services
                 </Link>

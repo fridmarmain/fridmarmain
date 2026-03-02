@@ -229,10 +229,9 @@ const ContactSection = () => {
                   viewport={{ once: true }}
                 >
                   <option value="">Type of service</option>
-                  <option value="consulting">Consulting</option>
-                  <option value="development">Development</option>
-                  <option value="design">Design</option>
-                  <option value="marketing">Marketing</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Dispute">Dispute</option>
+                  <option value="Litigation">Litigation</option>
                   <option value="other">Other</option>
                 </motion.select>
                 {errors.service && (
