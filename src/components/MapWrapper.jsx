@@ -1,8 +1,8 @@
-"use client";
+// PATH: /components/MapWrapper.jsx
 
+"use client";
 import dynamic from "next/dynamic";
 
-// We move the dynamic import here, inside a Client Component
 const ServiceMap = dynamic(() => import("./ServiceMap"), {
   ssr: false,
   loading: () => (
@@ -21,6 +21,6 @@ const ServiceMap = dynamic(() => import("./ServiceMap"), {
   ),
 });
 
-export default function MapWrapper({ regions }) {
-  return <ServiceMap regions={regions} />;
+export default function MapWrapper({ regions, coordsMap }) {
+  return <ServiceMap regions={regions} coordsMap={coordsMap} />;
 }

@@ -1,6 +1,8 @@
 "use client";
+// PATH: /components/pageHero.jsx
+
 import { motion } from "framer-motion";
-import Link from "next/link"; // Import Link for internal routing
+import Link from "next/link";
 import "../styles/pageHero.css";
 
 const PageHero = ({
@@ -8,7 +10,7 @@ const PageHero = ({
   title,
   subtitle,
   backgroundImage,
-  overlayOpacity = 0.7,
+  overlayOpacity = 0.55,
   primaryCtaText,
   primaryCtaLink,
   secondaryCtaText,
@@ -16,50 +18,90 @@ const PageHero = ({
 }) => {
   return (
     <div className="page-hero">
+      {/* Background image */}
       <div
         className="hero-bg"
         style={{
           backgroundImage: `url(${backgroundImage || "/default-hero.jpg"})`,
         }}
-      >
-        <div
-          className="hero-overlay"
-          style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})` }}
-        />
-      </div>
+      />
+
+      {/* Layered overlays for depth */}
+      <div
+        className="hero-overlay"
+        style={{ backgroundColor: `rgba(10, 8, 5, ${overlayOpacity})` }}
+      />
+      <div className="hero-overlay-gradient" />
+      <div className="hero-grain" />
+
+      {/* Decorative gold top rule */}
+      <div className="hero-rule-top" />
 
       <div className="container hero-content-wrapper">
         <motion.div
           className="hero-text-box"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <nav className="breadcrumb">
-            <span>Home</span> &gt; <span className="current">{pageTitle}</span>
-          </nav>
-          <h1 className="page-title">{title}</h1>
-          {subtitle && <p className="page-subtitle">{subtitle}</p>}
-
-          {/* CTA Button Group */}
-          <div
-            className="hero-ctas"
-            style={{ marginTop: "2rem", display: "flex", gap: "1rem" }}
+          {/* Breadcrumb */}
+          <motion.nav
+            className="breadcrumb"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            {primaryCtaLink && (
-              <Link href={primaryCtaLink} className="btn-main">
-                {primaryCtaText || "Get Started"}
-              </Link>
-            )}
+            <Link href="/">Home</Link>
+            <span className="breadcrumb-sep">—</span>
+            <span className="current">{pageTitle}</span>
+          </motion.nav>
 
-            {secondaryCtaLink && (
-              <Link href={secondaryCtaLink} className="btn-secondary">
-                {secondaryCtaText || "Learn More"}
-              </Link>
-            )}
-          </div>
+          {/* Animated gold eyebrow line */}
+          <motion.div
+            className="hero-eyebrow-line"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+          />
+
+          <h1 className="page-title">{title}</h1>
+
+          {subtitle && (
+            <motion.p
+              className="page-subtitle"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.45 }}
+            >
+              {subtitle}
+            </motion.p>
+          )}
+
+          {/* CTAs */}
+          {(primaryCtaLink || secondaryCtaLink) && (
+            <motion.div
+              className="hero-ctas"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.6 }}
+            >
+              {primaryCtaLink && (
+                <Link href={primaryCtaLink} className="btn-main">
+                  {primaryCtaText || "Get Started"}
+                </Link>
+              )}
+              {secondaryCtaLink && (
+                <Link href={secondaryCtaLink} className="btn-secondary">
+                  {secondaryCtaText || "Learn More"}
+                </Link>
+              )}
+            </motion.div>
+          )}
         </motion.div>
       </div>
+
+      {/* Bottom fade into page */}
+      <div className="hero-fade-bottom" />
     </div>
   );
 };

@@ -1,10 +1,23 @@
+// PATH: /components/ServiceMap.jsx
+
 "use client";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useMemo } from "react";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Link from "next/link";
 
-// Fix for default Leaflet icon
+// Fix Leaflet default icon paths
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+});
+
 const customIcon = new L.Icon({
   iconUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -12,101 +25,166 @@ const customIcon = new L.Icon({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
 });
 
-// A lookup table for Ontario cities
-const cityCoords = {
-  Toronto: [43.6532, -79.3832],
-  "North York": [43.7615, -79.4111],
-  "Vaughan (Concord)": [43.792, -79.503],
-  Mississauga: [43.589, -79.6441],
-  Brampton: [43.7315, -79.7624],
-  Markham: [43.8561, -79.337],
-  "Richmond Hill": [43.8828, -79.4403],
-  Oshawa: [43.8971, -78.8658],
-  // Simcoe
-  Barrie: [44.3894, -79.6903],
-  Collingwood: [44.5008, -80.2169],
-  Orillia: [44.6082, -79.4181],
-  // Southwest
-  London: [42.9849, -81.2453],
-  Windsor: [42.3149, -83.0364],
-  Woodstock: [43.1306, -80.7467],
-  // Eastern
-  Ottawa: [45.4215, -75.6972],
-  Kingston: [44.2312, -76.486],
-  Belleville: [44.1628, -77.3832],
-  Cornwall: [45.0213, -74.7303],
+// ── Defined OUTSIDE component so reference never changes between renders ──
+const ontarioGeoJSON = {
+  type: "Feature",
+  properties: { name: "Ontario" },
+  geometry: {
+    type: "Polygon",
+    coordinates: [
+      [
+        [-84.5, 46.0],
+        [-83.5, 46.1],
+        [-82.5, 45.3],
+        [-82.0, 43.0],
+        [-82.9, 42.6],
+        [-83.1, 42.1],
+        [-79.0, 42.7],
+        [-76.8, 43.6],
+        [-75.5, 44.2],
+        [-74.7, 45.0],
+        [-74.3, 45.5],
+        [-75.0, 46.0],
+        [-76.0, 46.5],
+        [-77.0, 47.0],
+        [-78.0, 48.0],
+        [-79.0, 48.5],
+        [-80.0, 50.0],
+        [-81.0, 51.0],
+        [-82.0, 52.0],
+        [-83.0, 53.0],
+        [-84.0, 54.0],
+        [-85.0, 55.0],
+        [-86.0, 55.5],
+        [-87.0, 56.0],
+        [-88.0, 56.5],
+        [-89.0, 56.8],
+        [-90.0, 57.0],
+        [-91.0, 56.8],
+        [-92.0, 56.5],
+        [-93.0, 56.0],
+        [-94.0, 55.0],
+        [-95.0, 53.0],
+        [-95.2, 52.0],
+        [-94.5, 51.0],
+        [-93.5, 50.0],
+        [-92.0, 49.0],
+        [-90.0, 48.5],
+        [-88.0, 48.0],
+        [-86.5, 47.5],
+        [-84.5, 46.9],
+        [-84.5, 46.0],
+      ],
+    ],
+  },
 };
 
-export default function ServiceMap({ regions }) {
-  // Center the map on Ontario
+// ── Also outside — stable function reference ──
+const ontarioStyle = () => ({
+  color: "#c5a059",
+  weight: 3,
+  opacity: 1,
+  fillColor: "#c5a059",
+  fillOpacity: 0.08,
+});
+
+// ── SVG renderer instance — created once at module level ──
+// This is the core fix: a single stable SVG renderer instead of
+// Leaflet recreating a canvas renderer on every map interaction
+const svgRenderer =
+  typeof window !== "undefined" ? L.svg({ padding: 0.5 }) : null;
+
+export default function ServiceMap({ regions, coordsMap = {} }) {
   const ontarioCenter = [44.5, -79.5];
+
+  const markers = useMemo(() => {
+    const seen = new Set();
+
+    return regions.flatMap((region, rIdx) =>
+      (region.groups ?? []).flatMap((group, gIdx) =>
+        (group.cities ?? "")
+          .split(",")
+          .map((city, cIdx) => {
+            const trimmedCity = city.trim();
+            const position = coordsMap[trimmedCity];
+            if (!position) return null;
+
+            const slug = trimmedCity
+              .toLowerCase()
+              .replace(/\s+/g, "-")
+              .replace(/[()]/g, "");
+
+            if (seen.has(slug)) return null;
+            seen.add(slug);
+
+            return {
+              trimmedCity,
+              position,
+              slug,
+              uniqueKey: `${rIdx}-${gIdx}-${cIdx}-${slug}`,
+            };
+          })
+          .filter(Boolean),
+      ),
+    );
+  }, [regions, coordsMap]);
 
   return (
     <div
       style={{
-        height: "500px",
+        height: "520px",
         width: "90%",
         maxWidth: "1200px",
-
         borderRadius: "12px",
         overflow: "hidden",
-
-        margin: "auto",
-        marginTop: "60px",
+        margin: "60px auto 0",
+        boxShadow: "0 4px 32px rgba(197, 160, 89, 0.1)",
+        border: "1px solid rgba(197, 160, 89, 0.2)",
       }}
     >
       <MapContainer
         center={ontarioCenter}
         zoom={6}
         style={{ height: "100%", width: "100%" }}
+        renderer={svgRenderer}
+        preferCanvas={false}
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap contributors"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        {regions.map((region) =>
-          region.groups?.map((group) =>
-            group.cities.split(",").map((city) => {
-              const trimmedCity = city.trim();
+        <GeoJSON
+          key="ontario-border"
+          data={ontarioGeoJSON}
+          style={ontarioStyle}
+        />
 
-              // 1. Get coordinates from our table, or default to Toronto if not found
-              const position = cityCoords[trimmedCity] || null;
-
-              // 2. Only render marker if we have coordinates
-              if (!position) return null;
-
-              const slug = trimmedCity
-                .toLowerCase()
-                .replace(/\s+/g, "-")
-                .replace(/[()]/g, "");
-
-              return (
-                <Marker key={slug} position={position} icon={customIcon}>
-                  <Popup>
-                    <div className="popup-content">
-                      <strong style={{ color: "#c5a059" }}>
-                        {trimmedCity}
-                      </strong>
-                      <br />
-                      <Link
-                        href={`/areas-we-serve/${slug}`}
-                        style={{
-                          fontSize: "12px",
-                          textDecoration: "underline",
-                        }}
-                      >
-                        View Local Legal Services
-                      </Link>
-                    </div>
-                  </Popup>
-                </Marker>
-              );
-            }),
-          ),
-        )}
+        {markers.map(({ trimmedCity, position, slug, uniqueKey }) => (
+          <Marker key={uniqueKey} position={position} icon={customIcon}>
+            <Popup>
+              <div style={{ padding: "4px 2px" }}>
+                <strong style={{ color: "#c5a059", fontSize: "13px" }}>
+                  {trimmedCity}
+                </strong>
+                <br />
+                <Link
+                  href={`/areas-we-serve/${slug}`}
+                  style={{
+                    fontSize: "11px",
+                    color: "#6b6259",
+                    textDecoration: "underline",
+                  }}
+                >
+                  View Local Legal Services
+                </Link>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
       </MapContainer>
     </div>
   );
