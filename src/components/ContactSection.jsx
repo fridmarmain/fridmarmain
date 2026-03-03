@@ -121,7 +121,7 @@ const ContactSection = () => {
         >
           <img
             src="./about/aboutx.jpg"
-            alt="Professional businessman"
+            alt="Dan Fridmar"
             className="contact-image"
           />
         </motion.div>
