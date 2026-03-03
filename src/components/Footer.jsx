@@ -68,7 +68,7 @@ const Footer = () => {
           <h4>Practice Areas</h4>
           <ul>
             <li>
-              <Link href="/practice/construction">Construction Law</Link>
+              <Link href="/practice/construction-law">Construction Law</Link>
             </li>
             <li>
               <Link href="/practice/disputes">Dispute</Link>

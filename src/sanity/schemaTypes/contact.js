@@ -8,5 +8,6 @@ export default {
     { name: "phone", type: "string", title: "Phone", readOnly: true },
     { name: "service", type: "string", title: "Service", readOnly: true },
     { name: "message", type: "text", title: "Message", readOnly: true },
+    { name: "submittedAt", title: "Submitted At", type: "datetime" },
   ],
 };

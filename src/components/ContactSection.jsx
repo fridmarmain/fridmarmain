@@ -3,14 +3,7 @@ import { motion } from "framer-motion";
 import * as Icon from "lucide-react";
 import { useState } from "react";
 
-const ALLOWED_SERVICES = [
-  "",
-  "consulting",
-  "development",
-  "design",
-  "marketing",
-  "other",
-];
+const ALLOWED_SERVICES = ["", "Construction", "dispute", "litigation", "other"];
 
 const validate = (formData) => {
   const errors = {};
@@ -45,13 +38,13 @@ const ContactSection = () => {
     phone: "",
     service: "",
     message: "",
+    _hp: "",
   });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Enforce max lengths on input
     const maxLengths = {
       name: 100,
       email: 254,
@@ -62,7 +55,6 @@ const ContactSection = () => {
     if (value.length > (maxLengths[name] ?? 2000)) return;
 
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error on change
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
@@ -81,8 +73,7 @@ const ContactSection = () => {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Include honeypot field — always empty for real users
-        body: JSON.stringify({ ...formData, _hp: "" }),
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -93,13 +84,13 @@ const ContactSection = () => {
           phone: "",
           service: "",
           message: "",
+          _hp: "",
         });
         setErrors({});
         setTimeout(() => setStatus("idle"), 3000);
       } else {
         const data = await response.json();
         setStatus("error");
-        // Show server-side error if available
         setErrors({ server: data.message || "Something went wrong." });
         setTimeout(() => setStatus("idle"), 4000);
       }
@@ -129,7 +120,7 @@ const ContactSection = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <img
-            src="./about/dan.png"
+            src="https://images.pexels.com/photos/3777557/pexels-photo-3777557.jpeg?auto=compress&cs=tinysrgb&w=800"
             alt="Professional businessman"
             className="contact-image"
           />
@@ -146,15 +137,6 @@ const ContactSection = () => {
             Get In <span className="highlight">Touch</span>
           </h2>
 
-          {/* Honeypot — hidden from real users, bots will fill it */}
-          <input
-            type="text"
-            name="_hp"
-            style={{ display: "none" }}
-            tabIndex={-1}
-            autoComplete="off"
-          />
-
           {errors.server && (
             <p style={{ color: "red", marginBottom: "1rem" }}>
               {errors.server}
@@ -162,6 +144,17 @@ const ContactSection = () => {
           )}
 
           <form onSubmit={handleSubmit} className="contact-form" noValidate>
+            {/* Honeypot — inside form, wired to state, hidden from real users */}
+            <input
+              type="text"
+              name="_hp"
+              value={formData._hp}
+              onChange={handleChange}
+              style={{ display: "none" }}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+
             <div className="form-grid">
               <div>
                 <motion.input
@@ -230,8 +223,8 @@ const ContactSection = () => {
                 >
                   <option value="">Type of service</option>
                   <option value="Construction">Construction</option>
-                  <option value="Dispute">Dispute</option>
-                  <option value="Litigation">Litigation</option>
+                  <option value="dispute">Dispute</option>
+                  <option value="litigation">Litigation</option>
                   <option value="other">Other</option>
                 </motion.select>
                 {errors.service && (

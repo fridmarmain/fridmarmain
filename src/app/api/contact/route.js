@@ -31,13 +31,7 @@ function isRateLimited(ip) {
 }
 
 // --- Field rules ---
-const ALLOWED_SERVICES = [
-  "consulting",
-  "development",
-  "design",
-  "marketing",
-  "other",
-];
+const ALLOWED_SERVICES = ["Construction", "dispute", "litigation", "other"];
 
 const FIELD_LIMITS = {
   name: { min: 2, max: 100 },
