@@ -42,8 +42,6 @@
      --radius-sm: 6px;
      --radius-md: 10px;
      --radius-lg: 16px;
-     /* --font-serif: 'Cormorant Garamond', Georgia, serif;
-     --font-sans: 'DM Sans', system-ui, sans-serif; */
 
      --font-serif: "Bricolage Grotesque", sans-serif;
      --font-sans: "Google Sans Flex", sans-serif;
@@ -282,15 +280,37 @@
      transform: translateX(3px);
 }
 
+.option-btn--active {
+     border-color: var(--gold);
+     background-color: var(--gold-light);
+     color: var(--ink);
+     box-shadow: 0 0 0 1px var(--gold), var(--shadow-sm);
+     transform: translateX(3px);
+}
+
 .option-btn .option-icon {
      color: var(--ink-ghost);
      flex-shrink: 0;
      transition: color var(--transition), transform var(--transition);
 }
 
-.option-btn:hover .option-icon {
+.option-btn:hover .option-icon,
+.option-btn--active .option-icon {
      color: var(--gold);
-     transform: translateX(2px);
+}
+
+/* ── Specify Box ───────────────────────────────────────────── */
+.specify-box {
+     margin-top: 0.5rem;
+     padding: 1.25rem;
+     background-color: var(--gold-light);
+     border: 1px solid var(--gold);
+     border-top: none;
+     border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+.specify-box .funnel-input {
+     background-color: #ffffff;
 }
 
 /* ── Submit / Continue Button ──────────────────────────────── */

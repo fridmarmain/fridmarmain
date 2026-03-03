@@ -17,17 +17,125 @@ export function urlFor(source) {
 }
 
 export async function getPosts() {
-  return await client.fetch(`*[_type == "post"] | order(publishedAt desc){
-
-    title, 
-    slug, 
-    publishedAt, 
+  const query = `{
+    "blog": *[_type == "post" && format == "blog"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
       format,
-    mainImage,
-    description,
-    podcastUrl,  
+      mainImage,
       excerpt,
-  }`);
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    },
+    "video": *[_type == "post" && format == "video"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    },
+    "podcast": *[_type == "post" && format == "podcast"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    },
+    "latest": *[_type == "post"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    }
+  }`;
+
+  const { blog, video, podcast, latest } = await client.fetch(query);
+
+  // Collect one of each format (skip silently if none exist)
+  const formatPicks = [blog[0], video[0], podcast[0]].filter(Boolean);
+
+  // Add most recent only if it's not already in the format picks
+  const latestPost = latest[0];
+  const alreadyIncluded = latestPost
+    ? formatPicks.some((p) => p.slug === latestPost.slug)
+    : true;
+
+  if (latestPost && !alreadyIncluded) {
+    formatPicks.push(latestPost);
+  }
+
+  return formatPicks;
+}
+
+export async function getPostForHome() {
+  const query = `{
+    "blog": *[_type == "post" && format == "blog"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    },
+    "video": *[_type == "post" && format == "video"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    },
+    "podcast": *[_type == "post" && format == "podcast"] | order(publishedAt desc) [0...1] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    },
+    "extras": *[_type == "post"] | order(publishedAt desc) [0...20] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format,
+      mainImage,
+      excerpt,
+      podcastUrl,
+      "categoryTitles": categories[]->title
+    }
+  }`;
+
+  const { blog, video, podcast, extras } = await client.fetch(query);
+
+  // One of each format, skip silently if none exist
+  const formatPicks = [blog[0], video[0], podcast[0]].filter(Boolean);
+  const pickedSlugs = new Set(formatPicks.map((p) => p.slug));
+
+  // From the pool of recent posts, pick one at random that isn't already shown
+  const pool = extras.filter((p) => !pickedSlugs.has(p.slug));
+  if (pool.length > 0) {
+    const randomPick = pool[Math.floor(Math.random() * pool.length)];
+    formatPicks.push(randomPick);
+  }
+
+  return formatPicks;
 }
 
 export async function getTermsOfUse() {

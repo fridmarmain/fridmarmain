@@ -17,7 +17,7 @@ const Footer = () => {
         {/* Column 1: Branding & Social */}
         <div className="footer-section">
           <div className="footer-logo">
-            <span>Fridmar</span>
+            <span>Fridmar Law</span>
           </div>
           <p>
             Professional Legal Solutions for the Construction Industry and

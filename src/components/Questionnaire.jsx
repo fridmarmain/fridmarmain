@@ -4,6 +4,13 @@ import { motion, AnimatePresence } from "framer-motion";
 import * as Icon from "lucide-react";
 import "../styles/questionaire.css";
 
+// Options that require a free-text "please specify" follow-up
+const SPECIFY_OPTIONS = new Set([
+  "Other",
+  "Another Law Firm",
+  "Unsure / not listed",
+]);
+
 export default function IntakeFunnel() {
   const [step, setStep] = useState("START");
   const [history, setHistory] = useState([]);
@@ -59,23 +66,7 @@ export default function IntakeFunnel() {
     }
   };
 
-  // Steps in order for progress bar
-  const STEPS_ORDER = [
-    "PERSONAL_DETAILS",
-    "WHO",
-    "URGENCY",
-    "PRACTICE_AREA",
-    "BRANCH_CONSTRUCTION",
-    "BRANCH_BUSINESS",
-    "BRANCH_REAL_ESTATE",
-    "BRANCH_ENFORCEMENT",
-    "BRANCH_UNSURE",
-    "EXISTING_COUNSEL",
-    "LAWYER_DETAILS",
-    "CONFLICT_CHECK",
-    "PROCEED_CHOICE",
-  ];
-  const totalSteps = 7; // approximate visible spine length
+  const totalSteps = 7;
   const currentIndex = Math.min(history.length, totalSteps);
 
   return (
@@ -83,7 +74,6 @@ export default function IntakeFunnel() {
       id="intake"
       className="intake-funnel-section py-24 min-h-screen relative"
     >
-      {/* Loading Overlay */}
       {submitStatus === "loading" && (
         <div className="funnel-loading-overlay">
           <Icon.Loader2
@@ -98,7 +88,6 @@ export default function IntakeFunnel() {
       )}
 
       <div className="container mx-auto px-6 max-w-xl">
-        {/* Progress bar */}
         {step !== "START" && step !== "COMPLETED" && (
           <div className="funnel-progress">
             {Array.from({ length: totalSteps }).map((_, i) => (
@@ -116,7 +105,6 @@ export default function IntakeFunnel() {
           </div>
         )}
 
-        {/* Back Button */}
         {step !== "START" && step !== "COMPLETED" && history.length > 0 && (
           <button onClick={goBack} className="funnel-back-btn">
             <Icon.ChevronLeft size={16} />
@@ -196,9 +184,9 @@ export default function IntakeFunnel() {
                 question="Is your matter urgent?"
                 description="This helps us prioritize our review of your submission."
                 options={[
-                  "Yes — there are deadlines",
-                  "Possibly — I'm not sure",
-                  "No — but I'd like advice",
+                  "Yes  there are deadlines",
+                  "Possibly  I'm not sure",
+                  "No  but I'd like advice",
                 ]}
                 onSelect={(opt) => goToStep("PRACTICE_AREA", opt, "urgency")}
               />
@@ -224,7 +212,9 @@ export default function IntakeFunnel() {
                       "BRANCH_ENFORCEMENT",
                     "Unsure / not listed": "BRANCH_UNSURE",
                   };
-                  goToStep(map[opt], opt, "practiceArea");
+                  // Match on the base label (before any ": specify" suffix)
+                  const baseOpt = opt.split(":")[0].trim();
+                  goToStep(map[baseOpt], opt, "practiceArea");
                 }}
               />
             )}
@@ -482,6 +472,7 @@ export default function IntakeFunnel() {
                     name: "yourOrg",
                     label: "Your company / organization",
                     type: "text",
+                    optional: true,
                   },
                   {
                     name: "opposing",
@@ -517,6 +508,7 @@ export default function IntakeFunnel() {
                 options={[
                   "Book a confidential intake call",
                   "Submit this information for review and hear back first",
+                  "Book a paid consultation",
                 ]}
                 onSelect={(opt) => {
                   const finalAnswers = { ...answers, intent: opt };
@@ -535,10 +527,10 @@ export default function IntakeFunnel() {
                 <h2 className="funnel-complete-title">Thank you.</h2>
                 <span className="funnel-gold-rule" />
                 <p className="funnel-complete-body">
-                  Our team will carefully review your submission — including any
-                  time-sensitive matters and potential conflicts — and will be
-                  in touch with you shortly. A confirmation has been sent to
-                  your inbox.
+                  Our team will carefully review your submission including any
+                  time-sensitive matters and potential conflicts and will be in
+                  touch with you shortly. A confirmation has been sent to your
+                  inbox.
                 </p>
                 {submitStatus === "error" && (
                   <p className="funnel-error-msg">
@@ -562,6 +554,25 @@ export default function IntakeFunnel() {
 
 /* ── OptionStep ─────────────────────────────────────────────── */
 function OptionStep({ question, description, options, onSelect }) {
+  const [selected, setSelected] = useState(null);
+  const [specifyVal, setSpecifyVal] = useState("");
+
+  const handleOptionClick = (opt) => {
+    if (SPECIFY_OPTIONS.has(opt)) {
+      // Toggle: clicking the same option again collapses it
+      setSelected((prev) => (prev === opt ? null : opt));
+      setSpecifyVal("");
+    } else {
+      onSelect(opt);
+    }
+  };
+
+  const handleSpecifyConfirm = () => {
+    if (!specifyVal.trim()) return;
+    // Pass the original label + the clarification so data is meaningful
+    onSelect(`${selected}: ${specifyVal.trim()}`);
+  };
+
   return (
     <div className="funnel-step">
       <span className="funnel-eyebrow">Select one</span>
@@ -576,14 +587,64 @@ function OptionStep({ question, description, options, onSelect }) {
         }}
       >
         {options.map((opt) => (
-          <button
-            key={opt}
-            onClick={() => onSelect(opt)}
-            className="option-btn"
-          >
-            <span>{opt}</span>
-            <Icon.ChevronRight size={16} className="option-icon" />
-          </button>
+          <div key={opt}>
+            <button
+              onClick={() => handleOptionClick(opt)}
+              className={`option-btn ${selected === opt ? "option-btn--active" : ""}`}
+            >
+              <span>{opt}</span>
+              {SPECIFY_OPTIONS.has(opt) ? (
+                <Icon.ChevronDown
+                  size={16}
+                  className="option-icon"
+                  style={{
+                    transform: selected === opt ? "rotate(180deg)" : "none",
+                    transition: "transform 0.2s ease",
+                  }}
+                />
+              ) : (
+                <Icon.ChevronRight size={16} className="option-icon" />
+              )}
+            </button>
+
+            {/* Inline specify input  only shown when this option is selected */}
+            <AnimatePresence>
+              {selected === opt && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                  style={{ overflow: "hidden" }}
+                >
+                  <div className="specify-box">
+                    <label className="field-label">
+                      Please specify <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="funnel-input"
+                      placeholder="Tell us a little more…"
+                      value={specifyVal}
+                      onChange={(e) => setSpecifyVal(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") handleSpecifyConfirm();
+                      }}
+                      autoFocus
+                    />
+                    <button
+                      onClick={handleSpecifyConfirm}
+                      disabled={!specifyVal.trim()}
+                      className={`funnel-submit-btn ${!specifyVal.trim() ? "disabled" : ""}`}
+                      style={{ marginTop: "0.75rem" }}
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         ))}
       </div>
     </div>
