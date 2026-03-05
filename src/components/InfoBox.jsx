@@ -12,8 +12,6 @@ function InfoBox() {
             <div className="innerlineTop"></div>
             <div className="innerlineBottom"></div>
           </div>
-
-          <Icon.ArrowUpRight className="midIcon" />
         </div>
 
         <Link href="/practice/construction-law" className="  infoInnerMid">
@@ -41,7 +39,7 @@ function InfoBox() {
           <Icon.ArrowUpRight className="midIcon" />
         </a>
 
-        <a href="/resources" className="  infoInnerMid">
+        <Link href="/resources" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.Book size={18} />
@@ -50,14 +48,13 @@ function InfoBox() {
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
-        </a>
+        </Link>
         <div className="infoInner">
           <div className="innerPic"></div>
           <div className="innerTextCont">
             <div className="innerlineTop"></div>
             <div className="innerlineBottom"></div>
           </div>
-          <Icon.ArrowUpRight className="midIcon" />
         </div>
       </div>
     </>

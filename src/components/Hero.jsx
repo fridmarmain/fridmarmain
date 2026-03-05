@@ -29,6 +29,9 @@ const Hero = () => {
 
         <div className="heroBottom">
           <div className="bottomLeft bottItem">
+            <span style={{ fontSize: "11px" }}>
+              Fridmar Professional Corporation
+            </span>
             <p>GEARING UP TO SERVE YOUR LEGAL NEEDS.</p>
           </div>
 
