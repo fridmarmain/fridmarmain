@@ -9,9 +9,10 @@
      /* height: 80px; Set a specific height instead of giant padding */
      height: 100px;
      z-index: 9999;
-     padding-top: 30px;
+     padding-top: 10px;
      /* This ensures smooth hide/show transitions */
      overflow: visible;
+     /* background-color: red; */
 }
 
 
@@ -40,6 +41,7 @@ overflow: visible;
      display: flex;
      justify-content: space-between;
      align-items: center;
+     height: 100%;
 }
 
 .navbar-logo {
@@ -82,7 +84,6 @@ overflow: visible;
      display: block;
      top: 0;
      bottom: 0;
-     background-color: green;
      height: 100px;
      color: var(--primary-light);
      transition: color 0.3s ease;
@@ -243,7 +244,7 @@ overflow: visible;
 .dropdown {
      position: relative;
      display: flex;
-     height: 70px;
+     height: 100%;
      align-items: center;
 }
 
