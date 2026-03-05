@@ -16,9 +16,7 @@ const Footer = () => {
       >
         {/* Column 1: Branding & Social */}
         <div className="footer-section">
-          <div className="footer-logo">
-            <span>Fridmar Law</span>
-          </div>
+          <div className="logo-icon">{/* <span>Fridmar Law</span> */}</div>
           <p>
             Professional Legal Solutions for the Construction Industry and
             Beyond.
@@ -141,9 +139,7 @@ const Footer = () => {
         {/* Column 5: Geography */}
         <div className="footer-section">
           <h4>Areas We Serve</h4>
-          <p className="footer-subtext">
-            Providing representation  .
-          </p>
+          <p className="footer-subtext">Providing representation .</p>
           <ul>
             <li>
               <Link href="/areas-we-serve">Interactive Map</Link>
