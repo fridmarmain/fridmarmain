@@ -15,7 +15,7 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <div>Contracts, liens & Legal Disputes</div>
-          <h1>Ontario Construction Law Expert</h1>
+          <h1> Construction Industry Law Experts</h1>
         </motion.div>
 
         <motion.div
@@ -29,10 +29,7 @@ const Hero = () => {
 
         <div className="heroBottom">
           <div className="bottomLeft bottItem">
-            <p>
-              Defend your case with a solid understanding of the facts and
-              evidence (TBD)
-            </p>
+            <p>GEARING UP TO SERVE YOUR LEGAL NEEDS.</p>
           </div>
 
           <div className="bottomRight bottItem">
@@ -54,7 +51,7 @@ const Hero = () => {
             </div>
             <p>
               "Aggressive advocacy and total transparency. If you have a
-              commercial dispute in Ontario, don’t go anywhere else"
+              commercial dispute , don’t go anywhere else"
             </p>
           </div>
         </div>

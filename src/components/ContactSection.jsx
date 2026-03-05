@@ -292,6 +292,74 @@ const ContactSection = () => {
           </form>
         </motion.div>
       </div>
+
+      {/* ── Office Info Section ── */}
+      <motion.div
+        className="office-info-wrapper"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <p className="office-intro">
+          The Fridmar Professional Corporation is happy to welcome its clients
+          to its new office. For legal advice tailored to your circumstances and
+          business, please contact us through the information below:
+        </p>
+
+        <div className="office-info-grid">
+          {/* Location */}
+          <div className="office-info-card">
+            <div className="office-info-icon">
+              <Icon.MapPin size={30} />
+            </div>
+            <div>
+              <span className="office-info-label">Location</span>
+              <p className="office-info-value">
+                242 Applewood Crescent, Unit 5-Ground
+                <br />
+                Concord, ON L4K 4E5
+              </p>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div className="office-info-card">
+            <div className="office-info-icon">
+              <Icon.Phone size={30} />
+            </div>
+            <div>
+              <span className="office-info-label">Contact</span>
+              <a
+                href="tel:6473636704"
+                className="office-info-value office-info-link"
+              >
+                (647) 363-6704
+              </a>
+              <p className="office-info-value">(289) 807-0204 — Fax</p>
+              <a
+                href="mailto:info@fridmar.com"
+                className="office-info-value office-info-link"
+              >
+                info@fridmar.com
+              </a>
+            </div>
+          </div>
+
+          {/* Office Hours */}
+          <div className="office-info-card">
+            <div className="office-info-icon">
+              <Icon.Clock size={30} />
+            </div>
+            <div>
+              <span className="office-info-label">Office Hours</span>
+              <p className="office-info-value">Weekdays: 9:00 AM – 7:00 PM</p>
+              <p className="office-info-value">Saturday: Closed</p>
+              <p className="office-info-value">Sunday: Closed</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };

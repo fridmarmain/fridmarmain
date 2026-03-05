@@ -142,7 +142,7 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Areas We Serve</h4>
           <p className="footer-subtext">
-            Providing representation across Ontario.
+            Providing representation  .
           </p>
           <ul>
             <li>

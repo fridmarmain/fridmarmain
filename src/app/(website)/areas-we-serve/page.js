@@ -19,8 +19,8 @@ export default async function AreasWeServe() {
     <main className="areas-hub">
       <PageHero
         pageTitle="areas-we-serve"
-        title="Serving Toronto, the GTA, and Communities Across Ontario"
-        subtitle="Based in Concord (Vaughan), Fridmar Law represents clients across Ontario."
+        title="Serving Toronto, the GTA, and Communities Across  "
+        subtitle="Based in Concord (Vaughan), Fridmar Law represents clients  ."
         backgroundImage={map.src}
         primaryCtaText="Explore Service Areas"
         primaryCtaLink="#map-anchor"

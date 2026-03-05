@@ -21,13 +21,16 @@ function InfoBox() {
             <div className="innerPic">
               <Icon.File size={18} />
             </div>
-            <div className="innerTextCont">Know Your Legal Rights</div>
+            <div className="innerTextCont"> Construction Law Services</div>
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />
         </Link>
 
-        <a href="#contactSection" className="  infoInnerMidActive">
+        <a
+          href="https://calendly.com/fridmar/meet-with-mey"
+          className="  infoInnerMidActive"
+        >
           <div className="innerContLeft">
             <div className="innerPic">
               <Icon.UserPlus size={18} />
@@ -38,12 +41,12 @@ function InfoBox() {
           <Icon.ArrowUpRight className="midIcon" />
         </a>
 
-        <a href="#intake" className="  infoInnerMid">
+        <a href="/resources" className="  infoInnerMid">
           <div className="innerContLeft">
             <div className="innerPic">
-              <Icon.Headphones size={18} />
+              <Icon.Book size={18} />
             </div>
-            <div className="innerTextCont">Instant Legal Support</div>
+            <div className="innerTextCont"> Legal Resources & Insights</div>
           </div>
 
           <Icon.ArrowUpRight className="midIcon" />

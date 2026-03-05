@@ -25,7 +25,7 @@ const CEOSection = () => {
 
           <div className="ceo-description">
             <p>
-              Welcome to the Fridmar Professional Corporation (the “FPC”) – a
+              Welcome to the Fridmar Professional Corporation (the “FPC”) a
               fresh practice ready to engage with your legal needs in the
               construction industry.
             </p>
