@@ -28,8 +28,8 @@ const Hero = () => {
         </motion.div>
 
         <div className="heroBottom">
-          <div className="bottomLeft bottItem">
-            <span style={{ fontSize: "11px" }}>
+          <div className="bottomLeft bottItem" style={{ minWidth: "250px" }}>
+            <span style={{ fontSize: "11px", lineHeight: "11px" }}>
               Fridmar Professional Corporation
             </span>
             <p>GEARING UP TO SERVE YOUR LEGAL NEEDS.</p>
