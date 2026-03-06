@@ -31,8 +31,12 @@ const Hero = () => {
           <div className="bottomLeft bottItem" style={{ minWidth: "250px" }}>
             <span style={{ fontSize: "11px", lineHeight: "11px" }}>
               Fridmar Professional Corporation
-            </span>
-            <p>GEARING UP TO SERVE YOUR LEGAL NEEDS.</p>
+            </span>{" "}
+            <br />
+            <span style={{ fontSize: "11px", lineHeight: "11px" }}>
+              gearing up to serve your legal needs.
+            </span>{" "}
+            {/* <p>gearing up to serve your legal needs.</p> */}
           </div>
 
           <div className="bottomRight bottItem">
