@@ -15,7 +15,7 @@ const Hero = () => {
           transition={{ duration: 0.8 }}
         >
           <div>Contracts, liens & Legal Disputes</div>
-          <h1> Construction Industry Law Experts</h1>
+          <h1> Construction Industry Lawyers</h1>
         </motion.div>
 
         <motion.div
