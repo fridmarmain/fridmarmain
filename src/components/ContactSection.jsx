@@ -355,7 +355,7 @@ const ContactSection = () => {
             </div>
             <div>
               <span className="office-info-label">Office Hours</span>
-              <p className="office-info-value">Weekdays: 9:00 AM – 7:00 PM</p>
+              <p className="office-info-value">Weekdays: 9:00 AM – 5:00 PM</p>
               <p className="office-info-value">Saturday: Closed</p>
               <p className="office-info-value">Sunday: Closed</p>
             </div>
