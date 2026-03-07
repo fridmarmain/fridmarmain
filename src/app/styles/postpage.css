@@ -199,7 +199,9 @@
      width: 100%;
      aspect-ratio: 16 / 9;
      background: #000;
+     margin-bottom: bottom;
      border-radius: 8px;
+
 }
 
 .video-wrapper iframe {
