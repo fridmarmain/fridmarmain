@@ -330,7 +330,7 @@ const ContactSection = () => {
             </div>
             <div>
               <span className="office-info-label">Contact</span>
-              phone:{" "}
+              phone:
               <a
                 href="tel:6473636704"
                 className="office-info-value office-info-link"
@@ -338,7 +338,7 @@ const ContactSection = () => {
                 (647) 363-6704
               </a>
               <p className="office-info-value">Fax: (289) 807-0204 </p>
-              Mail:{" "}
+              Mail:
               <a
                 href="mailto:info@fridmar.com"
                 className="office-info-value office-info-link"
