@@ -19,7 +19,7 @@ import PageHero from "@/components/pageHero";
 import aboutBg from "@/styles/assets/about.jpg";
 import TeamSlider from "@/components/TeamSlider";
 import CEOSection from "@/components/CEOSection";
-import Memoriam from "@/components/Memoriam";
+// import Memoriam from "@/components/Memoriam";
 
 export default async function AboutPage() {
   const posts = await getPosts();
@@ -47,7 +47,7 @@ export default async function AboutPage() {
       <ReviewGrid reviews={reviewsData} />
       <ContactSection />
 
-      <Memoriam />
+      {/* <Memoriam /> */}
       <CTA />
     </>
   );

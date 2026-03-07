@@ -18,6 +18,7 @@ const Memoriam = () => {
         <div className="memoriam-image-block">
           <div className="memoriam-frame">
             <Image
+              style={{ display: "none" }}
               src="/julia-fridmar.jpg"
               alt="Julia Fridmar"
               width={300}

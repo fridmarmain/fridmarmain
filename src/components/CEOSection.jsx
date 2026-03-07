@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import "../styles/fridmar.css";
+import * as Icon from "lucide-react";
 
 const CEOSection = () => {
   return (
@@ -41,8 +42,16 @@ const CEOSection = () => {
             </p>
           </div>
 
-          <Link href="/consultation" className="ceo-btn">
-            Book Consultation <ArrowRight size={20} className="btn-icon" />
+          <Link
+            href="/consultation"
+            type="submit"
+            style={{ display: "inline-flex" }}
+            className="secondaryBtn"
+          >
+            <div> Book Consultation</div>
+            <div className="iconBall">
+              <Icon.ArrowUpRight />
+            </div>
           </Link>
         </div>
       </div>

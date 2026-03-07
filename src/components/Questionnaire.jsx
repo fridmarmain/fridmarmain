@@ -133,12 +133,22 @@ export default function IntakeFunnel() {
                   <br />
                   It takes approximately 2 minutes to complete.
                 </p>
-                <button
-                  onClick={() => goToStep("PERSONAL_DETAILS")}
-                  className="funnel-start-btn"
-                >
+
+                {/* <button className="funnel-start-btn">
                   Begin
                   <Icon.ArrowRight size={15} />
+                </button> */}
+
+                <button
+                  type="submit"
+                  style={{ display: "inline-flex" }}
+                  className="secondaryBtn"
+                  onClick={() => goToStep("PERSONAL_DETAILS")}
+                >
+                  <div>Begin</div>
+                  <div className="iconBall">
+                    <Icon.ArrowUpRight />
+                  </div>
                 </button>
               </div>
             )}

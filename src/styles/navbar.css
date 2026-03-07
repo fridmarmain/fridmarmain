@@ -121,11 +121,12 @@ overflow: visible;
      background-color: var(--primary-dark);
      display: flex;
      color: var(--primary-light);
+     /* background-color: red; */
      gap: .5rem;
      border-radius: 50px;
      justify-content: space-between;
      align-items: center;
-     padding: .5rem .7rem;
+     padding: .7rem 1rem;
 
 }
 
