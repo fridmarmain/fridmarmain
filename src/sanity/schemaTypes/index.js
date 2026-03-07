@@ -13,7 +13,7 @@ import cityPages from "./cityPages";
 import contact from "./contact";
 import intakesubmission from "./intakesubmission";
 import terms from "./terms";
-
+import tableBlock from "./tableBlock";
 export const schemaTypes = [
   post,
   author,
@@ -27,6 +27,7 @@ export const schemaTypes = [
   blockContent,
   intakesubmission,
   // areas,
+  tableBlock,
   contact,
   terms,
   cityPages,
