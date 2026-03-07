@@ -123,15 +123,13 @@ const Footer = () => {
               <Link href="/resources/category/blog">Legal Blog</Link>
             </li>
             <li>
-              <Link href="/resources/category/vlog">Vlog & Video</Link>
+              <Link href="/resources/category/vlog"> Vlog </Link>
             </li>
             <li>
               <Link href="/resources/category/podcast">Podcast</Link>
             </li>
             <li>
-              <Link href="/resources/category/measure-twice">
-                Measure Twice
-              </Link>
+              <Link href="/resources/category/measure-twice">Youtube</Link>
             </li>
           </ul>
         </div>
@@ -139,7 +137,7 @@ const Footer = () => {
         {/* Column 5: Geography */}
         <div className="footer-section">
           <h4>Areas We Serve</h4>
-          <p className="footer-subtext">Providing representation .</p>
+
           <ul>
             <li>
               <Link href="/areas-we-serve">Interactive Map</Link>
@@ -147,11 +145,11 @@ const Footer = () => {
             <li>
               <Link href="/areas-we-serve">Toronto</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href="/areas-we-serve ">Ottawa</Link>
-            </li>
+            </li> */}
             <li>
-              <Link href="/areas-we-serve ">Hamilton</Link>
+              <Link href="/areas-we-serve ">Vaughan</Link>
             </li>
             <li>
               <Link href="/areas-we-serve ">Mississauga</Link>

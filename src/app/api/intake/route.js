@@ -197,8 +197,8 @@ export async function POST(request) {
 
     // 2. Notify the law firm
     await resend.emails.send({
-      from: "intake@yourdomain.com",
-      to: "lawyer@yourdomain.com",
+      from: "dan@fridmar.com",
+      to: "dan@fridmar.com",
       subject: `New Intake: ${answers.practiceArea} — ${answers.urgency ?? "Urgency unknown"}`,
       html: buildAdminEmail(answers),
     });
@@ -206,7 +206,7 @@ export async function POST(request) {
     // 3. Send confirmation to client (only if they provided an email)
     if (clientEmail) {
       await resend.emails.send({
-        from: "intake@yourdomain.com",
+        from: "dan@fridmar.com",
         to: clientEmail,
         subject: isBooking
           ? "Book Your Confidential Intake Call"
