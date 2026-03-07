@@ -8,19 +8,27 @@ import VideoPlayer from "@/components/VideoPlayer";
 // ── Table Block Renderer ──
 function TableBlock({ value }) {
   if (!value?.rows?.length) return null;
+
+  const [headerRow, ...bodyRows] = value.rows;
+
   return (
     <div className="table-wrapper">
       <table className="portable-table">
+        {headerRow && (
+          <thead>
+            <tr>
+              {headerRow.cells?.map((cell, i) => (
+                <th key={i}>{cell}</th>
+              ))}
+            </tr>
+          </thead>
+        )}
         <tbody>
-          {value.rows.map((row, rowIndex) => (
+          {bodyRows.map((row, rowIndex) => (
             <tr key={rowIndex}>
-              {row.cells?.map((cell, cellIndex) =>
-                rowIndex === 0 ? (
-                  <th key={cellIndex}>{cell}</th>
-                ) : (
-                  <td key={cellIndex}>{cell}</td>
-                ),
-              )}
+              {row.cells?.map((cell, cellIndex) => (
+                <td key={cellIndex}>{cell}</td>
+              ))}
             </tr>
           ))}
         </tbody>
