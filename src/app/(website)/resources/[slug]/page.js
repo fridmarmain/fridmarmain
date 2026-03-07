@@ -5,6 +5,76 @@ import BlogCard from "@/components/BlogCard";
 import "../../../styles/postpage.css";
 import VideoPlayer from "@/components/VideoPlayer";
 
+// ── Table Block Renderer ──
+function TableBlock({ value }) {
+  if (!value?.rows?.length) return null;
+  return (
+    <div className="table-wrapper">
+      <table className="portable-table">
+        <tbody>
+          {value.rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.cells?.map((cell, cellIndex) =>
+                rowIndex === 0 ? (
+                  <th key={cellIndex}>{cell}</th>
+                ) : (
+                  <td key={cellIndex}>{cell}</td>
+                ),
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ── Portable Text Components ──
+const portableTextComponents = {
+  types: {
+    tableBlock: ({ value }) => <TableBlock value={value} />,
+    image: ({ value }) => (
+      <img
+        src={urlFor(value).url()}
+        alt={value.alt || ""}
+        className="portable-image"
+      />
+    ),
+  },
+  block: {
+    normal: ({ children }) => <p className="pt-paragraph">{children}</p>,
+    h1: ({ children }) => <h1 className="pt-h1">{children}</h1>,
+    h2: ({ children }) => <h2 className="pt-h2">{children}</h2>,
+    h3: ({ children }) => <h3 className="pt-h3">{children}</h3>,
+    h4: ({ children }) => <h4 className="pt-h4">{children}</h4>,
+    blockquote: ({ children }) => (
+      <blockquote className="pt-blockquote">{children}</blockquote>
+    ),
+  },
+  list: {
+    bullet: ({ children }) => <ul className="pt-ul">{children}</ul>,
+    number: ({ children }) => <ol className="pt-ol">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="pt-li">{children}</li>,
+    number: ({ children }) => <li className="pt-li">{children}</li>,
+  },
+  marks: {
+    strong: ({ children }) => <strong className="pt-strong">{children}</strong>,
+    em: ({ children }) => <em>{children}</em>,
+    link: ({ value, children }) => (
+      <a
+        href={value?.href}
+        className="pt-link"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    ),
+  },
+};
+
 export default async function PostPage({ params }) {
   const { slug } = await params;
   const post = await getSinglePost(slug);
@@ -12,13 +82,11 @@ export default async function PostPage({ params }) {
   if (!post) return <div className="status-message pt-40">Post Not Found</div>;
 
   const relatedPosts = await getRelatedPosts(post.format, slug);
-
-  // Prepare the background image URL
   const bgImage = post.mainImage ? urlFor(post.mainImage).url() : "";
 
   return (
     <article className="post-page">
-      {/* HERO SECTION with Inline Background */}
+      {/* HERO SECTION */}
       <section
         className="hero-section"
         style={{
@@ -42,7 +110,7 @@ export default async function PostPage({ params }) {
         </div>
       </section>
 
-      {/* OVERLAPPING CONTENT CONTAINER */}
+      {/* CONTENT CONTAINER */}
       <div className="content-container">
         <div className="layout-grid">
           <main className="main-content">
@@ -50,21 +118,17 @@ export default async function PostPage({ params }) {
             {(post.videoUrl || post.podcastUrl) && (
               <div className="media-container mb-12">
                 {post.format === "video" && post.videoUrl && (
-                  /* Use our new Client Component here */
-
                   <VideoPlayer
                     videoUrl={post.videoUrl}
                     coverImage={post.videoCover}
                   />
                 )}
-
                 {post.format === "podcast" && post.podcastUrl && (
                   <div className="podcast-box">
                     <h3 className="podcast-label">
                       <Icon.Mic size={18} /> Listen to Episode
                     </h3>
                     <iframe
-                      // This logic converts the standard URL to the player URL
                       src={
                         post.podcastUrl.replace(
                           "rss.com/podcasts/",
@@ -73,7 +137,7 @@ export default async function PostPage({ params }) {
                       }
                       title="Podcast Player"
                       width="100%"
-                      height="202px" // Increased to 202px to match the RSS player design
+                      height="202px"
                       frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       scrolling="no"
@@ -84,7 +148,10 @@ export default async function PostPage({ params }) {
             )}
 
             <div className="rich-text-content">
-              <PortableText value={post.body} />
+              <PortableText
+                value={post.body}
+                components={portableTextComponents}
+              />
             </div>
 
             {/* Related Section */}
@@ -102,23 +169,8 @@ export default async function PostPage({ params }) {
               </section>
             )}
           </main>
-
-          {/* <aside className="sidebar">
-            <div className="sticky-sidebar">
-              <div className="contact-cta">
-                <Icon.Mail className="cta-icon" size={40} />
-                <h3>Need Legal Advice?</h3>
-                <p>Contact our experts today for a consultation.</p>
-                <a href="/contact" className="btn-black">
-                  Get in Touch
-                </a>
-              </div>
-            </div>
-          </aside> */}
         </div>
       </div>
     </article>
   );
 }
-
-//rss.com/podcasts/lawntrepreneurs/1302454/
