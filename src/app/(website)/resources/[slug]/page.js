@@ -41,13 +41,16 @@ function TableBlock({ value }) {
 const portableTextComponents = {
   types: {
     tableBlock: ({ value }) => <TableBlock value={value} />,
-    image: ({ value }) => (
-      <img
-        src={urlFor(value).url()}
-        alt={value.alt || ""}
-        className="portable-image"
-      />
-    ),
+    image: ({ value }) => {
+      if (!value?.asset?._ref) return null;
+      return (
+        <img
+          src={urlFor(value).url()}
+          alt={value.alt || ""}
+          className="portable-image"
+        />
+      );
+    },
   },
   block: {
     normal: ({ children }) => <p className="pt-paragraph">{children}</p>,
