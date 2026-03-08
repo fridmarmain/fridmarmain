@@ -223,10 +223,17 @@ const NavbarClient = ({ categories, practices }) => {
           <div className="flexCont">
             <Link
               href="https://calendly.com/fridmar/meet-with-mey"
-              className="navbar-cta desktop-only"
+              type="submit"
+              style={{ display: "inline-flex" }}
+              className="secondaryBtn"
+              onClick={() => goToStep("PERSONAL_DETAILS")}
             >
-              Book a call
+              <div> Book a call</div>
+              <div className="iconBall">
+                <Icon.ArrowUpRight />
+              </div>
             </Link>
+
             <div
               className={`hamBurger ${isOpen ? "active" : ""}`}
               onClick={() => setIsOpen(!isOpen)}

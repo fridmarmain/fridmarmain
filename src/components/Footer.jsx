@@ -14,7 +14,6 @@ const Footer = () => {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        {/* Column 1: Branding & Social */}
         <div className="footer-section">
           <div className="logo-icon">{/* <span>Fridmar Law</span> */}</div>
           <p>
@@ -33,10 +32,14 @@ const Footer = () => {
                 role="img"
                 viewBox="0 0 24 24"
                 height="20px"
-                fill="#fff"
+                fill="#ffffff00"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+                <path
+                  d="M16.8217 5.1344C16.0886 4.29394 15.6479 3.19805 15.6479 2H14.7293M16.8217 5.1344C17.4898 5.90063 18.3944 6.45788 19.4245 6.67608C19.7446 6.74574 20.0786 6.78293 20.4266 6.78293V10.2191C18.645 10.2191 16.9932 9.64801 15.6477 8.68211V15.6707C15.6477 19.1627 12.8082 22 9.32386 22C7.50043 22 5.85334 21.2198 4.69806 19.98C3.64486 18.847 2.99994 17.3331 2.99994 15.6707C2.99994 12.2298 5.75592 9.42509 9.17073 9.35079M16.8217 5.1344C16.8039 5.12276 16.7861 5.11101 16.7684 5.09914M6.9855 17.3517C6.64217 16.8781 6.43802 16.2977 6.43802 15.6661C6.43802 14.0734 7.73249 12.7778 9.32394 12.7778C9.62087 12.7778 9.9085 12.8288 10.1776 12.9124V9.40192C9.89921 9.36473 9.61622 9.34149 9.32394 9.34149C9.27287 9.34149 8.86177 9.36884 8.81073 9.36884M14.7244 2H12.2097L12.2051 15.7775C12.1494 17.3192 10.8781 18.5591 9.32386 18.5591C8.35878 18.5591 7.50971 18.0808 6.98079 17.3564"
+                  stroke="#ffffff"
+                  stroke-linejoin="round"
+                />
               </svg>
             </a>
             <a
@@ -50,18 +53,14 @@ const Footer = () => {
               aria-label="facebook"
             >
               <Facebook size={20} />
-            </a>{" "}
-            {/* Using Twitter icon as placeholder for TikTok */}
+            </a>
+
             <a href="https://www.youtube.com/@FridmarLaw" aria-label="YouTube">
               <Youtube size={20} />
             </a>
           </div>
-          {/* <Link href="/contact" className="footer-cta-btn">
-            Easy Contact Us
-          </Link> */}
         </div>
 
-        {/* Column 2: 5 Areas of Focus */}
         <div className="footer-section">
           <h4>Practice Areas</h4>
           <ul>
@@ -102,20 +101,9 @@ const Footer = () => {
             <li>
               <Link href="/reviews">Reviews & Testimonials</Link>
             </li>
-
-            {/* <li>
-              <Link href="/partner">Partner With Us</Link>
-            </li> */}
-            {/* <li>
-              <Link href="/volunteer">Volunteer Opportunities</Link>
-            </li> */}
-            {/* <li>
-              <Link href="/coop">Co-op Placements</Link>
-            </li> */}
           </ul>
         </div>
 
-        {/* Column 4: Resources */}
         <div className="footer-section">
           <h4>Resources</h4>
           <ul>
@@ -134,7 +122,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Column 5: Geography */}
         <div className="footer-section">
           <h4>Areas We Serve</h4>
 
@@ -145,9 +132,7 @@ const Footer = () => {
             <li>
               <Link href="/areas-we-serve">Toronto</Link>
             </li>
-            {/* <li>
-              <Link href="/areas-we-serve ">Ottawa</Link>
-            </li> */}
+
             <li>
               <Link href="/areas-we-serve ">Vaughan</Link>
             </li>
