@@ -85,10 +85,9 @@ export default async function TeamProfilePage({ params }) {
       </div>
 
       <section className="reels-visibility-block">
-        <h3>Featured Insights</h3>
+        <h3>Featured Content</h3>
         <p className="reels-subtitle">
-          Watch {member.name.split(" ")[0]} discuss recent trends in
-          Construction Law.
+          Some Content from {member.name.split(" ")[0]}
         </p>
 
         <div className="tikTokContainer">

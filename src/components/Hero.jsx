@@ -14,7 +14,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div>Contracts, liens & Legal Disputes</div>
+          {/* <div>Contracts, liens & Legal Disputes</div> */}
           <h1> Construction Industry Lawyers</h1>
         </motion.div>
 
@@ -53,7 +53,7 @@ const Hero = () => {
               </div>
               <div className="numbersC">
                 {/* <div className="numbers">2.5k+</div> */}
-                <div className="numbers">(4.8)</div>
+                <div className="numbers">(5.0)</div>
               </div>
             </div>
             <p>
