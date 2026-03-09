@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,549&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,549&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
 
 
 :root {
@@ -8,7 +8,7 @@
      --accent-light: #f5f5f5;
      --text-dark: #0e0e0e;
      --blur:
-          #020e16b6;
+          #0a314d;
      --blurDark: rgba(0, 0, 0, 0.651);
      --text-light: #666666;
      --border: #e0e0e0;
@@ -48,8 +48,7 @@ body {
      width: 100%;
      overflow-x: hidden;
 }
-
-/* Basic container */
+ 
 .container {
      width: 90%;
      max-width: 1200px;
@@ -149,4 +148,4 @@ section {
      section {
           padding: 2rem var(--small);
      }
-}
+} */

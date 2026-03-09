@@ -27,10 +27,7 @@ const PageHero = ({
       />
 
       {/* Layered overlays for depth */}
-      <div
-        className="hero-overlay"
-        style={{ backgroundColor: `rgba(10, 8, 5, ${overlayOpacity})` }}
-      />
+      <div className="hero-overlay" />
       <div className="hero-overlay-gradient" />
       <div className="hero-grain" />
 

@@ -40,7 +40,7 @@ export default async function PracticeAreaPage({ params }) {
         style={{
           backgroundImage: data.mainImage
             ? `url(${urlFor(data.mainImage).url()})`
-            : "none",
+            : "url(/about/aboutx.jpg)",
           backgroundSize: "cover",
           backgroundPosition: "center",
           position: "relative", // Required for the content to sit on top
@@ -148,9 +148,13 @@ export default async function PracticeAreaPage({ params }) {
                 <p>Our experts are ready to assist with your case.</p>
                 <Link
                   href="https://calendly.com/fridmar/meet-with-mey"
-                  className="btn-black"
+                  className="secondaryBtn"
+                  style={{ margin: "auto" }}
                 >
                   Contact Us Now
+                  <div className="iconBall">
+                    <Icon.ArrowUpRight />
+                  </div>
                 </Link>
               </div>
             </div>

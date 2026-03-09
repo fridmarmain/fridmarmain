@@ -126,6 +126,17 @@ export default async function PostPage({ params }) {
         <div className="layout-grid">
           <main className="main-content">
             {/* Media Player Section */}
+
+            {post.mainImage && (
+              <div className="post-hero-image-wrapper">
+                <img
+                  src={urlFor(post.mainImage).url()}
+                  alt={post.title || ""}
+                  className="post-hero-image"
+                />
+              </div>
+            )}
+
             {(post.videoUrl || post.podcastUrl) && (
               <div className="media-container mb-12">
                 {post.format === "video" && post.videoUrl && (
@@ -170,7 +181,7 @@ export default async function PostPage({ params }) {
               <section className="related-section">
                 <div className="section-header">
                   <h2 className="section-title">More {post.format}s</h2>
-                  <Icon.ArrowRight className="text-gold" />
+                  {/* <Icon.ArrowRight className="text-gold" /> */}
                 </div>
                 <div className="related-grid">
                   {relatedPosts.map((related) => (

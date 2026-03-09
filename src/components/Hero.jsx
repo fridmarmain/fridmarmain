@@ -29,13 +29,10 @@ const Hero = () => {
 
         <div className="heroBottom">
           <div className="bottomLeft bottItem" style={{ minWidth: "250px" }}>
-            <span style={{ fontSize: "11px", lineHeight: "11px" }}>
-              Fridmar Professional Corporation
-            </span>{" "}
-            <br />
-            <span style={{ fontSize: "11px", lineHeight: "11px" }}>
-              gearing up to serve your legal needs.
-            </span>{" "}
+            <p style={{}}>
+              Fridmar Professional Corporation <br />
+              Gearing Up To Serve Your Legal Needs.
+            </p>{" "}
             {/* <p>gearing up to serve your legal needs.</p> */}
           </div>
 
@@ -57,7 +54,7 @@ const Hero = () => {
               </div>
             </div>
             <p>
-              "Aggressive advocacy and total transparency. If you have a
+              "Confident advocacy and total transparency. If you have a
               commercial dispute , don’t go anywhere else"
             </p>
           </div>
