@@ -6,13 +6,13 @@ function InfoBox() {
   return (
     <>
       <div className="info-box  ">
-        <div className="infoInner">
+        {/* <div className="infoInner">
           <div className="innerPic"></div>
           <div className="innerTextCont">
             <div className="innerlineTop"></div>
             <div className="innerlineBottom"></div>
           </div>
-        </div>
+        </div> */}
 
         <Link href="/practice/construction-law" className="  infoInnerMid">
           <div className="innerContLeft">
@@ -49,13 +49,13 @@ function InfoBox() {
 
           <Icon.ArrowUpRight className="midIcon" />
         </Link>
-        <div className="infoInner">
+        {/* <div className="infoInner">
           <div className="innerPic"></div>
           <div className="innerTextCont">
             <div className="innerlineTop"></div>
             <div className="innerlineBottom"></div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

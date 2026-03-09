@@ -117,7 +117,7 @@ const Footer = () => {
               <Link href="/resources/category/vlog"> Vlog </Link>
             </li>
             <li>
-              <Link href="/resources/category/podcast">Podcast</Link>
+              <Link href="/resources/category/our-podcast">Podcast</Link>
             </li>
             <li>
               <Link href="/resources/category/measure-twice">Youtube</Link>
