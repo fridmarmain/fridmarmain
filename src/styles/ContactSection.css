@@ -8,6 +8,23 @@
      padding: 80px 20px;
 }
 
+.offficeImg {
+     width: 100%;
+     border-radius: 1rem;
+}
+
+
+.contactHeader {
+     max-width: 780px;
+     margin: auto;
+     text-align: center;
+}
+
+.contactHeader p {
+     margin-top: 1rem;
+     margin-bottom: 2rem;
+}
+
 .contact-container {
      max-width: 1200px;
      width: 100%;
@@ -43,8 +60,13 @@
 .contact-title {
      font-size: 48px;
      font-weight: 400;
-     margin-bottom: 40px;
      color: #1a1a1a;
+}
+
+
+
+.margBottom {
+     margin-bottom: 20px;
 }
 
 .contact-title .highlight {

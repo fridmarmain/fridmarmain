@@ -1,5 +1,4 @@
 import ContactSection from "@/components/ContactSection";
-import "../../styles/ContactSection.css";
 
 import React from "react";
 

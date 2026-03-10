@@ -138,7 +138,7 @@ overflow: visible;
 
 
 .scrolled {
-     background-color: var(--blur);
+     background-color: var(--blur2);
      transform: translateY(-100%);
      backdrop-filter: blur(10px);
 
@@ -149,7 +149,7 @@ overflow: visible;
 }
 
 .past-50 {
-     background-color: var(--blur);
+     background-color: var(--blur2);
      backdrop-filter: blur(4px);
 
 
@@ -158,7 +158,7 @@ overflow: visible;
 @media (max-width: 768px) {
      .navbar-links {
           position: fixed !important;
-          background-color: var(--blur);
+          background-color: var(--blur2);
           width: 100%;
           height: 100%;
           top: 0;
@@ -179,7 +179,7 @@ overflow: visible;
      .hamBurger {
           display: flex;
           height: 30px;
-          /* background-color: var(--blur); */
+          /* background-color: var(--blur2); */
           width: 39px;
 
           flex-direction: column;

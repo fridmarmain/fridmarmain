@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import * as Icon from "lucide-react";
 import { useState } from "react";
+import "../styles/ContactSection.css";
 
 const ALLOWED_SERVICES = ["", "Construction", "dispute", "litigation", "other"];
 
@@ -104,12 +105,92 @@ const ContactSection = () => {
 
   return (
     <section id="contactSection" className="contact-section container">
-      <h1 style={{ textAlign: "left", width: "100%" }}>
+      {/* ── Office Info Section ── */}
+      <motion.div
+        className="office-info-wrapper"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className="contactHeader">
+          <h2>Your Legal Strategy Starts Here</h2>
+
+          <p>
+            The Fridmar Professional Corporation is happy to welcome its clients
+            to its new office. For legal advice tailored to your circumstances
+            and business, please contact us through the information below:
+          </p>
+        </div>
+
+        <img className="offficeImg" src="/about/fridmaroffice.webp" />
+        {/* <p className="office-intro">
+          The Fridmar Professional Corporation is happy to welcome its clients
+          to its new office. For legal advice tailored to your circumstances and
+          business, please contact us through the information below:
+        </p> */}
+
+        <div className="office-info-grid">
+          {/* Location */}
+          <div className="office-info-card">
+            <div className="office-info-icon">
+              <Icon.MapPin size={30} />
+            </div>
+            <div>
+              <span className="office-info-label">Location</span>
+              <p className="office-info-value">
+                242 Applewood Crescent, Unit 5-Ground
+                <br />
+                Concord, ON L4K 4E5
+              </p>
+            </div>
+          </div>
+
+          {/* Contact */}
+          <div className="office-info-card">
+            <div className="office-info-icon">
+              <Icon.Phone size={30} />
+            </div>
+            <div>
+              <span className="office-info-label">Contact</span>
+              phone:
+              <a
+                href="tel:6473636704"
+                className="office-info-value office-info-link"
+              >
+                (647) 363-6704
+              </a>
+              <p className="office-info-value">Fax: (289) 807-0204 </p>
+              Mail:
+              <a
+                href="mailto:info@fridmar.com"
+                className="office-info-value office-info-link"
+              >
+                info@fridmar.com
+              </a>
+            </div>
+          </div>
+
+          {/* Office Hours */}
+          <div className="office-info-card">
+            <div className="office-info-icon">
+              <Icon.Clock size={30} />
+            </div>
+            <div>
+              <span className="office-info-label">Office Hours</span>
+              <p className="office-info-value">Weekdays: 9:00 AM – 5:00 PM</p>
+              <p className="office-info-value">Saturday: Closed</p>
+              <p className="office-info-value">Sunday: Closed</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+      {/* <h3 style={{ textAlign: "center", width: "100%" }}>
         REQUEST A CONSULTATION
-      </h1>
-      <p style={{ textAlign: "left", width: "100%" }}>
+      </h3> */}
+      {/* <p style={{ textAlign: "center", width: "100%" }}>
         Fill out the form below to schedule a confidential initial consultation.
-      </p>
+      </p> */}
 
       <div className="contact-container">
         <motion.div
@@ -136,6 +217,11 @@ const ContactSection = () => {
           <h2 className="contact-title">
             Get In <span className="highlight">Touch</span>
           </h2>
+
+          <p className="margBottom">
+            Fill out the form below to schedule a confidential initial
+            consultation.
+          </p>
 
           {errors.server && (
             <p style={{ color: "red", marginBottom: "1rem" }}>
@@ -292,77 +378,6 @@ const ContactSection = () => {
           </form>
         </motion.div>
       </div>
-
-      {/* ── Office Info Section ── */}
-      <motion.div
-        className="office-info-wrapper"
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true, amount: 0.2 }}
-      >
-        <img src="/about/fridmaroffice.webp" />
-        <p className="office-intro">
-          The Fridmar Professional Corporation is happy to welcome its clients
-          to its new office. For legal advice tailored to your circumstances and
-          business, please contact us through the information below:
-        </p>
-
-        <div className="office-info-grid">
-          {/* Location */}
-          <div className="office-info-card">
-            <div className="office-info-icon">
-              <Icon.MapPin size={30} />
-            </div>
-            <div>
-              <span className="office-info-label">Location</span>
-              <p className="office-info-value">
-                242 Applewood Crescent, Unit 5-Ground
-                <br />
-                Concord, ON L4K 4E5
-              </p>
-            </div>
-          </div>
-
-          {/* Contact */}
-          <div className="office-info-card">
-            <div className="office-info-icon">
-              <Icon.Phone size={30} />
-            </div>
-            <div>
-              <span className="office-info-label">Contact</span>
-              phone:
-              <a
-                href="tel:6473636704"
-                className="office-info-value office-info-link"
-              >
-                (647) 363-6704
-              </a>
-              <p className="office-info-value">Fax: (289) 807-0204 </p>
-              Mail:
-              <a
-                href="mailto:info@fridmar.com"
-                className="office-info-value office-info-link"
-              >
-                info@fridmar.com
-              </a>
-            </div>
-          </div>
-
-          {/* Office Hours */}
-          <div className="office-info-card">
-            <div className="office-info-icon">
-              <Icon.Clock size={30} />
-            </div>
-            <div>
-              <span className="office-info-label">Office Hours</span>
-              <p className="office-info-value">Weekdays: 9:00 AM – 5:00 PM</p>
-              <p className="office-info-value">Saturday: Closed</p>
-              <p className="office-info-value">Sunday: Closed</p>
-            </div>
-          </div>
-        </div>
-      </motion.div>
     </section>
   );
 };
