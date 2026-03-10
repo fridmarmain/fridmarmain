@@ -117,6 +117,24 @@ export default function ResourceGrid({
         </div>
       )}
 
+      <div className="resource-grid">
+        {posts.map((post) => (
+          <BlogCard key={post.slug} post={post} />
+        ))}
+      </div>
+
+      {!loading && posts.length === 0 && (
+        <div className="coming-soon-state">
+          <div className="coming-soon-icon">
+            <Icon.Scale size={50} />
+          </div>
+          <h2 className="coming-soon-title">Coming Soon</h2>
+          <p className="coming-soon-text">
+            We are working on new content for this section. Check back soon.
+          </p>
+        </div>
+      )}
+
       {hasMore && !loading && posts.length > 0 && (
         <div className="load-more-wrapper">
           <button className="btn-load-more " onClick={() => loadPosts(false)}>

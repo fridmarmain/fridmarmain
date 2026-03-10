@@ -226,3 +226,37 @@
      border-radius: 16px;
      color: #a8a29e;
 }
+
+
+.coming-soon-state {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     padding: 80px 20px;
+     text-align: center;
+     /* border: 2px dashed #e7e5e4; */
+     border-radius: 16px;
+     background: #fafaf9;
+     margin: 2rem 0;
+}
+
+.coming-soon-icon {
+     font-size: 3rem;
+     margin-bottom: 1.5rem;
+}
+
+.coming-soon-title {
+     font-size: 1.75rem;
+     font-weight: 700;
+     color: #1a1a1a;
+     margin-bottom: 0.75rem;
+     letter-spacing: -0.02em;
+}
+
+.coming-soon-text {
+     font-size: 1rem;
+     color: #a8a29e;
+     max-width: 380px;
+     line-height: 1.7;
+}

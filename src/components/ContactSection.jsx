@@ -301,6 +301,7 @@ const ContactSection = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.2 }}
       >
+        <img src="/about/fridmaroffice.webp" />
         <p className="office-intro">
           The Fridmar Professional Corporation is happy to welcome its clients
           to its new office. For legal advice tailored to your circumstances and

@@ -3,9 +3,9 @@
      --gold: #c5a059;
      --gold-light: #f0e6cc;
      --dark: #0f172a;
-     --text: #1a1a1a;
-     --text-mid: #4a5568;
-     --text-soft: #718096;
+     --text: #666666;
+     --text-mid: #666666;
+     --text-soft: #030303;
      --border: #e8e8e8;
      --bg-off: #f9f7f4;
      --bg-dark: #0f172a;
@@ -128,7 +128,19 @@
 .rich-text {
      font-size: 1rem;
      line-height: 1.85;
+     /* color: red; */
      color: var(--text-mid);
+}
+
+.rich-text h1 {
+     font-size: 1.6rem;
+     font-weight: 700;
+     /* color: var(--text); */
+     margin: 40px 0 16px;
+     padding-bottom: 10px;
+     border-bottom: 2px solid var(--gold);
+     display: inline-block;
+     color: rgb(19, 19, 19);
 }
 
 .rich-text h2 {
@@ -144,7 +156,9 @@
 .rich-text h3 {
      font-size: 1.2rem;
      font-weight: 600;
-     color: var(--text);
+     /* color: var(--text); */
+     color: rgb(19, 19, 19);
+
      margin: 32px 0 12px;
 }
 
@@ -378,7 +392,7 @@
 
 /* ─── Reviews Card ───────────────────────────────────────── */
 .reviews-card {
-     background: var(--blur);
+     background: var(--primary);
      color: white;
      padding: 32px;
      border-radius: 8px;

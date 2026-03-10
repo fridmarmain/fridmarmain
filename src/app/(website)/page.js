@@ -42,7 +42,7 @@ export default async function HomePage() {
       <PracticeOverview practices={practices} />
       {/* <Trust /> */}
       <TeamGrid members={members} title="Who We Are" />
-      <ContactSection />
+      {/* <ContactSection /> */}
       <Questionnaire />
       <ReviewGrid reviews={reviewsData} />
       <Blog posts={posts} />

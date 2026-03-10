@@ -104,6 +104,9 @@ const Footer = () => {
             <li>
               <Link href="/reviews">Reviews & Testimonials</Link>
             </li>
+            <li>
+              <Link href="/contact">Contact</Link>
+            </li>
           </ul>
         </div>
 

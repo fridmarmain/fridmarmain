@@ -2,11 +2,13 @@
 
 
 :root {
+     --primary: #0a314d;
      --primary-dark: #000000;
      --primary-light: #ffffff;
      --accent-dark: #2d2d2d;
      --accent-light: #f5f5f5;
      --text-dark: #0e0e0e;
+
      --blur:
           #020e16b6;
      --blurDark: rgba(0, 0, 0, 0.651);
