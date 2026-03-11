@@ -234,9 +234,10 @@
      flex-direction: column;
      gap: 12px;
      background: transparent;
-     border: #1a1a1a 1px solid;
+     /* border: #1a1a1a 1px solid; */
      border-radius: 16px;
      padding: 24px 20px;
+     text-align: center;
 }
 
 .office-info-icon {
@@ -249,6 +250,7 @@
      border-radius: 10px;
      color: #000000;
      flex-shrink: 0;
+     margin: auto;
      font-size: 90px;
 }
 

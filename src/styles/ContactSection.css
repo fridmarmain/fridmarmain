@@ -8,23 +8,114 @@
      padding: 80px 20px;
 }
 
+/* ── Office Info Wrapper ── */
+.office-info-wrapper {
+     max-width: 1200px;
+     width: 100%;
+     margin: 40px auto 60px;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+}
+
 .offficeImg {
      width: 100%;
      border-radius: 1rem;
+     margin-bottom: 40px;
 }
-
 
 .contactHeader {
      max-width: 780px;
-     margin: auto;
+     width: 100%;
+     margin: 0 auto;
      text-align: center;
+}
+
+.contactHeader h2 {
+     font-size: clamp(1.75rem, 3vw, 2.5rem);
+     font-weight: 700;
+     color: #1a1a1a;
+     line-height: 1.2;
 }
 
 .contactHeader p {
      margin-top: 1rem;
      margin-bottom: 2rem;
+     font-size: 1rem;
+     line-height: 1.7;
+     color: #555;
 }
 
+/* ── Office Info Grid ── */
+.office-info-grid {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     gap: 24px;
+     width: 100%;
+}
+
+.office-info-card {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     text-align: center;
+     gap: 14px;
+     background: #eeeeee;
+     border-radius: 16px;
+     padding: 32px 24px;
+}
+
+.office-info-card>div {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     width: 100%;
+}
+
+.office-info-icon {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 52px;
+     height: 52px;
+     background: #c9a66b00;
+     border-radius: 12px;
+     color: #c9a66b;
+     flex-shrink: 0;
+}
+
+.office-info-label {
+     display: block;
+     font-size: 11px;
+     font-weight: 600;
+     letter-spacing: 0.08em;
+     text-transform: uppercase;
+     color: #999;
+     margin-bottom: 8px;
+}
+
+.office-info-value {
+     font-size: 14px;
+     color: #1a1a1a;
+     line-height: 1.7;
+     margin: 0;
+     display: block;
+}
+
+.office-info-link {
+     font-size: 14px;
+     color: #1a1a1a;
+     text-decoration: none;
+     display: block;
+     line-height: 1.7;
+     transition: opacity 0.2s ease;
+}
+
+.office-info-link:hover {
+     opacity: 0.6;
+}
+
+/* ── Contact Form Container ── */
 .contact-container {
      max-width: 1200px;
      width: 100%;
@@ -61,12 +152,7 @@
      font-size: 48px;
      font-weight: 400;
      color: #1a1a1a;
-}
-
-
-
-.margBottom {
-     margin-bottom: 20px;
+     margin-bottom: 8px;
 }
 
 .contact-title .highlight {
@@ -74,6 +160,14 @@
      font-weight: 400;
 }
 
+.margBottom {
+     margin-bottom: 24px;
+     font-size: 0.95rem;
+     color: #666;
+     line-height: 1.6;
+}
+
+/* ── Form ── */
 .contact-form {
      display: flex;
      flex-direction: column;
@@ -88,13 +182,13 @@
 
 .form-input,
 .form-textarea {
+     width: 100%;
      padding: 18px 24px;
      border: none;
      border-radius: 12px;
      background: rgba(255, 255, 255, 0.9);
      font-size: 15px;
      color: #333;
-
      transition: all 0.3s ease;
      outline: none;
 }
@@ -123,39 +217,20 @@
 .form-textarea {
      resize: vertical;
      min-height: 140px;
-
 }
 
-.submit-button {
-     display: inline-flex;
-     align-items: center;
-     gap: 12px;
-     padding: 16px 36px;
-     background: #c9a66b;
-     color: white;
-     border: none;
-     border-radius: 50px;
-     font-size: 16px;
-     font-weight: 500;
-     cursor: pointer;
-     transition: all 0.3s ease;
-     align-self: flex-start;
-     box-shadow: 0 4px 16px rgba(201, 166, 107, 0.3);
+.input-error {
+     box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
 }
 
-.submit-button:hover {
-     background: #b8956a;
-     box-shadow: 0 6px 20px rgba(201, 166, 107, 0.4);
+.error-text {
+     display: block;
+     margin-top: 6px;
+     font-size: 12px;
+     color: #dc2626;
 }
 
-.button-icon {
-     transition: transform 0.3s ease;
-}
-
-.submit-button:hover .button-icon {
-     transform: translateX(4px);
-}
-
+/* ── Responsive ── */
 @media (max-width: 1024px) {
      .contact-container {
           grid-template-columns: 1fr;
@@ -173,6 +248,13 @@
 
      .contact-title {
           font-size: 42px;
+     }
+}
+
+@media (max-width: 768px) {
+     .office-info-grid {
+          grid-template-columns: 1fr;
+          gap: 16px;
      }
 }
 
@@ -207,12 +289,6 @@
 
      .form-textarea {
           min-height: 120px;
-     }
-
-     .submit-button {
-          width: 100%;
-          justify-content: center;
-          padding: 16px 32px;
      }
 }
 

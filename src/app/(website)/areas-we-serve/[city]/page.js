@@ -73,7 +73,7 @@ export default async function CityServicePage({ params }) {
               </li>
               <li>
                 <MapPin size={18} />
-                Serving all of {regionData?.title || displayName}
+                Providing Services In {regionData?.title || displayName}
               </li>
             </ul>
           </div>

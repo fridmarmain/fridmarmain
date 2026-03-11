@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+// import Link from "next/link";
 import InfoBox from "./InfoBox";
 const Hero = () => {
   const images = ["img1.jpg", "img2.png", "img3.jpg", "img4.jpg"];
@@ -14,7 +15,9 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          {/* <div>Contracts, liens & Legal Disputes</div> */}
+          <div style={{ color: "#ebebeb" }}>
+            Gearing Up To Serve Your Legal Needs.
+          </div>
           <h1> Construction Industry Lawyers</h1>
         </motion.div>
 
@@ -29,25 +32,27 @@ const Hero = () => {
 
         <div className="heroBottom">
           <div className="bottomLeft bottItem" style={{ minWidth: "250px" }}>
-            <p style={{}}>
+            {/* <p style={{}}>
               Fridmar Professional Corporation <br />
               Gearing Up To Serve Your Legal Needs.
-            </p>{" "}
+            </p>{" "} */}
             {/* <p>gearing up to serve your legal needs.</p> */}
           </div>
 
           <div className="bottomRight bottItem">
             <div className="peopleCont">
               {" "}
-              <div className="peopleInner">
-                {images.map((img, i) => (
-                  <div
-                    key={i}
-                    className="box"
-                    style={{ backgroundImage: `url(${img})` }}
-                  ></div>
-                ))}
-              </div>
+              <a target="_blank" href="https://share.google/0znkPZAkylMiB2P2v">
+                <div className="peopleInner">
+                  {images.map((img, i) => (
+                    <div
+                      key={i}
+                      className="box"
+                      style={{ backgroundImage: `url(${img})` }}
+                    ></div>
+                  ))}
+                </div>
+              </a>
               <div className="numbersC">
                 {/* <div className="numbers">2.5k+</div> */}
                 <div className="numbers">(5.0)</div>
