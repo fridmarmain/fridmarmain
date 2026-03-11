@@ -117,11 +117,11 @@ export default function ResourceGrid({
         </div>
       )}
 
-      <div className="resource-grid">
+      {/* <div className="resource-grid">
         {posts.map((post) => (
           <BlogCard key={post.slug} post={post} />
         ))}
-      </div>
+      </div> */}
 
       {!loading && posts.length === 0 && (
         <div className="coming-soon-state">
