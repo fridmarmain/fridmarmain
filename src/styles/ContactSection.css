@@ -98,17 +98,19 @@
      font-size: 14px;
      color: #1a1a1a;
      line-height: 1.7;
+     display: inline;
      margin: 0;
-     display: block;
+     /* display: block; */
 }
 
 .office-info-link {
      font-size: 14px;
      color: #1a1a1a;
      text-decoration: none;
-     display: block;
+     /* display: inline-block; */
      line-height: 1.7;
      transition: opacity 0.2s ease;
+     display: inline;
 }
 
 .office-info-link:hover {

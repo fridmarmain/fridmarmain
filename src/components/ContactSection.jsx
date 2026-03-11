@@ -153,20 +153,21 @@ const ContactSection = () => {
             </div>
             <div>
               <span className="office-info-label">Contact</span>
-              phone:
               <a
                 href="tel:6473636704"
                 className="office-info-value office-info-link"
               >
-                (647) 363-6704
+                {" "}
+                phone: (647) 363-6704
               </a>
               <p className="office-info-value">Fax: (289) 807-0204 </p>
-              Mail:
+
               <a
                 href="mailto:info@fridmar.com"
                 className="office-info-value office-info-link"
               >
-                info@fridmar.com
+                {" "}
+                Mail: info@fridmar.com
               </a>
             </div>
           </div>

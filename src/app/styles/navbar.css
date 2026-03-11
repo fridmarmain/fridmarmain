@@ -40,9 +40,9 @@
 .logo-icon {
      font-size: 1.5rem;
      height: 90px;
-     width: 90px;
+     width: 120px;
      background-image: url(../styles/assets/logo.png);
-     background-size: 120%;
+     background-size: contain;
      background-position: center;
 }
 
