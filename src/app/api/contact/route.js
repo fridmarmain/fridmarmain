@@ -1,6 +1,5 @@
 import { createClient } from "@sanity/client";
 import { NextResponse } from "next/server";
-import DOMPurify from "isomorphic-dompurify";
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -12,8 +11,8 @@ const client = createClient({
 
 // --- Rate limiting (in-memory, per IP) ---
 const rateLimitMap = new Map();
-const RATE_LIMIT = 3; // max submissions
-const RATE_WINDOW = 60_000; // per 60 seconds
+const RATE_LIMIT = 3;
+const RATE_WINDOW = 60_000;
 
 function isRateLimited(ip) {
   const now = Date.now();
@@ -41,8 +40,15 @@ const FIELD_LIMITS = {
   message: { min: 10, max: 2000 },
 };
 
+// Replaces isomorphic-dompurify — escapes dangerous characters from plain text fields
 function sanitize(value) {
-  return DOMPurify.sanitize(String(value ?? "").trim());
+  return String(value ?? "")
+    .trim()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
 }
 
 function validateEmail(email) {
@@ -50,12 +56,10 @@ function validateEmail(email) {
 }
 
 function validatePhone(phone) {
-  // Allow empty or digits/spaces/dashes/plus/parens only
   return phone === "" || /^[\d\s\-+().]{7,20}$/.test(phone);
 }
 
 export async function POST(request) {
-  // --- Rate limit by IP ---
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 
@@ -66,7 +70,6 @@ export async function POST(request) {
     );
   }
 
-  // --- Parse body safely ---
   let body;
   try {
     body = await request.json();
@@ -77,10 +80,8 @@ export async function POST(request) {
     );
   }
 
-  // --- Only allow known fields (block mass assignment) ---
   const { name, email, phone = "", service = "", message } = body;
 
-  // --- Sanitize all inputs ---
   const clean = {
     name: sanitize(name),
     email: sanitize(email),
@@ -89,7 +90,6 @@ export async function POST(request) {
     message: sanitize(message),
   };
 
-  // --- Validate lengths ---
   for (const [field, { min, max }] of Object.entries(FIELD_LIMITS)) {
     const len = clean[field].length;
     if (len < min || len > max) {
@@ -100,7 +100,6 @@ export async function POST(request) {
     }
   }
 
-  // --- Validate email format ---
   if (!validateEmail(clean.email)) {
     return NextResponse.json(
       { message: "Invalid email address." },
@@ -108,7 +107,6 @@ export async function POST(request) {
     );
   }
 
-  // --- Validate phone format ---
   if (!validatePhone(clean.phone)) {
     return NextResponse.json(
       { message: "Invalid phone number." },
@@ -116,7 +114,6 @@ export async function POST(request) {
     );
   }
 
-  // --- Validate service is from allowed list (or empty) ---
   if (clean.service && !ALLOWED_SERVICES.includes(clean.service)) {
     return NextResponse.json(
       { message: "Invalid service selection." },
@@ -124,13 +121,11 @@ export async function POST(request) {
     );
   }
 
-  // --- Honeypot check (set field name in frontend form) ---
+  // Honeypot check
   if (body._hp && body._hp !== "") {
-    // Silent rejection — looks like success to a bot
     return NextResponse.json({ message: "Success" }, { status: 200 });
   }
 
-  // --- Write to Sanity ---
   try {
     const result = await client.create({
       _type: "contact",
@@ -148,7 +143,6 @@ export async function POST(request) {
     );
   } catch (error) {
     console.error("Sanity write error:", error);
-    // Never expose internal error details to the client
     return NextResponse.json(
       { message: "Submission failed. Please try again." },
       { status: 500 },
