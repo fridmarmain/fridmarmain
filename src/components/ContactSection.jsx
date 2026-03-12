@@ -1,38 +1,34 @@
 "use client";
 import { motion } from "framer-motion";
 import * as Icon from "lucide-react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import "../styles/ContactSection.css";
 
 const ALLOWED_SERVICES = ["", "Construction", "dispute", "litigation", "other"];
 
 const validate = (formData) => {
   const errors = {};
-
   if (!formData.name.trim() || formData.name.trim().length < 2)
     errors.name = "Name must be at least 2 characters.";
   if (formData.name.length > 100) errors.name = "Name is too long.";
-
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(formData.email))
     errors.email = "Please enter a valid email address.";
-
   const phoneRegex = /^[\d\s\-+().]{7,20}$/;
   if (formData.phone && !phoneRegex.test(formData.phone))
     errors.phone = "Please enter a valid phone number.";
-
   if (formData.service && !ALLOWED_SERVICES.includes(formData.service))
     errors.service = "Invalid service selection.";
-
   if (!formData.message.trim() || formData.message.trim().length < 10)
     errors.message = "Message must be at least 10 characters.";
   if (formData.message.length > 2000)
     errors.message = "Message is too long (max 2000 characters).";
-
   return errors;
 };
 
 const ContactSection = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -54,58 +50,60 @@ const ContactSection = () => {
       message: 2000,
     };
     if (value.length > (maxLengths[name] ?? 2000)) return;
-
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const validationErrors = validate(formData);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    setStatus("loading");
-
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setStatus("success");
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          service: "",
-          message: "",
-          _hp: "",
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const validationErrors = validate(formData);
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+      }
+      if (!executeRecaptcha) {
+        setErrors({ server: "reCAPTCHA not ready. Please try again." });
+        return;
+      }
+      setStatus("loading");
+      try {
+        const recaptchaToken = await executeRecaptcha("contact_form");
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, recaptchaToken }),
         });
-        setErrors({});
-        setTimeout(() => setStatus("idle"), 3000);
-      } else {
-        const data = await response.json();
+        if (response.ok) {
+          setStatus("success");
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+            service: "",
+            message: "",
+            _hp: "",
+          });
+          setErrors({});
+          setTimeout(() => setStatus("idle"), 3000);
+        } else {
+          const data = await response.json();
+          setStatus("error");
+          setErrors({ server: data.message || "Something went wrong." });
+          setTimeout(() => setStatus("idle"), 4000);
+        }
+      } catch (error) {
+        console.error("Submission error:", error);
         setStatus("error");
-        setErrors({ server: data.message || "Something went wrong." });
+        setErrors({ server: "Network error. Please try again." });
         setTimeout(() => setStatus("idle"), 4000);
       }
-    } catch (error) {
-      console.error("Submission error:", error);
-      setStatus("error");
-      setErrors({ server: "Network error. Please try again." });
-      setTimeout(() => setStatus("idle"), 4000);
-    }
-  };
+    },
+    [formData, executeRecaptcha],
+  );
 
   return (
     <section id="contactSection" className="contact-section container">
-      {/* ── Office Info Section ── */}
       <motion.div
         className="office-info-wrapper"
         initial={{ opacity: 0, y: 40 }}
@@ -115,7 +113,6 @@ const ContactSection = () => {
       >
         <div className="contactHeader">
           <h2>Your Legal Strategy Starts Here</h2>
-
           <p>
             The Fridmar Professional Corporation is happy to welcome its clients
             to its new office. For legal advice tailored to your circumstances
@@ -124,14 +121,8 @@ const ContactSection = () => {
         </div>
 
         <img className="offficeImg" src="/about/fridmaroffice.webp" />
-        {/* <p className="office-intro">
-          The Fridmar Professional Corporation is happy to welcome its clients
-          to its new office. For legal advice tailored to your circumstances and
-          business, please contact us through the information below:
-        </p> */}
 
         <div className="office-info-grid">
-          {/* Location */}
           <div className="office-info-card">
             <div className="office-info-icon">
               <Icon.MapPin size={30} />
@@ -145,8 +136,6 @@ const ContactSection = () => {
               </p>
             </div>
           </div>
-
-          {/* Contact */}
           <div className="office-info-card">
             <div className="office-info-icon">
               <Icon.Phone size={30} />
@@ -157,22 +146,17 @@ const ContactSection = () => {
                 href="tel:6473636704"
                 className="office-info-value office-info-link"
               >
-                {" "}
-                phone: (647) 363-6704
+                Phone: (647) 363-6704
               </a>
-              <p className="office-info-value">Fax: (289) 807-0204 </p>
-
+              <p className="office-info-value">Fax: (289) 807-0204</p>
               <a
                 href="mailto:info@fridmar.com"
                 className="office-info-value office-info-link"
               >
-                {" "}
                 Mail: info@fridmar.com
               </a>
             </div>
           </div>
-
-          {/* Office Hours */}
           <div className="office-info-card">
             <div className="office-info-icon">
               <Icon.Clock size={30} />
@@ -186,12 +170,6 @@ const ContactSection = () => {
           </div>
         </div>
       </motion.div>
-      {/* <h3 style={{ textAlign: "center", width: "100%" }}>
-        REQUEST A CONSULTATION
-      </h3> */}
-      {/* <p style={{ textAlign: "center", width: "100%" }}>
-        Fill out the form below to schedule a confidential initial consultation.
-      </p> */}
 
       <div className="contact-container">
         <motion.div
@@ -218,7 +196,6 @@ const ContactSection = () => {
           <h2 className="contact-title">
             Get In <span className="highlight">Touch</span>
           </h2>
-
           <p className="margBottom">
             Fill out the form below to schedule a confidential initial
             consultation.
@@ -231,7 +208,6 @@ const ContactSection = () => {
           )}
 
           <form onSubmit={handleSubmit} className="contact-form" noValidate>
-            {/* Honeypot — inside form, wired to state, hidden from real users */}
             <input
               type="text"
               name="_hp"
@@ -260,7 +236,6 @@ const ContactSection = () => {
                   <span className="error-text">{errors.name}</span>
                 )}
               </div>
-
               <div>
                 <motion.input
                   type="email"
@@ -278,7 +253,6 @@ const ContactSection = () => {
                   <span className="error-text">{errors.email}</span>
                 )}
               </div>
-
               <div>
                 <motion.input
                   type="tel"
@@ -296,7 +270,6 @@ const ContactSection = () => {
                   <span className="error-text">{errors.phone}</span>
                 )}
               </div>
-
               <div>
                 <motion.select
                   name="service"
@@ -333,7 +306,6 @@ const ContactSection = () => {
                 transition={{ duration: 0.5, delay: 0.6 }}
                 viewport={{ once: true }}
               />
-
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 {errors.message ? (
                   <span className="error-text">{errors.message}</span>

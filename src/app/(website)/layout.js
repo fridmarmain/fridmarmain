@@ -94,10 +94,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${bricolage.variable} ${googleSans.variable}`}>
       <body className="antialiased">
-        <Providers />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

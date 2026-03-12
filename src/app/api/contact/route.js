@@ -17,14 +17,11 @@ const RATE_WINDOW = 60_000;
 function isRateLimited(ip) {
   const now = Date.now();
   const entry = rateLimitMap.get(ip) || { count: 0, start: now };
-
   if (now - entry.start > RATE_WINDOW) {
     rateLimitMap.set(ip, { count: 1, start: now });
     return false;
   }
-
   if (entry.count >= RATE_LIMIT) return true;
-
   rateLimitMap.set(ip, { count: entry.count + 1, start: entry.start });
   return false;
 }
@@ -40,7 +37,6 @@ const FIELD_LIMITS = {
   message: { min: 10, max: 2000 },
 };
 
-// Replaces isomorphic-dompurify — escapes dangerous characters from plain text fields
 function sanitize(value) {
   return String(value ?? "")
     .trim()
@@ -57,6 +53,17 @@ function validateEmail(email) {
 
 function validatePhone(phone) {
   return phone === "" || /^[\d\s\-+().]{7,20}$/.test(phone);
+}
+
+async function verifyRecaptcha(token) {
+  const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+  });
+  const data = await res.json();
+  // score >= 0.5 is a human, lower scores are likely bots
+  return data.success && data.score >= 0.5;
 }
 
 export async function POST(request) {
@@ -77,6 +84,23 @@ export async function POST(request) {
     return NextResponse.json(
       { message: "Invalid request body." },
       { status: 400 },
+    );
+  }
+
+  // --- Verify reCAPTCHA token ---
+  const { recaptchaToken } = body;
+  if (!recaptchaToken) {
+    return NextResponse.json(
+      { message: "reCAPTCHA token missing." },
+      { status: 400 },
+    );
+  }
+
+  const isHuman = await verifyRecaptcha(recaptchaToken);
+  if (!isHuman) {
+    return NextResponse.json(
+      { message: "reCAPTCHA verification failed. Please try again." },
+      { status: 403 },
     );
   }
 
