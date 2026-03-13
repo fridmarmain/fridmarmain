@@ -54,12 +54,12 @@ const PageHero = ({
           </motion.nav>
 
           {/* Animated gold eyebrow line */}
-          <motion.div
+          {/* <motion.div
             className="hero-eyebrow-line"
             initial={{ scaleX: 0 }}
             animate={{ scaleX: 1 }}
             transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-          />
+          /> */}
 
           <h1 className="page-title">{title}</h1>
 

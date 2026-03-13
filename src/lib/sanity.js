@@ -260,6 +260,19 @@ export async function getPostBySlug(slug) {
   return await client.fetch(query, { slug });
 }
 
+export async function getCategoryBySlug(slug) {
+  return await client.fetch(
+    `*[_type == "category" && slug.current == $slug][0] {
+      title,
+      "slug": slug.current,
+      description,
+      heroSubtitle,
+      heroImage
+    }`,
+    { slug },
+  );
+}
+
 export async function getPracticeArea(slug) {
   return await client.fetch(
     `
