@@ -1,7 +1,14 @@
-import { getSinglePost, getRelatedPosts, urlFor } from "@/lib/sanity";
+import {
+  getSinglePost,
+  getRelatedPosts,
+  getNextPost,
+  getPreviousPost,
+  urlFor,
+} from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import * as Icon from "lucide-react";
 import BlogCard from "@/components/BlogCard";
+import PostNavigation from "@/components/PostNavigation";
 import "../../../styles/postpage.css";
 import VideoPlayer from "@/components/VideoPlayer";
 
@@ -92,6 +99,18 @@ export default async function PostPage({ params }) {
 
   if (!post) return <div className="status-message pt-40">Post Not Found</div>;
 
+  // Get the first category ID for navigation filtering
+  const categoryId = post.categories?.[0]?._id;
+
+  // Fetch navigation posts (same format & category)
+  let nextPost = null;
+  let previousPost = null;
+
+  if (categoryId && post.format) {
+    nextPost = await getNextPost(slug, post.format, categoryId);
+    previousPost = await getPreviousPost(slug, post.format, categoryId);
+  }
+
   const relatedPosts = await getRelatedPosts(post.format, slug);
   const bgImage = post.mainImage ? urlFor(post.mainImage).url() : "";
 
@@ -107,17 +126,12 @@ export default async function PostPage({ params }) {
         <div className="hero-content">
           <div className="flex-center gap-2 mb-4">
             {post.categories?.map((cat) => (
-              <span key={cat.slug} className="badge">
+              <span key={cat._id} className="badge">
                 {cat.title}
               </span>
             ))}
           </div>
           <h1>{post.title}</h1>
-          {/* <p className="hero-date">
-            {new Date(post.publishedAt).toLocaleDateString("en-US", {
-              dateStyle: "long",
-            })}
-          </p> */}
         </div>
       </section>
 
@@ -125,8 +139,10 @@ export default async function PostPage({ params }) {
       <div className="content-container">
         <div className="layout-grid">
           <main className="main-content">
-            {/* Media Player Section */}
+            {/* Navigation Top */}
+            <PostNavigation previousPost={previousPost} nextPost={nextPost} />
 
+            {/* Media Player Section */}
             {post.format === "blog" && post.mainImage && (
               <div className="post-hero-image-wrapper">
                 <img
@@ -181,7 +197,6 @@ export default async function PostPage({ params }) {
               <section className="related-section">
                 <div className="section-header">
                   <h2 className="section-title">More {post.format}s</h2>
-                  {/* <Icon.ArrowRight className="text-gold" /> */}
                 </div>
                 <div className="related-grid">
                   {relatedPosts.map((related) => (
@@ -190,6 +205,9 @@ export default async function PostPage({ params }) {
                 </div>
               </section>
             )}
+
+            {/* Navigation Bottom */}
+            <PostNavigation previousPost={previousPost} nextPost={nextPost} />
           </main>
         </div>
       </div>

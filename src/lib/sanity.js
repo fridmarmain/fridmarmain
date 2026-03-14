@@ -185,9 +185,79 @@ export async function getSinglePost(slug) {
   return await client.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
     ...,
-    "categories": categories[]->{title, "slug": slug.current}
+    "categories": categories[]->{_id, title, "slug": slug.current}
   }`,
     { slug },
+  );
+}
+
+// Replace the navigation queries in your sanity.js file with these:
+
+export async function getNextPost(currentSlug, format, categoryId) {
+  // Get current post's publishedAt date
+  const currentPost = await client.fetch(
+    `*[_type == "post" && slug.current == $slug][0] {
+      publishedAt
+    }`,
+    { slug: currentSlug },
+  );
+
+  if (!currentPost?.publishedAt) return null;
+
+  // Get the next most recent post (older than current, same format & category)
+  return await client.fetch(
+    `*[
+      _type == "post" && 
+      format == $format && 
+      references($categoryId) &&
+      slug.current != $currentSlug &&
+      publishedAt < $currentPublishedAt
+    ] | order(publishedAt desc)[0] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format
+    }`,
+    {
+      currentSlug,
+      format,
+      categoryId,
+      currentPublishedAt: currentPost.publishedAt,
+    },
+  );
+}
+
+export async function getPreviousPost(currentSlug, format, categoryId) {
+  // Get current post's publishedAt date
+  const currentPost = await client.fetch(
+    `*[_type == "post" && slug.current == $slug][0] {
+      publishedAt
+    }`,
+    { slug: currentSlug },
+  );
+
+  if (!currentPost?.publishedAt) return null;
+
+  // Get the next oldest post (newer than current, same format & category)
+  return await client.fetch(
+    `*[
+      _type == "post" && 
+      format == $format && 
+      references($categoryId) &&
+      slug.current != $currentSlug &&
+      publishedAt > $currentPublishedAt
+    ] | order(publishedAt asc)[0] {
+      title,
+      "slug": slug.current,
+      publishedAt,
+      format
+    }`,
+    {
+      currentSlug,
+      format,
+      categoryId,
+      currentPublishedAt: currentPost.publishedAt,
+    },
   );
 }
 
