@@ -136,7 +136,8 @@
 }
 
 .pt-strong {
-     font-weight: 700;
+     font-weight: bold !important;
+     font-size: 20px !important;
      color: #0f172a;
 }
 
