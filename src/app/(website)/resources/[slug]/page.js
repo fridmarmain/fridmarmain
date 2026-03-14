@@ -113,11 +113,11 @@ export default async function PostPage({ params }) {
             ))}
           </div>
           <h1>{post.title}</h1>
-          <p className="hero-date">
+          {/* <p className="hero-date">
             {new Date(post.publishedAt).toLocaleDateString("en-US", {
               dateStyle: "long",
             })}
-          </p>
+          </p> */}
         </div>
       </section>
 
@@ -127,7 +127,7 @@ export default async function PostPage({ params }) {
           <main className="main-content">
             {/* Media Player Section */}
 
-            {post.mainImage && (
+            {post.format === "blog" && post.mainImage && (
               <div className="post-hero-image-wrapper">
                 <img
                   src={urlFor(post.mainImage).url()}

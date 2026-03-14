@@ -15,10 +15,11 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div style={{ color: "#ebebeb" }}>
+          <h1> Construction Industry Lawyers</h1>
+
+          <div style={{ color: "#ebebeb", fontSize: "14px" }}>
             Gearing Up To Serve Your Legal Needs.
           </div>
-          <h1> Construction Industry Lawyers</h1>
         </motion.div>
 
         <motion.div

@@ -114,16 +114,20 @@ const Footer = () => {
           <h4>Resources</h4>
           <ul>
             <li>
-              <Link href="/resources/category/blog">Legal Blog</Link>
+              <Link href="/resources/category/blog">Concrete Concepts </Link>
             </li>
             <li>
-              <Link href="/resources/category/vlog"> Vlog </Link>
+              <Link href="/resources/category/vlog"> Drill Bit </Link>
             </li>
             <li>
-              <Link href="/resources/category/our-podcast">Podcast</Link>
+              <Link href="/resources/category/our-podcast">
+                #Lawtrepreneurs
+              </Link>
             </li>
             <li>
-              <Link href="/resources/category/measure-twice">Youtube</Link>
+              <Link href="/resources/category/measure-twice">
+                Measure Twice
+              </Link>
             </li>
           </ul>
         </div>
