@@ -43,7 +43,7 @@ const CEOSection = () => {
           </div>
 
           <Link
-            href="/consultation"
+            href="https://calendly.com/fridmar/meet-with-mey"
             type="submit"
             style={{ display: "inline-flex" }}
             className="secondaryBtn"
