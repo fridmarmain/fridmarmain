@@ -97,7 +97,7 @@
 /* ─── Content Container ──────────────────────────────────── */
 .content-container {
      max-width: var(--max);
-     margin: -60px auto 0;
+     margin: -10px auto 0;
      padding: 0 60px 100px;
      position: relative;
      z-index: 10;
@@ -136,10 +136,10 @@
      font-size: 1.6rem;
      font-weight: 700;
      /* color: var(--text); */
-     margin: 40px 0 16px;
+     margin: 40px 0 5px;
      padding-bottom: 10px;
-     border-bottom: 2px solid var(--gold);
-     display: inline-block;
+     /* border-bottom: 2px solid var(--gold); */
+     display: block;
      color: rgb(19, 19, 19);
 }
 
@@ -149,8 +149,8 @@
      color: var(--text);
      margin: 40px 0 16px;
      padding-bottom: 10px;
-     border-bottom: 2px solid var(--gold);
-     display: inline-block;
+     /* border-bottom: 2px solid var(--gold); */
+     display: block;
 }
 
 .rich-text h3 {
@@ -159,7 +159,7 @@
      /* color: var(--text); */
      color: rgb(19, 19, 19);
 
-     margin: 32px 0 12px;
+     margin: 32px 0 2px;
 }
 
 .rich-text p {
