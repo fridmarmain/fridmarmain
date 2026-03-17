@@ -57,23 +57,45 @@ const ContactSection = () => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
+
       const validationErrors = validate(formData);
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
         return;
       }
-      if (!executeRecaptcha) {
-        setErrors({ server: "reCAPTCHA not ready. Please try again." });
+
+      setStatus("loading");
+
+      // Wait up to 3s for reCAPTCHA to become ready
+      let recaptchaToken = null;
+      for (let attempt = 0; attempt < 6; attempt++) {
+        if (executeRecaptcha) {
+          try {
+            recaptchaToken = await executeRecaptcha("contact_form");
+            break;
+          } catch {
+            // token generation failed — retry
+          }
+        }
+        await new Promise((res) => setTimeout(res, 500));
+      }
+
+      if (!recaptchaToken) {
+        setStatus("error");
+        setErrors({
+          server: "reCAPTCHA failed to load. Please refresh and try again.",
+        });
+        setTimeout(() => setStatus("idle"), 4000);
         return;
       }
-      setStatus("loading");
+
       try {
-        const recaptchaToken = await executeRecaptcha("contact_form");
         const response = await fetch("/api/contact", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...formData, recaptchaToken }),
         });
+
         if (response.ok) {
           setStatus("success");
           setFormData({
