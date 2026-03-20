@@ -8,10 +8,31 @@ import "./city.css";
 import { generateSEO } from "@/lib/seo";
 
 export async function generateMetadata({ params }) {
-  const city = params.city;
+  const city = params?.city; // safe optional chaining
+
+  // If no city, return default metadata for the main "Areas We Serve" page
+  if (!city) {
+    return {
+      title: "Areas We Serve | Fridmar Professional Corporation",
+      description:
+        "Fridmar Professional Corporation proudly serves clients across Ontario, including Toronto and surrounding regions. Our experienced lawyers provide expert legal services in construction law, bankruptcy, real estate litigation, and civil & commercial disputes.",
+      openGraph: {
+        title: "Areas We Serve | Fridmar Professional Corporation",
+        description:
+          "Fridmar Professional Corporation proudly serves clients across Ontario, including Toronto and surrounding regions. Our experienced lawyers provide expert legal services in construction law, bankruptcy, real estate litigation, and civil & commercial disputes.",
+        url: "https://fridmar.com/areas-we-serve",
+        images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+      },
+      alternates: {
+        canonical: "https://fridmar.com/areas-we-serve",
+      },
+    };
+  }
+
+  // Now it's safe to call replace
   const cityName = city.replace(/-/g, " ");
 
-  // Fetch same data you're already using
+  // Fetch dynamic SEO data
   const { customData, regionData } = await client.fetch(GET_CITY_PAGE_QUERY, {
     citySlug: city,
     cityName,
@@ -19,17 +40,23 @@ export async function generateMetadata({ params }) {
 
   const displayName = cityName.replace(/\b\w/g, (l) => l.toUpperCase());
 
-  return generateSEO({
+  return {
     title: customData?.seoTitle || `Construction Lawyers in ${displayName}`,
-
     description:
       customData?.seoDescription ||
-      `Looking for a construction lawyer in ${displayName}? Fridmar Professional Corporation provides expert legal services in construction law, civil litigation, and dispute resolution in ${displayName} and surrounding areas.`,
-
-    path: `/areas-we-serve/${city}`,
-
-    image: customData?.seoImage || "/og-image.png",
-  });
+      `Looking for a construction lawyer in ${displayName}? Fridmar Professional Corporation provides expert legal services in construction law, bankruptcy, real estate litigation, and civil & commercial disputes.`,
+    openGraph: {
+      title: `Areas We Serve | ${displayName}`,
+      description:
+        customData?.seoDescription ||
+        `Fridmar Professional Corporation serves clients in ${displayName}, offering legal expertise in construction, civil, and real estate law.`,
+      url: `https://fridmar.com/areas-we-serve/${city}`,
+      images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    },
+    alternates: {
+      canonical: `https://fridmar.com/areas-we-serve/${city}`,
+    },
+  };
 }
 
 export default async function CityServicePage({ params }) {
