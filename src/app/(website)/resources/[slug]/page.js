@@ -11,7 +11,34 @@ import BlogCard from "@/components/BlogCard";
 import PostNavigation from "@/components/PostNavigation";
 import "../../../styles/postpage.css";
 import VideoPlayer from "@/components/VideoPlayer";
+import { generateSEO } from "@/lib/seo";
 
+export async function generateMetadata({ params }) {
+  const { slug } = await params; // ✅ FIX
+
+  const post = await getSinglePost(slug);
+
+  if (!post) {
+    return generateSEO({
+      title: "Post Not Found",
+      description: "The requested article could not be found.",
+      path: `/blog/${slug}`,
+    });
+  }
+
+  const image = post.mainImage ? urlFor(post.mainImage).url() : "/og-image.png";
+
+  return generateSEO({
+    title: post.title,
+    description:
+      post.excerpt ||
+      post.description ||
+      "Read expert legal insights from Fridmar Professional Corporation.",
+    path: `/blog/${slug}`,
+    image,
+    type: "article",
+  });
+}
 // ── Table Block Renderer ──
 function TableBlock({ value }) {
   if (!value?.rows?.length) return null;

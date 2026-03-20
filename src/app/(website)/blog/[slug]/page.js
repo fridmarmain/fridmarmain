@@ -2,8 +2,35 @@ import { getSinglePost } from "@/lib/sanity";
 import { urlFor } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import Link from "next/link";
-import "./blog.css";
 
+import "./blog.css";
+import { generateSEO } from "@/lib/seo";
+
+export async function generateMetadata({ params }) {
+  const { slug } = params;
+
+  const post = await getSinglePost(slug);
+
+  if (!post) {
+    return generateSEO({
+      title: "Post Not Found",
+      description: "The requested article could not be found.",
+      path: `/blog/${slug}`,
+    });
+  }
+
+  const image = post.mainImage ? urlFor(post.mainImage).url() : "/og-image.png";
+
+  return generateSEO({
+    title: post.title,
+    description:
+      post.excerpt ||
+      post.description ||
+      "Read expert legal insights from Fridmar Professional Corporation on construction, litigation, and real estate law.",
+    path: `/blog/${slug}`,
+    image,
+  });
+}
 export default async function PostPage({ params }) {
   // 1. You MUST await params in Next.js 15
   const { slug } = await params;

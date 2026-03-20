@@ -3,6 +3,7 @@ import { PortableText } from "@portabletext/react";
 import Link from "next/link";
 import * as Icon from "lucide-react";
 import "../styles/terms.css";
+import { generateSEO } from "@/lib/seo";
 
 // ─── Portable Text Components ─────────────────────────────────────────────────
 const portableTextComponents = {
@@ -28,6 +29,20 @@ const portableTextComponents = {
     number: ({ children }) => <li>{children}</li>,
   },
 };
+
+// ─── Metadata for SEO ───────────────────────────────────────────────────────
+export async function generateMetadata() {
+  const data = await getTermsOfUse();
+
+  return generateSEO({
+    title: data?.title || "Terms of Use",
+    description:
+      "Read the Terms of Use for Fridmar Professional Corporation, detailing user responsibilities and legal policies for accessing our site and services.",
+    path: "/terms-of-use",
+    image: "/og-image.png",
+    type: "website",
+  });
+}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default async function TermsPage() {

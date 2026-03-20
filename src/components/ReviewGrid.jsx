@@ -222,7 +222,7 @@ export default function ReviewGrid({ reviews }) {
 
   return (
     <section className="reviews-container">
-      <div className="container">
+      <div className="container" style={{ paddingTop: "40px" }}>
         <div className="SideHeader">
           <h3>What Our Clients Say</h3>
         </div>

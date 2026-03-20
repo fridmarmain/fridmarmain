@@ -2,9 +2,22 @@ import { client } from "@/lib/sanity";
 import ReviewCard from "@/components/ReviewGrid";
 import "../../styles/reviews.css";
 import ReviewGrid from "@/components/ReviewGrid";
+import { generateSEO } from "@/lib/seo";
 
 async function getReviews() {
   return await client.fetch(`*[_type == "review"] | order(_createdAt desc)`);
+}
+
+// ── Metadata for SEO ──
+export async function generateMetadata() {
+  return generateSEO({
+    title: "Client Reviews",
+    description:
+      "Read testimonials and reviews from clients of Fridmar Professional Corporation, showcasing our commitment to excellence in legal services.",
+    path: "/reviews",
+    image: "/og-image.png",
+    type: "website",
+  });
 }
 
 export default async function ReviewsPage() {

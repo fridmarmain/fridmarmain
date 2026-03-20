@@ -3,18 +3,21 @@ export function generateSEO({
   description,
   path = "",
   image = "/og-image.png",
+  type = "website",
 }) {
   const baseUrl = "https://fridmar.com";
   const url = `${baseUrl}${path}`;
+  const fullTitle = `${title} | Fridmar Professional Corporation`;
 
   return {
-    title,
+    title: fullTitle, // ✅ browser tab title
     description,
     openGraph: {
-      title: `${title} | Fridmar Professional Corporation`,
+      title: fullTitle, // ✅ matches exactly
       description,
       url,
       siteName: "Fridmar Professional Corporation",
+      type,
       images: [
         {
           url: image,
@@ -25,7 +28,7 @@ export function generateSEO({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} | Fridmar Professional Corporation`,
+      title: fullTitle, // ✅ matches exactly
       description,
       images: [image],
     },

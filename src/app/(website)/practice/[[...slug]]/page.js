@@ -10,6 +10,42 @@ import * as Icon from "lucide-react";
 import PracticeSidebar from "@/components/PracticeSidebar";
 import "../../../styles/practiceArea.css"; // Ensure you create this file
 
+import { generateSEO } from "@/lib/seo";
+
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+
+  if (!slug || slug.length === 0) {
+    return generateSEO({
+      title: "Practice Areas",
+      description:
+        "Explore our main legal practice areas at Fridmar Professional Corporation.",
+      path: "/practice",
+    });
+  }
+
+  const currentSlug = slug[slug.length - 1];
+  const data = await getPracticeArea(currentSlug);
+
+  if (!data) {
+    return generateSEO({
+      title: "Practice Area Not Found",
+      description: "The requested practice area could not be found.",
+      path: `/practice/${currentSlug}`,
+    });
+  }
+
+  return generateSEO({
+    title: data.title,
+    description:
+      data.description ||
+      `Expert legal services in ${data.title} at Fridmar Professional Corporation.`,
+    path: `/practice/${slug.join("/")}`,
+    image: data.mainImage ? urlFor(data.mainImage).url() : "/og-image.png",
+    type: "website",
+  });
+}
+
 export default async function PracticeAreaPage({ params }) {
   const { slug } = await params;
   if (!slug || slug.length === 0) {
