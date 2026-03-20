@@ -4,6 +4,7 @@ import "../styles/footer.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Providers from "./Providers";
+import Script from "next/script";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -25,6 +26,10 @@ export const metadata = {
     default: "Fridmar Professional Corporation | Construction Industry Lawyers",
     template: "%s | Fridmar Professional Corporation",
   },
+  verification: {
+    google: "lWWoIt_YoFGuVxXX0AA1l3_t7KVrRZzpHBuMUklGdCU",
+  },
+
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -99,6 +104,18 @@ export default function RootLayout({ children }) {
           <main>{children}</main>
           <Footer />
         </Providers>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9WN725GQPR"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9WN725GQPR');
+          `}
+        </Script>
       </body>
     </html>
   );
