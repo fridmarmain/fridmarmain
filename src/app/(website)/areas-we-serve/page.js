@@ -10,6 +10,16 @@ import MapWrapper from "@/components/MapWrapper";
 import PageHero from "@/components/pageHero";
 import { geocodeAllCities } from "@/lib/geocode";
 import map from "@/styles/assets/map.jpg";
+import { generateSEO } from "@/lib/seo";
+
+export async function generateMetadata() {
+  return generateSEO({
+    title: "Areas We Serve",
+    description:
+      "Fridmar Professional Corporation proudly serves clients across Ontario, including Toronto and surrounding regions. Our experienced lawyers provide expert legal services in construction law, bankruptcy, real estate litigation, and civil & commercial disputes.",
+    path: "/areas-we-serve",
+  });
+}
 
 export default async function AreasWeServe() {
   const regions = await client.fetch(GET_REGIONS_QUERY);

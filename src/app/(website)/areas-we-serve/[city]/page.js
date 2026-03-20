@@ -5,6 +5,32 @@ import Link from "next/link";
 import { Shield, Gavel, MapPin } from "lucide-react";
 import CTA from "@/components/CTA";
 import "./city.css";
+import { generateSEO } from "@/lib/seo";
+
+export async function generateMetadata({ params }) {
+  const city = params.city;
+  const cityName = city.replace(/-/g, " ");
+
+  // Fetch same data you're already using
+  const { customData, regionData } = await client.fetch(GET_CITY_PAGE_QUERY, {
+    citySlug: city,
+    cityName,
+  });
+
+  const displayName = cityName.replace(/\b\w/g, (l) => l.toUpperCase());
+
+  return generateSEO({
+    title: customData?.seoTitle || `Construction Lawyers in ${displayName}`,
+
+    description:
+      customData?.seoDescription ||
+      `Looking for a construction lawyer in ${displayName}? Fridmar Professional Corporation provides expert legal services in construction law, civil litigation, and dispute resolution in ${displayName} and surrounding areas.`,
+
+    path: `/areas-we-serve/${city}`,
+
+    image: customData?.seoImage || "/og-image.png",
+  });
+}
 
 export default async function CityServicePage({ params }) {
   const { city } = await params;

@@ -21,6 +21,30 @@ import TeamSlider from "@/components/TeamSlider";
 import CEOSection from "@/components/CEOSection";
 // import Memoriam from "@/components/Memoriam";
 
+export async function generateMetadata() {
+  return {
+    title: "About Our Firm",
+    description:
+      "Learn more about Fridmar Professional Corporation, our team, and our commitment to delivering expert legal solutions in construction, litigation, and real estate law.",
+    openGraph: {
+      title: "About Our Firm | Fridmar Professional Corporation",
+      description:
+        "Meet the team and discover the values behind Fridmar Professional Corporation.",
+      url: "https://fridmar.com/about",
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+        },
+      ],
+    },
+    alternates: {
+      canonical: "https://fridmar.com/about",
+    },
+  };
+}
+
 export default async function AboutPage() {
   const posts = await getPosts();
   const practices = await getMainPractices();
