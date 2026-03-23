@@ -4,6 +4,44 @@ import * as Icon from "lucide-react";
 import "../../../styles/team-profile.css";
 import TikTokGallery from "@/components/TikTokGallery";
 
+import { generateSEO } from "@/lib/seo";
+
+// ─── Metadata for Team Member Page ─────────────────────────────
+export async function generateMetadata({ params }) {
+  const { slug } = await params; // ✅ must await
+
+  if (!slug) {
+    return generateSEO({
+      title: "Team Member Not Found",
+      description: "This team member does not exist.",
+      path: "/team",
+    });
+  }
+
+  const member = await client.fetch(
+    `*[_type == "team" && slug.current == $slug][0]`,
+    { slug }, // ✅ pass slug as object
+  );
+
+  if (!member) {
+    return generateSEO({
+      title: "Team Member Not Found",
+      description: "This team member does not exist.",
+      path: `/team/${slug}`,
+    });
+  }
+
+  const image = member.image ? urlFor(member.image).url() : "/og-image.png";
+
+  return generateSEO({
+    title: member.name,
+    description: `${member.name} is a ${member.role} at Fridmar Professional Corporation.`,
+    path: `/team/${member.slug.current}`,
+    image,
+    type: "profile", // optional, good for people pages
+  });
+}
+
 export default async function TeamProfilePage({ params }) {
   const { slug } = await params;
   const member = await client.fetch(

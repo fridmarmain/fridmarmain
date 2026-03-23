@@ -126,7 +126,7 @@ export default async function CityServicePage({ params }) {
               </li>
               <li>
                 <MapPin size={18} />
-                Providing Services In {regionData?.title || displayName}
+                Providing Services in {regionData?.title || displayName}
               </li>
             </ul>
           </div>
