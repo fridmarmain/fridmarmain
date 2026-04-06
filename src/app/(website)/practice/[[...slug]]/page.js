@@ -104,7 +104,7 @@ export default async function PracticeAreaPage({ params }) {
           </nav>
 
           <div className="hero-content">
-            <h1>{data.title}</h1>
+            <h1 style={{ width: "100%" }}>{data.title}</h1>
             <p>{data.description}</p>
           </div>
         </div>

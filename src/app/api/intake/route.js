@@ -198,7 +198,7 @@ export async function POST(request) {
     // 2. Notify the law firm
     await resend.emails.send({
       from: "dan@fridmar.com",
-      to: "dan@fridmar.com",
+      to: "mey@fridmar.com",
       subject: `New Intake: ${answers.practiceArea} — ${answers.urgency ?? "Urgency unknown"}`,
       html: buildAdminEmail(answers),
     });

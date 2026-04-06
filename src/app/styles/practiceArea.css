@@ -76,6 +76,7 @@
 /* ─── Hero Content ───────────────────────────────────────── */
 .hero-content {
      max-width: 720px;
+     text-align: left;
 }
 
 .hero-content h1 {
@@ -83,6 +84,8 @@
      font-weight: 700;
      line-height: 1.1;
      letter-spacing: -0.5px;
+     text-align: left !important;
+
      margin-bottom: 16px;
      color: #fff;
 }
@@ -91,7 +94,7 @@
      font-size: 1.05rem;
      line-height: 1.7;
      color: rgba(255, 255, 255, 0.75);
-     max-width: 560px;
+     width: 100%;
 }
 
 /* ─── Content Container ──────────────────────────────────── */
