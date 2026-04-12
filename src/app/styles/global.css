@@ -65,15 +65,22 @@ body {
      justify-content: space-between;
      padding: 3rem 0rem;
      flex-wrap: wrap;
+
+}
+
+.sectionHeaderRight {
+     width: calc(100% - 650px);
+     min-width: 300px;
 }
 
 
 .sectionHeaderleft {
-     max-width: 500px;
+     max-width: 600px;
+     display: flex;
 }
 
 
-h1,
+.sectionHeaderleft h1,
 h2,
 h3,
 h4,
@@ -151,5 +158,11 @@ section {
 
      section {
           padding: 2rem var(--small);
+     }
+
+     .sectionHeaderleft {
+          max-width: 600px;
+          gap: 10px;
+          flex-direction: column;
      }
 }

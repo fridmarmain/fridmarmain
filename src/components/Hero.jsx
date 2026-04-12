@@ -40,7 +40,7 @@ const Hero = () => {
             {/* <p>gearing up to serve your legal needs.</p> */}
           </div>
 
-          <div className="bottomRight bottItem">
+          {/* <div className="bottomRight bottItem">
             <div className="peopleCont">
               {" "}
               <a target="_blank" href="https://share.google/0znkPZAkylMiB2P2v">
@@ -55,7 +55,7 @@ const Hero = () => {
                 </div>
               </a>
               <div className="numbersC">
-                {/* <div className="numbers">2.5k+</div> */}
+              
                 <div className="numbers">(5.0)</div>
               </div>
             </div>
@@ -63,7 +63,7 @@ const Hero = () => {
               " I felt Daniel was responsive, efficient, professional and
               fair/reasonable in fees charged for the work. I "
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

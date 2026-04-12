@@ -473,7 +473,7 @@ export async function getHomepageReviews() {
   const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
   const videos = shuffle(videoReviews).slice(0, 2);
-  const texts = shuffle(textReviews).slice(0, 2);
+  const texts = shuffle(textReviews).slice(0, 1);
 
   // interleave: video, text, video, text
   return [videos[0], texts[0], videos[1], texts[1]].filter(Boolean);

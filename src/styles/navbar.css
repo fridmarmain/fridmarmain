@@ -141,7 +141,7 @@ overflow: visible;
 
 .scrolled {
      background-color: var(--blur2);
-     transform: translateY(-100%);
+     /* transform: translateY(-100%); */
      backdrop-filter: blur(10px);
 
 }

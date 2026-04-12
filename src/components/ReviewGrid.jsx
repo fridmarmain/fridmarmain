@@ -5,6 +5,7 @@ import { urlFor } from "@/lib/sanity";
 import * as Icon from "lucide-react";
 import MuxPlayer from "@mux/mux-player-react";
 import "../styles/reviews.css";
+import Link from "next/link";
 
 const INITIAL_COUNT = 6;
 const LOAD_MORE_COUNT = 6;
@@ -227,15 +228,41 @@ export default function ReviewGrid({ reviews }) {
           <h3>What Our Clients Say</h3>
         </div>
         <div className="sectionHeader">
-          <div className="sectionHeaderRight">
-            <h2 className="mainHeader">Reviews</h2>
-            <h3>Client Trust</h3>
+          <div
+            className="sectionHeaderRight"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "30px",
+            }}
+          >
+            <div>
+              <h2 className="mainHeader">Reviews</h2>
+              <h3>Client Trust</h3>
+            </div>
           </div>
+
           <div className="sectionHeaderleft">
             <p>
               Discover how our commitment to excellence has helped clients
               achieve their legal goals and find peace of mind.
             </p>
+
+            <Link
+              href="/reviews"
+              type="submit"
+              style={{
+                display: "inline-flex",
+                height: "45px",
+                minWidth: "150px",
+              }}
+              className="secondaryBtn"
+            >
+              <div>View all</div>
+              <div className="iconBall">
+                <Icon.ArrowUpRight />
+              </div>
+            </Link>
           </div>
         </div>
 
