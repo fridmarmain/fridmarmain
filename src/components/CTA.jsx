@@ -30,7 +30,7 @@ const CTA = () => {
           style={{ borderRadius: ".7rem" }}
           whileTap={{ scale: 0.95 }}
         >
-          <Link href="https://calendly.com/fridmar/meet-with-mey">
+          <Link href="https://calendly.com/fridmar/schedule-a-consult">
             Book a Consultation
           </Link>
         </motion.button>
