@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: https://fridmarmain.vercel.app/
+
+Sitemap: https://fridmar.com/sitemap.xml
