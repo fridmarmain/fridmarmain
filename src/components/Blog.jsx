@@ -1,10 +1,6 @@
 "use client";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
-import * as Icon from "lucide-react";
-import { urlFor } from "@/lib/sanity";
 import BlogCard from "./BlogCard";
 
 const Blog = ({ posts }) => {
