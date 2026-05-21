@@ -260,7 +260,7 @@ export async function POST(request) {
     // Send email via Resend
     const emailHTML = generateEmailHTML(clean);
     const emailResult = await resend.emails.send({
-      from: clean.email, // Reply-to will be the sender's email
+      from: "dan@fridmar.com", // Reply-to will be the sender's email
       to: "ezeaniandrew8197@gmail.com",
       replyTo: clean.email,
       subject: `New Contact Form Submission from ${clean.name}`,
