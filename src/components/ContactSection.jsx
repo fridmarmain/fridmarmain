@@ -326,30 +326,30 @@ const ContactSection = () => {
                   <span className="error-text">{errors.service}</span>
                 )}
               </div>
-              <div>
-                <motion.select
-                  name="source"
-                  value={formData.source}
-                  onChange={handleChange}
-                  className={`form-input form-select ${errors.source ? "input-error" : ""}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 }}
-                  viewport={{ once: true }}
-                >
-                  <option value="">How did you hear about us?</option>
-                  <option value="Google Search">Google Search</option>
-                  <option value="Referral">Referral</option>
-                  <option value="Social Media">Social Media</option>
-                  <option value="Website">Website</option>
-                  <option value="Other">Other</option>
-                </motion.select>
-                {errors.source && (
-                  <span className="error-text">{errors.source}</span>
-                )}
-              </div>
             </div>
-
+            <div>
+              <motion.select
+                name="source"
+                value={formData.source}
+                onChange={handleChange}
+                className={`form-input form-select ${errors.source ? "input-error" : ""}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                style={{ width: "100%" }}
+                viewport={{ once: true }}
+              >
+                <option value="">How did you hear about us?</option>
+                <option value="Google Search">Google Search</option>
+                <option value="Referral">Referral</option>
+                <option value="Social Media">Social Media</option>
+                <option value="Website">Website</option>
+                <option value="Other">Other</option>
+              </motion.select>
+              {errors.source && (
+                <span className="error-text">{errors.source}</span>
+              )}
+            </div>
             <div>
               <motion.textarea
                 name="message"
