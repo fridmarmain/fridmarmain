@@ -6,6 +6,14 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import "../styles/ContactSection.css";
 
 const ALLOWED_SERVICES = ["", "Construction", "dispute", "litigation", "other"];
+const ALLOWED_SOURCES = [
+  "",
+  "Google Search",
+  "Referral",
+  "Social Media",
+  "Website",
+  "Other",
+];
 
 const validate = (formData) => {
   const errors = {};
@@ -20,6 +28,8 @@ const validate = (formData) => {
     errors.phone = "Please enter a valid phone number.";
   if (formData.service && !ALLOWED_SERVICES.includes(formData.service))
     errors.service = "Invalid service selection.";
+  if (formData.source && !ALLOWED_SOURCES.includes(formData.source))
+    errors.source = "Invalid source selection.";
   if (!formData.message.trim() || formData.message.trim().length < 10)
     errors.message = "Message must be at least 10 characters.";
   if (formData.message.length > 2000)
@@ -34,6 +44,7 @@ const ContactSection = () => {
     email: "",
     phone: "",
     service: "",
+    source: "",
     message: "",
     _hp: "",
   });
@@ -47,6 +58,7 @@ const ContactSection = () => {
       email: 254,
       phone: 20,
       service: 50,
+      source: 100,
       message: 2000,
     };
     if (value.length > (maxLengths[name] ?? 2000)) return;
@@ -103,6 +115,7 @@ const ContactSection = () => {
             email: "",
             phone: "",
             service: "",
+            source: "",
             message: "",
             _hp: "",
           });
@@ -313,6 +326,28 @@ const ContactSection = () => {
                   <span className="error-text">{errors.service}</span>
                 )}
               </div>
+              <div>
+                <motion.select
+                  name="source"
+                  value={formData.source}
+                  onChange={handleChange}
+                  className={`form-input form-select ${errors.source ? "input-error" : ""}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
+                  viewport={{ once: true }}
+                >
+                  <option value="">How did you hear about us?</option>
+                  <option value="Google Search">Google Search</option>
+                  <option value="Referral">Referral</option>
+                  <option value="Social Media">Social Media</option>
+                  <option value="Website">Website</option>
+                  <option value="Other">Other</option>
+                </motion.select>
+                {errors.source && (
+                  <span className="error-text">{errors.source}</span>
+                )}
+              </div>
             </div>
 
             <div>
@@ -325,7 +360,7 @@ const ContactSection = () => {
                 rows={6}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.7 }}
                 viewport={{ once: true }}
               />
               <div style={{ display: "flex", justifyContent: "space-between" }}>

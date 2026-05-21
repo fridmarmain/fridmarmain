@@ -1,5 +1,6 @@
 import { createClient } from "@sanity/client";
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -8,6 +9,8 @@ const client = createClient({
   token: process.env.SANITY_API_WRITE_TOKEN,
   apiVersion: "2026-01-07",
 });
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // --- Rate limiting (in-memory, per IP) ---
 const rateLimitMap = new Map();
@@ -28,12 +31,20 @@ function isRateLimited(ip) {
 
 // --- Field rules ---
 const ALLOWED_SERVICES = ["Construction", "dispute", "litigation", "other"];
+const ALLOWED_SOURCES = [
+  "Google Search",
+  "Referral",
+  "Social Media",
+  "Website",
+  "Other",
+];
 
 const FIELD_LIMITS = {
   name: { min: 2, max: 100 },
   email: { min: 5, max: 254 },
   phone: { min: 0, max: 20 },
   service: { min: 0, max: 50 },
+  source: { min: 0, max: 100 },
   message: { min: 10, max: 2000 },
 };
 
@@ -64,6 +75,81 @@ async function verifyRecaptcha(token) {
   const data = await res.json();
   // score >= 0.5 is a human, lower scores are likely bots
   return data.success && data.score >= 0.5;
+}
+
+function generateEmailHTML(formData) {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9; border-radius: 8px; }
+          .header { background: linear-gradient(135deg, #1a365d 0%, #2d5a8c 100%); color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
+          .content { background: white; padding: 20px; }
+          .field { margin-bottom: 15px; }
+          .field-label { font-weight: bold; color: #1a365d; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+          .field-value { color: #555; margin-top: 5px; padding: 10px; background: #f0f0f0; border-radius: 4px; }
+          .message-box { background: #f5f5f5; border-left: 4px solid #1a365d; padding: 15px; margin-top: 20px; border-radius: 4px; }
+          .footer { background: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #666; border-radius: 0 0 8px 8px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>New Contact Form Submission</h1>
+          </div>
+          <div class="content">
+            <div class="field">
+              <div class="field-label">Name</div>
+              <div class="field-value">${formData.name}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Email</div>
+              <div class="field-value"><a href="mailto:${formData.email}">${formData.email}</a></div>
+            </div>
+            ${
+              formData.phone
+                ? `
+            <div class="field">
+              <div class="field-label">Phone</div>
+              <div class="field-value"><a href="tel:${formData.phone}">${formData.phone}</a></div>
+            </div>
+            `
+                : ""
+            }
+            ${
+              formData.service
+                ? `
+            <div class="field">
+              <div class="field-label">Service Type</div>
+              <div class="field-value">${formData.service}</div>
+            </div>
+            `
+                : ""
+            }
+            ${
+              formData.source
+                ? `
+            <div class="field">
+              <div class="field-label">How Did You Hear About Us?</div>
+              <div class="field-value">${formData.source}</div>
+            </div>
+            `
+                : ""
+            }
+            <div class="message-box">
+              <div class="field-label" style="margin-bottom: 10px;">Message</div>
+              <div style="color: #555; white-space: pre-wrap; word-wrap: break-word;">${formData.message}</div>
+            </div>
+          </div>
+          <div class="footer">
+            <p>Submitted on ${new Date().toLocaleString()}</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
 }
 
 export async function POST(request) {
@@ -104,13 +190,14 @@ export async function POST(request) {
     );
   }
 
-  const { name, email, phone = "", service = "", message } = body;
+  const { name, email, phone = "", service = "", source = "", message } = body;
 
   const clean = {
     name: sanitize(name),
     email: sanitize(email),
     phone: sanitize(phone),
     service: sanitize(service),
+    source: sanitize(source),
     message: sanitize(message),
   };
 
@@ -145,28 +232,52 @@ export async function POST(request) {
     );
   }
 
+  if (clean.source && !ALLOWED_SOURCES.includes(clean.source)) {
+    return NextResponse.json(
+      { message: "Invalid source selection." },
+      { status: 400 },
+    );
+  }
+
   // Honeypot check
   if (body._hp && body._hp !== "") {
     return NextResponse.json({ message: "Success" }, { status: 200 });
   }
 
   try {
-    const result = await client.create({
+    // Save to Sanity
+    const sanityResult = await client.create({
       _type: "contact",
       name: clean.name,
       email: clean.email,
       phone: clean.phone,
       service: clean.service,
+      source: clean.source,
       message: clean.message,
       submittedAt: new Date().toISOString(),
     });
 
+    // Send email via Resend
+    const emailHTML = generateEmailHTML(clean);
+    const emailResult = await resend.emails.send({
+      from: clean.email, // Reply-to will be the sender's email
+      to: "ezeaniandrew8197@gmail.com",
+      replyTo: clean.email,
+      subject: `New Contact Form Submission from ${clean.name}`,
+      html: emailHTML,
+    });
+
+    // Log email send result (but don't fail the submission if email fails)
+    if (emailResult.error) {
+      console.error("Email send error:", emailResult.error);
+    }
+
     return NextResponse.json(
-      { message: "Success", id: result._id },
+      { message: "Success", id: sanityResult._id },
       { status: 200 },
     );
   } catch (error) {
-    console.error("Sanity write error:", error);
+    console.error("Submission error:", error);
     return NextResponse.json(
       { message: "Submission failed. Please try again." },
       { status: 500 },
