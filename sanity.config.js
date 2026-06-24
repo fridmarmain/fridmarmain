@@ -5,6 +5,7 @@ import { schemaTypes } from "./src/sanity/schemaTypes"; // Updated path to your 
 import { iconPicker } from "sanity-plugin-icon-picker";
 import { structure } from "./src/sanity/deskStructure"; // Updated path
 import { muxInput } from "sanity-plugin-mux-input";
+import { vercelDeployTool } from "sanity-plugin-vercel-deploy";
 
 export default defineConfig({
   name: "default",
@@ -17,6 +18,7 @@ export default defineConfig({
   basePath: "/admin",
 
   plugins: [
+    vercelDeployTool(),
     structureTool({
       structure: structure,
     }),

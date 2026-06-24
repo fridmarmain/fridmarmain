@@ -125,9 +125,7 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link href="/resources/category/measure-twice">
-                Measure Twice
-              </Link>
+              <Link href="/resources/category/youtube">Measure Twice</Link>
             </li>
           </ul>
         </div>
