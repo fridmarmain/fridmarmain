@@ -5,7 +5,7 @@ import { Resend } from "resend";
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  useCdn: false,
+  useCdn: process.env.NODE_ENV === "production",
   token: process.env.SANITY_API_WRITE_TOKEN,
   apiVersion: "2026-01-07",
 });
