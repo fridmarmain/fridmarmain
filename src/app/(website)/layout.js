@@ -273,6 +273,20 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
+        {/* Calendly Link Click Tracking */}
+        <Script id="calendly-click-tracking" strategy="lazyOnload">
+          {`
+            document.addEventListener('click', function(e) {
+              var link = e.target.closest('a');
+              if (link && link.href && link.href.includes('calendly.com')) {
+                gtag('event', 'qualify_lead', {
+                  'event_category': 'booking',
+                  'event_label': 'calendly_click'
+                });
+              }
+            });
+          `}
+        </Script>
         {/* Structured Data / JSON-LD */}
         <Script
           id="schema-org"
