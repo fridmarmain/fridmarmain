@@ -398,8 +398,7 @@ export async function getSettings() {
 }
 
 export async function getTeamMembers(limit = 100) {
-  // Use [0...limit] for slicing
-  const query = `*[_type == "team"] | order(name asc) [0...$limit] {
+  const query = `*[_type == "team"] | order(name asc) {
     name,
     role,
     "slug": slug.current,
@@ -414,7 +413,8 @@ export async function getTeamMembers(limit = 100) {
     tiktokVideo
   }`;
 
-  return await client.fetch(query, { limit });
+  const results = await client.fetch(query);
+  return results.slice(0, limit);
 }
 export async function getReviews(limit = null) {
   const range = limit ? `[0...${limit}]` : "";

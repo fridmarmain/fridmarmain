@@ -3,6 +3,7 @@ import Trust from "@/components/Trust";
 import ContactSection from "@/components/ContactSection";
 import Blog from "@/components/Blog.jsx";
 import CTA from "@/components/CTA";
+
 import {
   getPostForHome,
   getMainPractices,
@@ -26,6 +27,7 @@ import TeamGrid from "@/components/TeamGrid";
 import ReviewGrid from "@/components/ReviewGrid";
 import ResourceGrid from "@/components/ResourceGrid";
 
+export const revalidate = 60; // revalidate this page every 60 seconds
 export default async function HomePage() {
   const posts = await getPostForHome();
   const practices = await getMainPractices();
