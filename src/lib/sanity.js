@@ -138,6 +138,18 @@ export async function getPostForHome() {
   return formatPicks;
 }
 
+// export async function getTermsOfUse() {
+//   const query = `*[_type == "termsOfUse"][0] {
+//     title,
+//     lastUpdated,
+//     sections[] {
+//       heading,
+//       body
+//     }
+//   }`;
+//   return await client.fetch(query);
+// }
+
 export async function getTermsOfUse() {
   const query = `*[_type == "termsOfUse"][0] {
     title,
@@ -147,7 +159,14 @@ export async function getTermsOfUse() {
       body
     }
   }`;
-  return await client.fetch(query);
+
+  return await client.fetch(
+    query,
+    {}, // empty params
+    {
+      next: { tags: ["termsOfUse"] }, // Tag this specific query
+    },
+  );
 }
 
 export async function getPaginatedPosts(
@@ -388,13 +407,75 @@ export async function getAboutSection() {
   const query = `*[_type == "aboutComponent"][0]{
     subtitle,
     title,
-    bio
+    bio,
+    image1,
+    image2
   }`;
   return await client.fetch(query);
 }
 
 export async function getSettings() {
   return await client.fetch(`*[_type == "siteSettings"][0]`);
+}
+
+// export async function getSiteSettings() {
+//   const query = `*[_type == "siteSettings"][0]{
+//     calendlyUrl,
+//     footerTagline,
+//     footerBackgroundText,
+//     socialLinks {
+//       linkedin,
+//       tiktok,
+//       instagram,
+//       facebook,
+//       youtube
+//     },
+//     footerColumns[] {
+//       columnHeading,
+//       links[] { label, path }
+//     },
+//     navbarItems[] {
+//       _type,
+//       label,
+//       path,
+//       links[] { label, path }
+//     }
+//   }`;
+//   return await client.fetch(query, {}, { next: { revalidate: 60 } });
+// }
+
+export async function getSiteSettings() {
+  const query = `*[_type == "siteSettings"][0]{
+    calendlyUrl,
+    footerTagline,
+    footerBackgroundText,
+    socialLinks {
+      linkedin,
+      tiktok,
+      instagram,
+      facebook,
+      youtube
+    },
+    footerColumns[] {
+      columnHeading,
+      links[] { label, path }
+    },
+    // ======= NAVBAR & EXTRA LINKS CONFIG =======
+    bookingLabel,
+    bookingUrl,
+    resourcesLabel,
+    resourcesPath,
+    customResourcesLinks[] { label, path },
+    reviewsLabel,
+    reviewsPath,
+    extraLinks[] { 
+      _type, 
+      label, 
+      path, 
+      links[] { label, path } 
+    }
+  }`;
+  return await client.fetch(query, {}, { next: { revalidate: 60 } });
 }
 
 export async function getTeamMembers(limit = 100) {
@@ -488,6 +569,7 @@ export const GET_REGIONS_QUERY = `*[_type == "region"] | order(_createdAt asc) {
     cities
   }
 }`;
+
 // Query for the individual city page
 // It looks for a custom cityPage first, then finds the region info as a fallback
 export const GET_CITY_PAGE_QUERY = `
@@ -499,3 +581,222 @@ export const GET_CITY_PAGE_QUERY = `
     }
   }
 `;
+
+// export async function getPageBySlug(slug) {
+//   const query = `*[_type == "page" && slug.current == $slug][0]{
+//     title,
+//     pageBuilder[] {
+//       _type,
+//       _type == "heroSection" => {
+//         heading,
+//         subheading,
+//         backgroundImage,
+//         infoLinks[] {
+//           title,
+//           url,
+//           icon,
+//           isActive
+//         }
+//       },
+//       _type == "ctaSection" => {
+//         heading,
+//         buttonText,
+//         buttonLink
+//       },
+//       _type == "practiceSection" => {
+//         displayLevel,
+//         header {
+//           sideHeader,
+//           mainHeader,
+//           subHeader,
+//           description
+//         }
+//       },
+//       _type == "teamSection" => {
+//         layoutType,
+//         header {
+//           sideHeader,
+//           mainHeader,
+//           subHeader,
+//           description
+//         },
+//         "members": members[]-> {
+//           name,
+//           "slug": slug.current,
+//           role,
+//           image,
+//           phone,
+//           email
+//         }
+//       },
+//       _type == "blogSection" => {
+//         postsCount,
+//         header {
+//           sideHeader,
+//           mainHeader,
+//           subHeader,
+//           description
+//         }
+//       },
+//       _type == "reviewSection" => {
+//         showLoadMore,
+//         header {
+//           sideHeader,
+//           mainHeader,
+//           subHeader,
+//           description
+//         }
+//       },
+//       // ======= NEW ABOUT PAGE ARCHITECTURE CONDITIONS =======
+//       _type == "aboutComponent" => {
+//         bio,
+//         image1,
+//         image2
+//       },
+//       _type == "ceoSection" => {
+//         subtitle,
+//         quoteText,
+//         description,
+//         portraitImage,
+//         ctaLabel,
+//         ctaUrl
+//       },
+//       _type == "visionMissionSection" => {
+//         cards[] {
+//           cardId,
+//           label,
+//           subtitle,
+//           text,
+//           wide
+//         }
+//       }
+//     }
+//   }`;
+
+//   return await client.fetch(query, { slug }, { next: { revalidate: 10 } });
+// }
+
+export async function getPageBySlug(slug) {
+  const query = `*[_type == "page" && slug.current == $slug][0]{
+    title,
+    pageBuilder[] {
+      _type,
+      _type == "heroSection" => {
+        heading,
+        subheading,
+        backgroundImage,
+        infoLinks[] {
+          title,
+          url,
+          icon,
+          isActive
+        }
+      },
+      _type == "ctaSection" => {
+        heading,
+        buttonText,
+        buttonLink
+      },
+      _type == "practiceSection" => {
+        displayLevel,
+        header {
+          sideHeader,
+          mainHeader,
+          subHeader,
+          description
+        }
+      },
+      _type == "teamSection" => {
+        layoutType,
+        header {
+          sideHeader,
+          mainHeader,
+          subHeader,
+          description
+        },
+        "members": members[]-> {
+          name,
+          "slug": slug.current,
+          role,
+          image,
+          phone,
+          email
+        }
+      },
+      _type == "blogSection" => {
+        postsCount,
+        header {
+          sideHeader,
+          mainHeader,
+          subHeader,
+          description
+        }
+      },
+      _type == "reviewSection" => {
+        showLoadMore,
+        header {
+          sideHeader,
+          mainHeader,
+          subHeader,
+          description
+        }
+      },
+      // ======= UPDATED INLINE BLOCK SECTIONS =======
+      _type == "aboutComponent" => {
+        title,
+        subtitle,
+        bio,
+        image1,
+        image2,
+        visionMissionCards[] {
+          cardId,
+          label,
+          subtitle,
+          text,
+          wide
+        }
+      },
+      _type == "ceoSection" => {
+        subtitle,
+        quoteText,
+        description,
+        portraitImage,
+        ctaLabel,
+        ctaUrl
+      },
+      _type == "contactSection" => {
+        heading,
+        subheading,
+        formHeading,     
+  formSubheading,
+        officeImage,
+        locationAddress,
+        phone,
+        fax,
+        email,
+        hoursWeekdays,
+        formImage
+      }
+    }
+  }`;
+
+  return await client.fetch(query, { slug }, { next: { revalidate: 10 } });
+}
+
+export async function getGlobalContactInfo() {
+  const query = `*[_type == "contactSection"][0]{
+    heading,
+  subheading,
+  formHeading,      
+  formSubheading,
+    officeImage,
+    locationAddress,
+    phone,
+    fax,
+    email,
+    hoursWeekdays,
+    formImage
+  }`;
+
+  return await client.fetch(query, {}, { next: { revalidate: 10 } });
+}
