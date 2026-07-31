@@ -3,41 +3,39 @@ import { motion } from "framer-motion";
 import * as Icon from "lucide-react";
 import { useState, useCallback } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { urlFor } from "@/lib/sanity";
 import "../styles/ContactSection.css";
 
-const ALLOWED_SERVICES = ["", "Construction", "dispute", "litigation", "other"];
-const ALLOWED_SOURCES = [
-  "",
-  "Google Search",
-  "Referral",
-  "Social Media",
-  "Website",
-  "Other",
-];
-
-const validate = (formData) => {
+// We move validate inside the component file, but pass dynamic allowed lists to it
+const validate = (formData, allowedServices, allowedSources) => {
   const errors = {};
   if (!formData.name.trim() || formData.name.trim().length < 2)
     errors.name = "Name must be at least 2 characters.";
   if (formData.name.length > 100) errors.name = "Name is too long.";
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(formData.email))
     errors.email = "Please enter a valid email address.";
+
   const phoneRegex = /^[\d\s\-+().]{7,20}$/;
   if (formData.phone && !phoneRegex.test(formData.phone))
     errors.phone = "Please enter a valid phone number.";
-  if (formData.service && !ALLOWED_SERVICES.includes(formData.service))
+
+  if (formData.service && !allowedServices.includes(formData.service))
     errors.service = "Invalid service selection.";
-  if (formData.source && !ALLOWED_SOURCES.includes(formData.source))
+
+  if (formData.source && !allowedSources.includes(formData.source))
     errors.source = "Invalid source selection.";
+
   if (!formData.message.trim() || formData.message.trim().length < 10)
     errors.message = "Message must be at least 10 characters.";
   if (formData.message.length > 2000)
     errors.message = "Message is too long (max 2000 characters).";
+
   return errors;
 };
 
-const ContactSection = () => {
+const ContactSection = ({ sectionData }) => {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const [formData, setFormData] = useState({
     name: "",
@@ -50,6 +48,46 @@ const ContactSection = () => {
   });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle");
+
+  // Custom visual configuration map fallbacks
+  const headingRaw = sectionData?.heading || "Get In *Touch*";
+  const subheading =
+    sectionData?.subheading ||
+    "The Fridmar Professional Corporation is happy to welcome its clients to its new office. For legal advice tailored to your circumstances and business, please contact us through the information below:";
+  const displayAddress =
+    sectionData?.locationAddress ||
+    "242 Applewood Crescent, Unit 5-Ground\nConcord, ON L4K 4E5";
+  const displayPhone = sectionData?.phone || "(647) 363-6704";
+  const displayFax = sectionData?.fax || "(289) 807-0204";
+  const formHeadingRaw = sectionData?.formHeading || "Get In *Touch*";
+  const formSubheading =
+    sectionData?.formSubheading ||
+    "Fill out the form below to schedule a confidential initial consultation.";
+  const displayEmail = sectionData?.email || "info@fridmar.com";
+  const weekdayHours =
+    sectionData?.hoursWeekdays || "Weekdays: 9:00 AM – 5:00 PM";
+
+  const officeImgUrl = sectionData?.officeImage
+    ? urlFor(sectionData.officeImage).url()
+    : "/about/fridmaroffice.webp";
+  const formImgUrl = sectionData?.formImage
+    ? urlFor(sectionData.formImage).url()
+    : "./about/aboutx.jpg";
+
+  // Dynamic dropdown arrays mapping
+  const servicesList = sectionData?.servicesOptions || [
+    "Construction",
+    "dispute",
+    "litigation",
+    "other",
+  ];
+  const sourcesList = sectionData?.sourcesOptions || [
+    "Google Search",
+    "Referral",
+    "Social Media",
+    "Website",
+    "Other",
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,8 +107,10 @@ const ContactSection = () => {
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
+      if (formData._hp) return; // Silent discard bots
 
-      const validationErrors = validate(formData);
+      // Pass the dynamic arrays to the validator to ensure it doesn't block valid CMS additions
+      const validationErrors = validate(formData, servicesList, sourcesList);
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
         return;
@@ -78,7 +118,6 @@ const ContactSection = () => {
 
       setStatus("loading");
 
-      // Wait up to 3s for reCAPTCHA to become ready
       let recaptchaToken = null;
       for (let attempt = 0; attempt < 6; attempt++) {
         if (executeRecaptcha) {
@@ -86,7 +125,7 @@ const ContactSection = () => {
             recaptchaToken = await executeRecaptcha("contact_form");
             break;
           } catch {
-            // token generation failed — retry
+            // token failed -> retry
           }
         }
         await new Promise((res) => setTimeout(res, 500));
@@ -134,7 +173,7 @@ const ContactSection = () => {
         setTimeout(() => setStatus("idle"), 4000);
       }
     },
-    [formData, executeRecaptcha],
+    [formData, executeRecaptcha, servicesList, sourcesList],
   );
 
   return (
@@ -147,15 +186,22 @@ const ContactSection = () => {
         viewport={{ once: true, amount: 0.2 }}
       >
         <div className="contactHeader">
-          <h2>Your Legal Strategy Starts Here</h2>
-          <p>
-            The Fridmar Professional Corporation is happy to welcome its clients
-            to its new office. For legal advice tailored to your circumstances
-            and business, please contact us through the information below:
-          </p>
+          {/* Dynamic asterisk splitting for highlighted text */}
+          <h2>
+            {headingRaw.split("*").map((text, idx) =>
+              idx % 2 === 1 ? (
+                <span key={idx} className="highlight">
+                  {text}
+                </span>
+              ) : (
+                text
+              ),
+            )}
+          </h2>
+          <p>{subheading}</p>
         </div>
 
-        <img className="offficeImg" src="/about/fridmaroffice.webp" />
+        <img className="offficeImg" src={officeImgUrl} alt="Office space" />
 
         <div className="office-info-grid">
           <div className="office-info-card">
@@ -164,10 +210,11 @@ const ContactSection = () => {
             </div>
             <div>
               <span className="office-info-label">Location</span>
-              <p className="office-info-value">
-                242 Applewood Crescent, Unit 5-Ground
-                <br />
-                Concord, ON L4K 4E5
+              <p
+                className="office-info-value"
+                style={{ whiteSpace: "pre-line" }}
+              >
+                {displayAddress}
               </p>
             </div>
           </div>
@@ -178,17 +225,19 @@ const ContactSection = () => {
             <div>
               <span className="office-info-label">Contact</span>
               <a
-                href="tel:6473636704"
+                href={`tel:${displayPhone.replace(/\D/g, "")}`}
                 className="office-info-value office-info-link"
               >
-                Phone: (647) 363-6704
+                Phone: {displayPhone}
               </a>
-              <p className="office-info-value">Fax: (289) 807-0204</p>
+              {displayFax && (
+                <p className="office-info-value">Fax: {displayFax}</p>
+              )}
               <a
-                href="mailto:info@fridmar.com"
+                href={`mailto:${displayEmail}`}
                 className="office-info-value office-info-link"
               >
-                Mail: info@fridmar.com
+                Mail: {displayEmail}
               </a>
             </div>
           </div>
@@ -198,7 +247,7 @@ const ContactSection = () => {
             </div>
             <div>
               <span className="office-info-label">Office Hours</span>
-              <p className="office-info-value">Weekdays: 9:00 AM – 5:00 PM</p>
+              <p className="office-info-value">{weekdayHours}</p>
               <p className="office-info-value">Saturday: Closed</p>
               <p className="office-info-value">Sunday: Closed</p>
             </div>
@@ -215,8 +264,8 @@ const ContactSection = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <img
-            src="./about/aboutx.jpg"
-            alt="Dan Fridmar"
+            src={formImgUrl}
+            alt="Contact representative"
             className="contact-image"
           />
         </motion.div>
@@ -229,13 +278,17 @@ const ContactSection = () => {
           viewport={{ once: true, amount: 0.3 }}
         >
           <h2 className="contact-title">
-            Get In <span className="highlight">Touch</span>
+            {formHeadingRaw.split("*").map((text, idx) =>
+              idx % 2 === 1 ? (
+                <span key={idx} className="highlight">
+                  {text}
+                </span>
+              ) : (
+                text
+              ),
+            )}
           </h2>
-          <p className="margBottom">
-            Fill out the form below to schedule a confidential initial
-            consultation.
-          </p>
-
+          <p className="margBottom">{formSubheading}</p>
           {errors.server && (
             <p style={{ color: "red", marginBottom: "1rem" }}>
               {errors.server}
@@ -258,7 +311,7 @@ const ContactSection = () => {
                 <motion.input
                   type="text"
                   name="name"
-                  placeholder="Your Name"
+                  placeholder={sectionData?.namePlaceholder || "Your Name"}
                   value={formData.name}
                   onChange={handleChange}
                   className={`form-input ${errors.name ? "input-error" : ""}`}
@@ -275,7 +328,7 @@ const ContactSection = () => {
                 <motion.input
                   type="email"
                   name="email"
-                  placeholder="Your Email"
+                  placeholder={sectionData?.emailPlaceholder || "Your Email"}
                   value={formData.email}
                   onChange={handleChange}
                   className={`form-input ${errors.email ? "input-error" : ""}`}
@@ -292,7 +345,9 @@ const ContactSection = () => {
                 <motion.input
                   type="tel"
                   name="phone"
-                  placeholder="Your Phone Number"
+                  placeholder={
+                    sectionData?.phonePlaceholder || "Your Phone Number"
+                  }
                   value={formData.phone}
                   onChange={handleChange}
                   className={`form-input ${errors.phone ? "input-error" : ""}`}
@@ -317,16 +372,18 @@ const ContactSection = () => {
                   viewport={{ once: true }}
                 >
                   <option value="">Type of service</option>
-                  <option value="Construction">Construction</option>
-                  <option value="dispute">Dispute</option>
-                  <option value="litigation">Litigation</option>
-                  <option value="other">Other</option>
+                  {servicesList.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
                 </motion.select>
                 {errors.service && (
                   <span className="error-text">{errors.service}</span>
                 )}
               </div>
             </div>
+
             <div>
               <motion.select
                 name="source"
@@ -340,20 +397,21 @@ const ContactSection = () => {
                 viewport={{ once: true }}
               >
                 <option value="">How did you hear about us?</option>
-                <option value="Google Search">Google Search</option>
-                <option value="Referral">Referral</option>
-                <option value="Social Media">Social Media</option>
-                <option value="Website">Website</option>
-                <option value="Other">Other</option>
+                {sourcesList.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
               </motion.select>
               {errors.source && (
                 <span className="error-text">{errors.source}</span>
               )}
             </div>
+
             <div>
               <motion.textarea
                 name="message"
-                placeholder="Message"
+                placeholder={sectionData?.messagePlaceholder || "Message"}
                 value={formData.message}
                 onChange={handleChange}
                 className={`form-textarea ${errors.message ? "input-error" : ""}`}
@@ -388,10 +446,10 @@ const ContactSection = () => {
                 {status === "loading"
                   ? "Sending..."
                   : status === "success"
-                    ? "Message Sent!"
+                    ? sectionData?.submitButtonSuccessText || "Message Sent!"
                     : status === "error"
                       ? "Try Again"
-                      : "Send Message"}
+                      : sectionData?.submitButtonText || "Send Message"}
               </div>
               <div className="iconBall">
                 {status === "loading" ? (

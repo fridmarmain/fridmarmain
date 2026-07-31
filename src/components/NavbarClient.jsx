@@ -8,12 +8,17 @@ import Link from "next/link";
 
 /**
  * 1. NAV LINKS COMPONENT
- * Handles recursive dropdowns for "Children of Children"
+ * Handles multi-level dropdown menus exactly as designed, using Sanity settings text/links with fallback options.
  */
-const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
-  // Track open states for multiple levels
-  const [openSubMenu, setOpenSubMenu] = useState(null); // Level 1 (Umbrellas)
-  const [openInnerMenu, setOpenInnerMenu] = useState(null); // Level 2 (Categories)
+const NavLinks = ({
+  isMobile = false,
+  practices,
+  categories,
+  settings,
+  closeMenu,
+}) => {
+  const [openSubMenu, setOpenSubMenu] = useState(null);
+  const [openInnerMenu, setOpenInnerMenu] = useState(null);
 
   const toggleLevel1 = (slug) =>
     setOpenSubMenu(openSubMenu === slug ? null : slug);
@@ -24,8 +29,15 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
     if (isMobile) closeMenu();
   };
 
+  // Editable settings targets with your exact original defaults
+  const resourcesLabel = settings?.resourcesLabel || "Resources";
+  const resourcesPath = settings?.resourcesPath || "/resources";
+  const reviewsLabel = settings?.reviewsLabel || "Reviews";
+  const reviewsPath = settings?.reviewsPath || "/reviews";
+
   return (
     <>
+      {/* PRACTICE AREAS RENDER MATRIX */}
       {practices?.map((umbrella) => {
         const hasCategories = umbrella.categories?.length > 0;
         const isL1Open = openSubMenu === umbrella.slug;
@@ -53,8 +65,7 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
               )}
             </div>
 
-            {/* --- LEVEL 2 (Categories) --- */}
-
+            {/* LEVEL 2 (Categories) */}
             {hasContent && (
               <div
                 className={`${isMobile ? "mobile-accordion" : "mega-menu-content"} ${isL1Open ? "open" : ""}`}
@@ -92,7 +103,7 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
                           )}
                         </div>
 
-                        {/* --- LEVEL 3 (Services) --- */}
+                        {/* LEVEL 3 (Services) */}
                         <div
                           className={`${isMobile ? "mobile-accordion nested" : "services-list"} ${isL2Open || !isMobile ? "open" : ""}`}
                         >
@@ -117,17 +128,17 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
         );
       })}
 
-      {/* RESOURCES SECTION */}
+      {/* RESOURCES MENU DROPDOWN SECTION */}
       <div
         className={`nav-item-wrapper ${isMobile ? "mobile-item-container" : "dropdown"}`}
       >
         <div className="nav-link-flex">
           <Link
-            href="/resources"
+            href={resourcesPath}
             className="nav-link"
             onClick={handleLinkClick}
           >
-            Resources
+            {resourcesLabel}
           </Link>
           <Icon.ChevronDown
             size={18}
@@ -138,26 +149,50 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
         <div
           className={`${isMobile ? "mobile-accordion" : "dropdown-content"} ${openSubMenu === "resources" ? "open" : ""}`}
         >
-          {categories?.map((cat, index) => (
-            <Link
-              key={cat.slug || index}
-              href={`/resources/category/${cat.slug}`}
-              className="sub-link"
-              onClick={handleLinkClick}
-            >
-              {cat.title}
-            </Link>
-          ))}
+          {settings?.customResourcesLinks?.length > 0
+            ? settings.customResourcesLinks.map((link, idx) => (
+                <Link
+                  key={idx}
+                  href={link.path}
+                  className="sub-link"
+                  onClick={handleLinkClick}
+                >
+                  {link.label}
+                </Link>
+              ))
+            : categories?.map((cat, index) => (
+                <Link
+                  key={cat.slug || index}
+                  href={`/resources/category/${cat.slug}`}
+                  className="sub-link"
+                  onClick={handleLinkClick}
+                >
+                  {cat.title}
+                </Link>
+              ))}
         </div>
       </div>
 
+      {/* REVIEWS BASE SECTION */}
       <Link
-        href="/reviews"
+        href={reviewsPath}
         className={isMobile ? "mobile-item-link" : "nav-link"}
         onClick={handleLinkClick}
       >
-        Reviews
+        {reviewsLabel}
       </Link>
+
+      {/* EXTRA SANITY LINKS INTERFACE */}
+      {settings?.extraLinks?.map((link, idx) => (
+        <Link
+          key={idx}
+          href={link.path}
+          className={isMobile ? "mobile-item-link" : "nav-link"}
+          onClick={handleLinkClick}
+        >
+          {link.label}
+        </Link>
+      ))}
     </>
   );
 };
@@ -165,7 +200,7 @@ const NavLinks = ({ isMobile = false, practices, categories, closeMenu }) => {
 /**
  * 2. MAIN NAVBAR CLIENT
  */
-const NavbarClient = ({ categories, practices }) => {
+const NavbarClient = ({ categories, practices, settings }) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [prevPathname, setPrevPathname] = useState(pathname);
@@ -178,7 +213,6 @@ const NavbarClient = ({ categories, practices }) => {
     pathname.startsWith("/practice")
   );
 
-  // Close menu on route change (Backup for internal navigation)
   if (pathname !== prevPathname) {
     setIsOpen(false);
     setPrevPathname(pathname);
@@ -202,6 +236,10 @@ const NavbarClient = ({ categories, practices }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScroll]);
 
+  const bookingUrl =
+    settings?.bookingUrl || "https://calendly.com/fridmar/meet-with-mey";
+  const bookingLabel = settings?.bookingLabel || "Book a call";
+
   return (
     <>
       <nav
@@ -216,19 +254,20 @@ const NavbarClient = ({ categories, practices }) => {
             <NavLinks
               practices={practices}
               categories={categories}
+              settings={settings}
               isMobile={false}
             />
           </div>
 
           <div className="flexCont">
             <Link
-              href="https://calendly.com/fridmar/meet-with-mey"
-              type="submit"
+              href={bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               style={{ display: "inline-flex" }}
               className="secondaryBtn"
-              onClick={() => goToStep("PERSONAL_DETAILS")}
             >
-              <div> Book a call</div>
+              <div>{bookingLabel}</div>
               <div className="iconBall">
                 <Icon.ArrowUpRight />
               </div>
@@ -253,6 +292,7 @@ const NavbarClient = ({ categories, practices }) => {
             isMobile={true}
             practices={practices}
             categories={categories}
+            settings={settings}
             closeMenu={() => setIsOpen(false)}
           />
         </div>

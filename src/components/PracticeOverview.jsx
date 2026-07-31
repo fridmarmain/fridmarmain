@@ -1,41 +1,50 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import * as LucideIcons from "lucide-react"; // Import all as LucideIcons
-import { urlFor } from "@/lib/sanity";
+import * as LucideIcons from "lucide-react";
 import "../styles/practice.css";
 
-const PracticeOverview = ({ practices }) => {
+const PracticeOverview = ({ sectionData, practices }) => {
+  // Extract custom text entries or fallback seamlessly to original configurations
+  const sideHeader = sectionData?.header?.sideHeader || "Our Services";
+  const mainHeader = sectionData?.header?.mainHeader || "Expertise";
+  const subHeader = sectionData?.header?.subHeader || "Practice Areas";
+  const description =
+    sectionData?.header?.description ||
+    "Our team of lawyers are dedicated to offering comprehensive legal solutions across multiple practice areas.";
+
+  // Filter out the practices based on user configurations selected inside Sanity
+  const filterLevel = sectionData?.displayLevel || "umbrella";
+  const filteredPractices =
+    practices?.filter((area) => {
+      if (filterLevel === "all") return true;
+      return area.level === filterLevel;
+    }) || [];
+
   return (
-    <section className=" container practiceCont">
-      <div className="">
+    <section className="container practiceCont">
+      <div>
         <div className="SideHeader">
-          <h3 className=" ">Our Services</h3>
+          <h3>{sideHeader}</h3>
         </div>
         <div className="sectionHeader">
           <div className="sectionHeaderRight">
-            <h2 className="mainHeader">Expertise</h2>
-            <h3 className=" ">Practice Areas</h3>
+            <h2 className="mainHeader">{mainHeader}</h2>
+            <h3>{subHeader}</h3>
           </div>
 
           <div className="sectionHeaderleft">
-            <p>
-              Our team of lawyers are dedicated to offering comprehensive legal
-              solutions across multiple practice areas.
-            </p>
+            <p>{description}</p>
           </div>
         </div>
 
         <div className="practiceAreaCont">
-          {practices?.map((area, index) => {
+          {filteredPractices.map((area, index) => {
             const rawName = area.icon?.name || "";
             const cleanName = rawName.replace(/^Lucide/, "");
-
-            // 2. Custom SVG check
             const isCustom = area.iconType === "custom" && area.customSvg;
-
-            // 3. Find icon
             const LucideIcon = LucideIcons[cleanName] || LucideIcons.Scale;
+
             return (
               <motion.div
                 key={area.slug?.current || index}
@@ -49,18 +58,9 @@ const PracticeOverview = ({ practices }) => {
                   className="LinkFloat"
                   href={`/practice/${area.slug?.current || area.slug}`}
                 />
-                {/* Background Image with Overlay */}
-                {/* {area.mainImage && (
-                  <img
-                    src={urlFor(area.mainImage).url()}
-                    alt={area.title}
-                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700 opacity-20 group-hover:opacity-40"
-                  />
-                )} */}
 
-                <div className=" InnerPractice">
-                  {/* ICON RENDERING */}
-                  <div className=" ">
+                <div className="InnerPractice">
+                  <div>
                     {isCustom ? (
                       <div
                         className="svgIcon"

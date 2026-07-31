@@ -10,6 +10,7 @@ import Link from "next/link";
 const INITIAL_COUNT = 6;
 const LOAD_MORE_COUNT = 6;
 
+// Keep your ReviewCard component implementation exactly as it is...
 const ReviewCard = ({ review, index }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMuxPlaying, setIsMuxPlaying] = useState(false);
@@ -103,9 +104,7 @@ const ReviewCard = ({ review, index }) => {
       >
         {review.reviewType === "video" && (
           <div className="video-section">
-            <div
-              className={`video-stack-container ${review.videoSource === "upload" ? "upload-variant" : "url-variant"}`}
-            >
+            <div className="video-stack-container">
               <div
                 className={`mux-player-wrapper ${isMuxPlaying ? "visible" : "hidden"}`}
               >
@@ -121,7 +120,6 @@ const ReviewCard = ({ review, index }) => {
                   />
                 )}
               </div>
-
               <div
                 className={`video-facade ${isMuxPlaying ? "fade-out" : ""}`}
                 onClick={handlePlayAction}
@@ -209,23 +207,36 @@ const ReviewCard = ({ review, index }) => {
   );
 };
 
-export default function ReviewGrid({ reviews }) {
+// Main Export Component updated to parse configuration props safely
+export default function ReviewGrid({ sectionData, reviews }) {
+  const allowLoadMore = sectionData?.showLoadMore ?? false;
   const [visibleCount, setVisibleCount] = useState(INITIAL_COUNT);
 
-  if (!reviews) return null;
+  if (!reviews || reviews.length === 0) return null;
 
-  const visibleReviews = reviews.slice(0, visibleCount);
-  const hasMore = visibleCount < reviews.length;
+  // Render limits are only imposed if "Load More" interface behavior is explicitly enabled
+  const visibleReviews = allowLoadMore
+    ? reviews.slice(0, visibleCount)
+    : reviews;
+  const hasMore = allowLoadMore && visibleCount < reviews.length;
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + LOAD_MORE_COUNT);
   };
 
+  // Gracefully fallback to clean default headers if not filled out in Sanity
+  const sideHeader = sectionData?.header?.sideHeader || "What Our Clients Say";
+  const mainHeader = sectionData?.header?.mainHeader || "Reviews";
+  const subHeader = sectionData?.header?.subHeader || "Client Trust";
+  const description =
+    sectionData?.header?.description ||
+    "Discover how our commitment to excellence has helped clients achieve their legal goals and find peace of mind.";
+
   return (
     <section className="reviews-container">
       <div className="container" style={{ paddingTop: "40px" }}>
         <div className="SideHeader">
-          <h3>What Our Clients Say</h3>
+          <h3>{sideHeader}</h3>
         </div>
         <div className="sectionHeader">
           <div
@@ -237,20 +248,16 @@ export default function ReviewGrid({ reviews }) {
             }}
           >
             <div>
-              <h2 className="mainHeader">Reviews</h2>
-              <h3>Client Trust</h3>
+              <h2 className="mainHeader">{mainHeader}</h2>
+              <h3>{subHeader}</h3>
             </div>
           </div>
 
           <div className="sectionHeaderleft">
-            <p>
-              Discover how our commitment to excellence has helped clients
-              achieve their legal goals and find peace of mind.
-            </p>
+            <p>{description}</p>
 
             <Link
               href="/reviews"
-              type="submit"
               style={{
                 display: "inline-flex",
                 height: "45px",

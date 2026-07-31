@@ -1,10 +1,12 @@
 "use client";
+
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { PortableText } from "@portabletext/react";
 import * as Icon from "lucide-react";
+import { urlFor } from "@/lib/sanity";
 import "../styles/about.css";
 import AboutInner from "./AboutInner";
 
@@ -13,17 +15,25 @@ const AboutSection = ({ data }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -100px 0px" });
   const isAboutPage = pathname === "/about";
+
   if (!data || !data.bio) return null;
 
-  // Custom components for PortableText
+  const img1Url = data?.image1
+    ? urlFor(data.image1).url()
+    : "/about/about1.jpg";
+
+  const img2Url = data?.image2
+    ? urlFor(data.image2).url()
+    : "/about/about2.jpg";
+
   const components = {
     block: {
-      // This logic targets only the VERY FIRST paragraph to highlight words
       normal: ({ children, index }) => {
         if (index === 0 && typeof children[0] === "string") {
           const words = children[0].split(" ");
           const firstFew = words.slice(0, 4).join(" ");
           const rest = words.slice(4).join(" ");
+
           return (
             <p className="about-p">
               <span className="bio-highlight">{firstFew} </span>
@@ -59,9 +69,9 @@ const AboutSection = ({ data }) => {
         >
           <div className="aboutSideText">
             <div className="aboutCeoBio">
-              {/* This replaces the old <p> tag */}
               <PortableText value={data.bio} components={components} />
             </div>
+
             {!isAboutPage && (
               <Link href="/about" className="secondaryBtn">
                 <div>Learn More</div>
@@ -73,11 +83,20 @@ const AboutSection = ({ data }) => {
           </div>
         </motion.div>
       </div>
+
       <div className="dualImgs container">
-        <div className="img1"></div>
-        <div className="img2"></div>
+        <div
+          className="img1"
+          style={{ backgroundImage: `url(${img1Url})` }}
+        ></div>
+        <div
+          className="img2"
+          style={{ backgroundImage: `url(${img2Url})` }}
+        ></div>
       </div>
-      {isAboutPage && <AboutInner />}
+
+      {/* Pass structural fields directly inside the nested layout toggle block */}
+      {isAboutPage && <AboutInner cardsData={data?.visionMissionCards} />}
     </section>
   );
 };

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Providers from "./Providers";
 import Script from "next/script";
+import { getSiteSettings } from "@/lib/sanity"; // Import settings engine
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -94,9 +95,11 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // Fetch Sanity settings variables safely on the server
+  const settings = await getSiteSettings();
+
   const globalSchema = [
-    // Organization
     {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -104,12 +107,14 @@ export default function RootLayout({ children }) {
       url: "https://fridmar.com/",
       logo: "https://fridmar.com/_next/static/media/logo.208b795d.png",
       sameAs: [
-        "https://www.facebook.com/profile.php?id=61575084998241",
-        "https://www.instagram.com/fridmarlaw/",
-        "https://ca.linkedin.com/company/fridmar-professional-corporation",
+        settings?.socialLinks?.facebook ||
+          "https://www.facebook.com/profile.php?id=61575084998241",
+        settings?.socialLinks?.instagram ||
+          "https://www.instagram.com/fridmarlaw/",
+        settings?.socialLinks?.linkedin ||
+          "https://ca.linkedin.com/company/fridmar-professional-corporation",
       ],
     },
-    // WebSite
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -121,7 +126,6 @@ export default function RootLayout({ children }) {
         "query-input": "required name=search_term_string",
       },
     },
-    // LegalService
     {
       "@context": "https://schema.org",
       "@type": "LegalService",
@@ -188,12 +192,14 @@ export default function RootLayout({ children }) {
         ],
       },
       sameAs: [
-        "https://www.facebook.com/profile.php?id=61575084998241",
-        "https://www.instagram.com/fridmarlaw/",
-        "https://ca.linkedin.com/company/fridmar-professional-corporation",
+        settings?.socialLinks?.facebook ||
+          "https://www.facebook.com/profile.php?id=61575084998241",
+        settings?.socialLinks?.instagram ||
+          "https://www.instagram.com/fridmarlaw/",
+        settings?.socialLinks?.linkedin ||
+          "https://ca.linkedin.com/company/fridmar-professional-corporation",
       ],
     },
-    // FAQPage
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -254,12 +260,17 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${bricolage.variable} ${googleSans.variable}`}>
       <body className="antialiased">
         <Providers>
-          <Navbar />
+          {/* Forward the dynamic Calendly URL to the navigation block directly */}
+          {/* Forward the dynamic layout arrays directly to your navigation component block */}
+          <Navbar
+            navbarItems={settings?.navbarItems}
+            calendlyUrl={settings?.calendlyUrl}
+          />
           <main>{children}</main>
-          <Footer />
+          {/* Pass whole settings frame directly down to Footer */}
+          <Footer settings={settings} />
         </Providers>
 
-        {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-9WN725GQPR"
           strategy="afterInteractive"
@@ -273,7 +284,6 @@ export default function RootLayout({ children }) {
           `}
         </Script>
 
-        {/* Calendly Link Click Tracking */}
         <Script id="calendly-click-tracking" strategy="lazyOnload">
           {`
             document.addEventListener('click', function(e) {
@@ -287,7 +297,7 @@ export default function RootLayout({ children }) {
             });
           `}
         </Script>
-        {/* Structured Data / JSON-LD */}
+
         <Script
           id="schema-org"
           type="application/ld+json"

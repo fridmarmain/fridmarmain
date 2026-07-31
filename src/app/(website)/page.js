@@ -1,7 +1,12 @@
 import Hero from "@/components/Hero";
-import Trust from "@/components/Trust";
-import ContactSection from "@/components/ContactSection";
+import Questionnaire from "@/components/Questionnaire";
+import PracticeOverview from "@/components/PracticeOverview";
+import AboutSection from "@/components/AboutSection";
+import TeamGrid from "@/components/TeamGrid";
+import TeamSlider from "@/components/TeamSlider";
+import ReviewGrid from "@/components/ReviewGrid";
 import Blog from "@/components/Blog.jsx";
+import Announcement from "@/components/Announcement";
 import CTA from "@/components/CTA";
 
 import {
@@ -9,8 +14,8 @@ import {
   getMainPractices,
   getSettings,
   getAboutSection,
-  getTeamMembers,
   getHomepageReviews,
+  getPageBySlug,
 } from "@/lib/sanity";
 
 import "../styles/hero.css";
@@ -18,39 +23,79 @@ import "../styles/trust.css";
 import "../styles/blog.css";
 import "../styles/cta.css";
 import "../styles/ContactSection.css";
-import Questionnaire from "@/components/Questionnaire";
-import PracticeOverview from "@/components/PracticeOverview";
-import Announcement from "@/components/Announcement";
-import TrustRibbon from "@/components/TrustRibbon";
-import AboutSection from "@/components/AboutSection";
-import TeamGrid from "@/components/TeamGrid";
-import ReviewGrid from "@/components/ReviewGrid";
-import ResourceGrid from "@/components/ResourceGrid";
 
-export const revalidate = 60; // revalidate this page every 60 seconds
+export const revalidate = 60;
+
 export default async function HomePage() {
   const posts = await getPostForHome();
   const practices = await getMainPractices();
   const settings = await getSettings();
   const aboutData = await getAboutSection();
-  const members = await getTeamMembers(4);
   const reviewsData = await getHomepageReviews();
 
+  // 1. Fetching our page layout containing the newly refactored team references
+  const pageData = await getPageBySlug("home");
+
+  // 2. Extracting layout blocks safely
+  const heroData = pageData?.pageBuilder?.find(
+    (section) => section._type === "heroSection",
+  );
+  const aboutComponentData = pageData?.pageBuilder?.find(
+    (section) => section._type === "aboutComponent",
+  );
+  const ctaData = pageData?.pageBuilder?.find(
+    (section) => section._type === "ctaSection",
+  );
+  const practiceSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "practiceSection",
+  );
+
+  // Find our updated team section block data
+  const teamSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "teamSection",
+  );
+
+  const blogSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "blogSection",
+  );
+
+  const reviewSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "reviewSection",
+  );
+  // 3. The members are already perfectly sorted in the order the user dragged them!
+  const orderedMembers = teamSectionData?.members || [];
+  // Slice the posts array dynamically based on user selection setting
+  const maxPosts = blogSectionData?.postsCount || 4;
+  const filteredPosts = posts?.slice(0, maxPosts) || [];
+  const resolvedAboutData = aboutComponentData || globalAboutData;
   return (
     <>
-      <Hero />
-      <AboutSection data={aboutData} />
-      {/* <TrustRibbon logos={settings?.trustLogos} /> */}
-      <PracticeOverview practices={practices} />
-      {/* <Trust /> */}
-      <TeamGrid members={members} title="Who We Are" />
-      {/* <ContactSection /> */}
+      <Hero data={heroData} />
+      <AboutSection data={resolvedAboutData} />
+      <PracticeOverview
+        sectionData={practiceSectionData}
+        practices={practices}
+      />
+
+      {/* 4. Rendering layout views seamlessly based on settings choice */}
+      {teamSectionData?.layoutType === "slider" ? (
+        <TeamSlider
+          headerData={teamSectionData?.header}
+          members={orderedMembers}
+        />
+      ) : (
+        <TeamGrid
+          headerData={teamSectionData?.header}
+          members={orderedMembers}
+        />
+      )}
+
       <Questionnaire />
-      <ReviewGrid reviews={reviewsData} />
-      <Blog posts={posts} />
-      {/* <ResourceGrid posts={posts} /> */}
+
+      <ReviewGrid sectionData={reviewSectionData} reviews={reviewsData} />
+      <Blog sectionData={blogSectionData} posts={filteredPosts} />
       <Announcement settings={settings} />
-      <CTA />
+      <CTA data={ctaData} />
     </>
   );
 }

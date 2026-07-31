@@ -5,9 +5,17 @@ import { useRef } from "react";
 import Link from "next/link";
 import "../styles/cta.css";
 
-const CTA = () => {
+const CTA = ({ data }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "0px 0px -100px 0px" });
+
+  // Use Sanity dashboard data, falling back seamlessly to historic defaults
+  const heading =
+    data?.heading ||
+    "Let's Solve Your Legal Challenges Together and Achieve the Justice You Deserve";
+  const buttonText = data?.buttonText || "Book a Consultation";
+  const buttonLink =
+    data?.buttonLink || "https://calendly.com/fridmar/schedule-a-consult";
 
   return (
     <section className="cta" ref={ref}>
@@ -17,8 +25,7 @@ const CTA = () => {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8 }}
         >
-          Let's Solve Your Legal Challenges Together and Achieve the Justice You
-          Deserve
+          {heading}
         </motion.h2>
 
         <motion.button
@@ -30,22 +37,9 @@ const CTA = () => {
           style={{ borderRadius: ".7rem" }}
           whileTap={{ scale: 0.95 }}
         >
-          <Link href="https://calendly.com/fridmar/schedule-a-consult">
-            Book a Consultation
-          </Link>
+          <Link href={buttonLink}>{buttonText}</Link>
         </motion.button>
       </div>
-      {/* 
-      <div className="cta-features">
-        <div className="feature">
-          <span className="feature-dot">●</span>
-          <p>Artificial Intelligence</p>
-        </div>
-        <div className="feature-divider">●</div>
-        <div className="feature">
-          <p>Human Creativity</p>
-        </div>
-      </div> */}
     </section>
   );
 };

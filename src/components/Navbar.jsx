@@ -1,13 +1,18 @@
-import { getCategories, getMegaMenuList } from "@/lib/sanity";
+import { getCategories, getMegaMenuList, getSiteSettings } from "@/lib/sanity";
 import NavbarClient from "./NavbarClient";
 
 export default async function Navbar() {
-  const [categories, practices] = await Promise.all([
+  const [categories, practices, settings] = await Promise.all([
     getCategories(),
-    getMegaMenuList(), // 👈 THIS is the key change
+    getMegaMenuList(), // Retains your key structural data mapping
+    getSiteSettings(), // Fetches your editable text, links, and buttons
   ]);
 
   return (
-    <NavbarClient categories={categories || []} practices={practices || []} />
+    <NavbarClient
+      categories={categories || []}
+      practices={practices || []}
+      settings={settings || {}}
+    />
   );
 }

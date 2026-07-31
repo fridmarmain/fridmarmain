@@ -1,17 +1,18 @@
 "use client";
+
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { usePathname } from "next/navigation";
 import * as Icon from "lucide-react";
 import "../styles/about.css";
 
-const VisionMission = () => {
+const AboutInner = ({ cardsData }) => {
   const pathname = usePathname();
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
   const isAboutPage = pathname === "/about";
 
-  const vmvContent = [
+  const defaultContent = [
     {
       id: "vision",
       label: "VISION",
@@ -28,18 +29,25 @@ const VisionMission = () => {
       id: "values",
       label: "VALUES",
       subtitle: "Cost-efficiency, Creativity, and Confidence",
-      text: `Our core values include cost-efficiency, creativity, and confidence:
-We understand that litigation, with its complexities and unknowns, might become a major source of stress in the lives of many clients. As such, we hope to inspire confidence in our clients to rest easy and trust that the FPC has their cases under control.`,
+      text: `Our core values include cost-efficiency, creativity, and confidence:\nWe understand that litigation, with its complexities and unknowns, might become a major source of stress in the lives of many clients. As such, we hope to inspire confidence in our clients to rest easy and trust that the FPC has their cases under control.`,
       wide: true,
     },
   ];
 
+  // Map Sanity fields safely onto frontend key formats
+  const cards =
+    cardsData?.map((card) => ({
+      id: card.cardId || card._key,
+      label: card.label,
+      subtitle: card.subtitle,
+      text: card.text,
+      wide: card.wide,
+    })) || defaultContent;
+
   return (
-    <section className="vmv-section" ref={containerRef}>
+    <div className="vmv-section" ref={containerRef}>
       <div className="container vmv-flex-container">
-        {" "}
-        {/* Updated class here */}
-        {vmvContent.map((item, index) => (
+        {cards.map((item, index) => (
           <motion.div
             key={item.id}
             className={`vmv-card ${item.wide ? "vmv-wide" : ""}`}
@@ -53,7 +61,9 @@ We understand that litigation, with its complexities and unknowns, might become 
           >
             <span className="vmv-label">{item.label}</span>
             {item.subtitle && <h3 className="vmv-subtitle">{item.subtitle}</h3>}
-            <p className="vmv-text">{item.text}</p>
+            <p className="vmv-text" style={{ whiteSpace: "pre-line" }}>
+              {item.text}
+            </p>
 
             {item.id === "values" && !isAboutPage && (
               <button className="secondaryBtn vmv-btn">
@@ -66,8 +76,8 @@ We understand that litigation, with its complexities and unknowns, might become 
           </motion.div>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 
-export default VisionMission;
+export default AboutInner;

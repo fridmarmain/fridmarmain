@@ -8,8 +8,15 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "../styles/team-grid.css";
 
-const TeamSlider = ({ members }) => {
+const TeamSlider = ({ headerData, members }) => {
   if (!members || members.length === 0) return null;
+
+  const sideHeader = headerData?.sideHeader || "Strategy That Delivers";
+  const mainHeader = headerData?.mainHeader || "Our Team";
+  const subHeader = headerData?.subHeader || "Meet the specialists";
+  const description =
+    headerData?.description ||
+    "Clear counsel, zero legalese. From the courtroom to social media, meet the team moving your case forward.";
 
   return (
     <section
@@ -22,19 +29,15 @@ const TeamSlider = ({ members }) => {
         style={{ maxWidth: "1200px", margin: "0 auto", overflow: "hidden" }}
       >
         <div className="SideHeader">
-          <h3>Strategy That Delivers</h3>
+          <h3>{sideHeader}</h3>
         </div>
         <div className="sectionHeader">
           <div className="sectionHeaderRight">
-            <h2 className="mainHeader">Our Team</h2>
-            <h3>Meet the specialists</h3>
+            <h2 className="mainHeader">{mainHeader}</h2>
+            <h3>{subHeader}</h3>
           </div>
-
           <div className="sectionHeaderleft">
-            <p>
-              Clear counsel, zero legalese. From the courtroom to social media,
-              meet the team moving your case forward.
-            </p>
+            <p>{description}</p>
           </div>
         </div>
 
@@ -42,7 +45,7 @@ const TeamSlider = ({ members }) => {
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={20}
           slidesPerView={1}
-          loop={members.length > 4} // Only loop if you have enough members
+          loop={members.length > 4}
           navigation={true}
           pagination={{ clickable: true }}
           autoplay={{

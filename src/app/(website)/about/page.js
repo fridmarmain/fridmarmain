@@ -1,9 +1,11 @@
 import {
   getPosts,
   getMainPractices,
-  getAboutSection,
   getTeamMembers,
   getHomepageReviews,
+  getPageBySlug,
+  getAboutSection, // Fetches the default global content
+  getGlobalContactInfo, // 👈 IMPORTED: New global singleton utility
 } from "@/lib/sanity";
 
 import "../../styles/hero.css";
@@ -18,8 +20,8 @@ import ContactSection from "@/components/ContactSection";
 import PageHero from "@/components/pageHero";
 import aboutBg from "@/styles/assets/about.jpg";
 import TeamSlider from "@/components/TeamSlider";
+import TeamGrid from "@/components/TeamGrid";
 import CEOSection from "@/components/CEOSection";
-// import Memoriam from "@/components/Memoriam";
 
 export async function generateMetadata() {
   return {
@@ -46,33 +48,84 @@ export async function generateMetadata() {
 }
 
 export default async function AboutPage() {
-  const posts = await getPosts();
-  const practices = await getMainPractices();
-  const latestPosts = posts?.slice(0, 4);
-  const aboutData = await getAboutSection();
-  const members = await getTeamMembers();
-  const reviewsData = await getHomepageReviews();
+  // 1. Fetch data concurrently (injecting the standalone global contact document query)
+  const [
+    posts,
+    practices,
+    reviewsData,
+    globalAboutData,
+    pageData,
+    contactData,
+  ] = await Promise.all([
+    getPosts(),
+    getMainPractices(),
+    getHomepageReviews(),
+    getAboutSection(),
+    getPageBySlug("about"),
+    getGlobalContactInfo(), // 👈 Fetches the clean, decoupled configuration
+  ]);
+
+  // 2. Extracting dynamic layout blocks safely from pageBuilder
+  const heroData = pageData?.pageBuilder?.find(
+    (section) => section._type === "heroSection",
+  );
+  const aboutComponentData = pageData?.pageBuilder?.find(
+    (section) => section._type === "aboutComponent",
+  );
+  const ceoSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "ceoSection",
+  );
+  const teamSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "teamSection",
+  );
+  const reviewSectionData = pageData?.pageBuilder?.find(
+    (section) => section._type === "reviewSection",
+  );
+  const ctaData = pageData?.pageBuilder?.find(
+    (section) => section._type === "ctaSection",
+  );
+
+  // Fallbacks for array data mappings
+  const orderedMembers = teamSectionData?.members || (await getTeamMembers());
+
+  // SMART FALLBACK RESOLVER FOR CORE ABOUT CONTENT:
+  const resolvedAboutData = aboutComponentData || globalAboutData;
+
   return (
     <>
       <PageHero
-        title="About Our Firm"
-        subtitle="Dedicated to providing sophisticated legal solutions with a commitment to excellence and integrity."
-        backgroundImage={aboutBg.src} // Replace with your Sanity image if dynamic
+        title={heroData?.title || "About Our Firm"}
+        subtitle={
+          heroData?.subtitle ||
+          "Dedicated to providing sophisticated legal solutions with a commitment to excellence and integrity."
+        }
+        backgroundImage={heroData?.backgroundImage || aboutBg.src}
       />
 
-      <AboutSection data={aboutData} />
-      {/* <Trust /> */}
+      {/* Renders safely using either the customized layout block or global fallback */}
+      <AboutSection data={resolvedAboutData} />
 
-      <CEOSection />
+      <CEOSection data={ceoSectionData} />
 
-      <TeamSlider members={members} title="Who We Are" />
+      {/* Conditional renderer for Team layout layouts */}
+      {teamSectionData?.layoutType === "slider" ? (
+        <TeamSlider
+          headerData={teamSectionData?.header}
+          members={orderedMembers}
+        />
+      ) : (
+        <TeamGrid
+          headerData={teamSectionData?.header}
+          members={orderedMembers}
+        />
+      )}
 
-      {/* <Questionnaire /> */}
-      <ReviewGrid reviews={reviewsData} />
-      <ContactSection />
+      <ReviewGrid sectionData={reviewSectionData} reviews={reviewsData} />
 
-      {/* <Memoriam /> */}
-      <CTA />
+      {/* 👈 Reusable Single Component Instance fueled directly via your global singleton context */}
+      <ContactSection sectionData={contactData} />
+
+      <CTA data={ctaData} />
     </>
   );
 }

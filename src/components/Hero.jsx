@@ -1,11 +1,21 @@
 "use client";
 import { motion } from "framer-motion";
-// import Link from "next/link";
 import InfoBox from "./InfoBox";
-const Hero = () => {
-  const images = ["img1.jpg", "img2.png", "img3.jpg", "img4.jpg"];
+import { urlFor } from "@/lib/sanity";
+
+const Hero = ({ data }) => {
+  const heading = data?.heading || "Construction Industry Lawyers";
+  const subheading =
+    data?.subheading || "Gearing Up To Serve Your Legal Needs.";
+
+  const bgUrl = data?.backgroundImage ? urlFor(data.backgroundImage).url() : "";
+  const heroStyle = bgUrl ? { backgroundImage: `url(${bgUrl})` } : {};
+
+  // Extract the info link items safely to hand down
+  const infoLinksData = data?.infoLinks;
+
   return (
-    <section className="hero" id="home">
+    <section className="hero" id="home" style={heroStyle}>
       <div className="heroOverLay"></div>
 
       <div className="hero-content container">
@@ -15,11 +25,9 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1> Construction Industry Lawyers</h1>
+          <h1>{heading}</h1>
 
-          <div style={{ color: "#ebebeb", fontSize: "14px" }}>
-            Gearing Up To Serve Your Legal Needs.
-          </div>
+          <div style={{ color: "#ebebeb", fontSize: "14px" }}>{subheading}</div>
         </motion.div>
 
         <motion.div
@@ -28,42 +36,15 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <InfoBox />
+          {/* Pass the dynamic link data array straight through */}
+          <InfoBox links={infoLinksData} />
         </motion.div>
 
         <div className="heroBottom">
-          <div className="bottomLeft bottItem" style={{ minWidth: "250px" }}>
-            {/* <p style={{}}>
-              Fridmar Professional Corporation <br />
-              Gearing Up To Serve Your Legal Needs.
-            </p>{" "} */}
-            {/* <p>gearing up to serve your legal needs.</p> */}
-          </div>
-
-          {/* <div className="bottomRight bottItem">
-            <div className="peopleCont">
-              {" "}
-              <a target="_blank" href="https://share.google/0znkPZAkylMiB2P2v">
-                <div className="peopleInner">
-                  {images.map((img, i) => (
-                    <div
-                      key={i}
-                      className="box"
-                      style={{ backgroundImage: `url(${img})` }}
-                    ></div>
-                  ))}
-                </div>
-              </a>
-              <div className="numbersC">
-              
-                <div className="numbers">(5.0)</div>
-              </div>
-            </div>
-            <p>
-              " I felt Daniel was responsive, efficient, professional and
-              fair/reasonable in fees charged for the work. I "
-            </p>
-          </div> */}
+          <div
+            className="bottomLeft bottItem"
+            style={{ minWidth: "250px" }}
+          ></div>
         </div>
       </div>
     </section>

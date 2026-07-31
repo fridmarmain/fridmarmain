@@ -1,8 +1,7 @@
 import ContactSection from "@/components/ContactSection";
-
 import React from "react";
-
 import { generateSEO } from "@/lib/seo";
+import { getGlobalContactInfo } from "@/lib/sanity"; // 👈 1. Import your new global fetch function
 
 export async function generateMetadata() {
   return generateSEO({
@@ -15,12 +14,15 @@ export async function generateMetadata() {
   });
 }
 
-function ContactPage() {
+// 👈 2. Turned this into an async function component
+export default async function ContactPage() {
+  // 3. Fetch the global content live from Sanity
+  const contactData = await getGlobalContactInfo();
+
   return (
     <div style={{ marginTop: "1rem" }}>
-      <ContactSection />{" "}
+      {/* 👈 4. Feed the live data directly into your component wrapper */}
+      <ContactSection sectionData={contactData} />
     </div>
   );
 }
-
-export default ContactPage;

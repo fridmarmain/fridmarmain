@@ -2,62 +2,69 @@ import React from "react";
 import * as Icon from "lucide-react";
 import Link from "next/link";
 
-function InfoBox() {
+function InfoBox({ links }) {
+  // 1. Setup your historical initial values as fallbacks so nothing looks empty or broken
+  const defaultLinks = [
+    {
+      title: "Construction Law Services",
+      url: "/practice/construction-law",
+      icon: { name: "File" },
+      isActive: false,
+    },
+    {
+      title: "Access a lawyer",
+      url: "https://calendly.com/fridmar/meet-with-mey",
+      icon: { name: "UserPlus" },
+      isActive: true,
+    },
+    {
+      title: "Legal Resources & Insights",
+      url: "/resources",
+      icon: { name: "Book" },
+      isActive: false,
+    },
+  ];
+
+  // Use Sanity links array if filled, otherwise use our initial data structure
+  const visibleLinks = links && links.length > 0 ? links : defaultLinks;
+
   return (
-    <>
-      <div className="info-box  ">
-        {/* <div className="infoInner">
-          <div className="innerPic"></div>
-          <div className="innerTextCont">
-            <div className="innerlineTop"></div>
-            <div className="innerlineBottom"></div>
-          </div>
-        </div> */}
+    <div className="info-box">
+      {visibleLinks.map((link, index) => {
+        // Resolve Lucide component string safely or fall back to standard HelpCircle
+        const IconComponent = Icon[link.icon?.name] || Icon.HelpCircle;
+        const className = link.isActive ? "infoInnerMidActive" : "infoInnerMid";
+        const isExternal = link.url?.startsWith("http");
 
-        <Link href="/practice/construction-law" className="  infoInnerMid">
-          <div className="innerContLeft">
-            <div className="innerPic">
-              <Icon.File size={18} />
+        const linkContent = (
+          <>
+            <div className="innerContLeft">
+              <div className="innerPic">
+                <IconComponent size={18} />
+              </div>
+              <div className="innerTextCont">{link.title}</div>
             </div>
-            <div className="innerTextCont"> Construction Law Services</div>
-          </div>
+            <Icon.ArrowUpRight className="midIcon" />
+          </>
+        );
 
-          <Icon.ArrowUpRight className="midIcon" />
-        </Link>
-
-        <a
-          href="https://calendly.com/fridmar/meet-with-mey"
-          className="  infoInnerMidActive"
-        >
-          <div className="innerContLeft">
-            <div className="innerPic">
-              <Icon.UserPlus size={18} />
-            </div>
-            <div className="innerTextCont">Access a lawyer</div>
-          </div>
-
-          <Icon.ArrowUpRight className="midIcon" />
-        </a>
-
-        <Link href="/resources" className="  infoInnerMid">
-          <div className="innerContLeft">
-            <div className="innerPic">
-              <Icon.Book size={18} />
-            </div>
-            <div className="innerTextCont"> Legal Resources & Insights</div>
-          </div>
-
-          <Icon.ArrowUpRight className="midIcon" />
-        </Link>
-        {/* <div className="infoInner">
-          <div className="innerPic"></div>
-          <div className="innerTextCont">
-            <div className="innerlineTop"></div>
-            <div className="innerlineBottom"></div>
-          </div>
-        </div> */}
-      </div>
-    </>
+        return isExternal ? (
+          <a
+            key={index}
+            href={link.url}
+            className={className}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {linkContent}
+          </a>
+        ) : (
+          <Link key={index} href={link.url || "#"} className={className}>
+            {linkContent}
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 
