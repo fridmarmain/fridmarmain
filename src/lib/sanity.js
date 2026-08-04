@@ -1,5 +1,4 @@
 import { createClient } from "next-sanity";
-// 1. Change to the named export inside curly braces
 import { createImageUrlBuilder } from "@sanity/image-url";
 
 export const client = createClient({
@@ -7,14 +6,18 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   apiVersion: "2026-01-07",
+  // Set to false temporarily if you need to bypass CDN quota limits right now:
   useCdn: process.env.NODE_ENV === "production",
 });
-// 2. Use the specific named builder function
+
 const builder = createImageUrlBuilder(client);
 
 export function urlFor(source) {
   return builder.image(source);
 }
+
+// Global cache duration for Next.js Data Cache (1 hour in seconds)
+const REVALIDATE_TIME = 3600;
 
 export async function getPosts() {
   const query = `{
@@ -60,7 +63,11 @@ export async function getPosts() {
     }
   }`;
 
-  const { blog, video, podcast, latest } = await client.fetch(query);
+  const { blog, video, podcast, latest } = await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
+  );
 
   // Collect one of each format (skip silently if none exist)
   const formatPicks = [blog[0], video[0], podcast[0]].filter(Boolean);
@@ -122,7 +129,11 @@ export async function getPostForHome() {
     }
   }`;
 
-  const { blog, video, podcast, extras } = await client.fetch(query);
+  const { blog, video, podcast, extras } = await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
+  );
 
   // One of each format, skip silently if none exist
   const formatPicks = [blog[0], video[0], podcast[0]].filter(Boolean);
@@ -138,18 +149,6 @@ export async function getPostForHome() {
   return formatPicks;
 }
 
-// export async function getTermsOfUse() {
-//   const query = `*[_type == "termsOfUse"][0] {
-//     title,
-//     lastUpdated,
-//     sections[] {
-//       heading,
-//       body
-//     }
-//   }`;
-//   return await client.fetch(query);
-// }
-
 export async function getTermsOfUse() {
   const query = `*[_type == "termsOfUse"][0] {
     title,
@@ -162,9 +161,9 @@ export async function getTermsOfUse() {
 
   return await client.fetch(
     query,
-    {}, // empty params
+    {},
     {
-      next: { tags: ["termsOfUse"] }, // Tag this specific query
+      next: { revalidate: REVALIDATE_TIME, tags: ["termsOfUse"] },
     },
   );
 }
@@ -197,7 +196,14 @@ export async function getPaginatedPosts(
     "categoryTitles": categories[]->title
   }`;
 
-  return await client.fetch(query);
+  // Shorter cache when searching so results stay relatively fresh
+  const revalidate = searchTerm ? 60 : REVALIDATE_TIME;
+
+  return await client.fetch(
+    query,
+    {},
+    { next: { revalidate, tags: ["posts"] } },
+  );
 }
 
 export async function getSinglePost(slug) {
@@ -207,10 +213,9 @@ export async function getSinglePost(slug) {
     "categories": categories[]->{_id, title, "slug": slug.current}
   }`,
     { slug },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`post-${slug}`] } },
   );
 }
-
-// Replace the navigation queries in your sanity.js file with these:
 
 export async function getNextPost(currentSlug, format, categoryId) {
   // Get current post's publishedAt date
@@ -219,6 +224,7 @@ export async function getNextPost(currentSlug, format, categoryId) {
       publishedAt
     }`,
     { slug: currentSlug },
+    { next: { revalidate: REVALIDATE_TIME } },
   );
 
   if (!currentPost?.publishedAt) return null;
@@ -243,6 +249,7 @@ export async function getNextPost(currentSlug, format, categoryId) {
       categoryId,
       currentPublishedAt: currentPost.publishedAt,
     },
+    { next: { revalidate: REVALIDATE_TIME } },
   );
 }
 
@@ -253,6 +260,7 @@ export async function getPreviousPost(currentSlug, format, categoryId) {
       publishedAt
     }`,
     { slug: currentSlug },
+    { next: { revalidate: REVALIDATE_TIME } },
   );
 
   if (!currentPost?.publishedAt) return null;
@@ -277,6 +285,7 @@ export async function getPreviousPost(currentSlug, format, categoryId) {
       categoryId,
       currentPublishedAt: currentPost.publishedAt,
     },
+    { next: { revalidate: REVALIDATE_TIME } },
   );
 }
 
@@ -290,7 +299,11 @@ export async function getRelatedPosts(format, currentSlug) {
     excerpt,
     "categoryTitles": categories[]->title
   }`;
-  return await client.fetch(query, { format, currentSlug });
+  return await client.fetch(
+    query,
+    { format, currentSlug },
+    { next: { revalidate: REVALIDATE_TIME } },
+  );
 }
 
 export async function getCategories() {
@@ -298,10 +311,16 @@ export async function getCategories() {
     title,
     "slug": slug.current
   }`;
-  return await client.fetch(query);
+  return await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["categories"] } },
+  );
 }
+
 export async function getMegaMenuList() {
-  return await client.fetch(`
+  return await client.fetch(
+    `
     *[_type == "practiceArea" && level == "umbrella"]
     | order(title asc) {
       _id,
@@ -325,12 +344,15 @@ export async function getMegaMenuList() {
         }
       }
     }
-  `);
+  `,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["megaMenu"] } },
+  );
 }
 
 export async function getMainPractices() {
-  // We look for practiceAreas that DON'T have a parent (Umbrellas)
-  return await client.fetch(`*[_type == "practiceArea" && !defined(parentArea)] | order(title asc){
+  return await client.fetch(
+    `*[_type == "practiceArea" && !defined(parentArea)] | order(title asc){
     title,
     "slug": slug.current,
     description,
@@ -338,7 +360,10 @@ export async function getMainPractices() {
     icon,
     iconType,  
     customSvg   
-  }`);
+  }`,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["practiceAreas"] } },
+  );
 }
 
 export async function getPostBySlug(slug) {
@@ -346,7 +371,11 @@ export async function getPostBySlug(slug) {
     ...,
     "categories": categories[]->title
   }`;
-  return await client.fetch(query, { slug });
+  return await client.fetch(
+    query,
+    { slug },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`post-${slug}`] } },
+  );
 }
 
 export async function getCategoryBySlug(slug) {
@@ -359,6 +388,7 @@ export async function getCategoryBySlug(slug) {
       heroImage
     }`,
     { slug },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`category-${slug}`] } },
   );
 }
 
@@ -372,13 +402,11 @@ export async function getPracticeArea(slug) {
       mainImage,
       body,
       faqs,
-      // Fetch the parent's slug to help build the breadcrumb path logic
       "parent": parentArea->{ 
         title, 
         "slug": slug.current,
         "parent": parentArea->{ title, "slug": slug.current } 
       },
-      // Fetch children (Categories if this is an Umbrella, Services if this is a Category)
       "subAreas": *[_type == "practiceArea" && references(^._id)] | order(title asc) {
         title,
         "slug": slug.current,
@@ -398,12 +426,11 @@ export async function getPracticeArea(slug) {
     }
   `,
     { slug },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`practice-${slug}`] } },
   );
 }
 
 export async function getAboutSection() {
-  // We search for the document with the type 'aboutComponent'
-  // The [0] ensures we only get one result
   const query = `*[_type == "aboutComponent"][0]{
     subtitle,
     title,
@@ -411,38 +438,20 @@ export async function getAboutSection() {
     image1,
     image2
   }`;
-  return await client.fetch(query);
+  return await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["about"] } },
+  );
 }
 
 export async function getSettings() {
-  return await client.fetch(`*[_type == "siteSettings"][0]`);
+  return await client.fetch(
+    `*[_type == "siteSettings"][0]`,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["settings"] } },
+  );
 }
-
-// export async function getSiteSettings() {
-//   const query = `*[_type == "siteSettings"][0]{
-//     calendlyUrl,
-//     footerTagline,
-//     footerBackgroundText,
-//     socialLinks {
-//       linkedin,
-//       tiktok,
-//       instagram,
-//       facebook,
-//       youtube
-//     },
-//     footerColumns[] {
-//       columnHeading,
-//       links[] { label, path }
-//     },
-//     navbarItems[] {
-//       _type,
-//       label,
-//       path,
-//       links[] { label, path }
-//     }
-//   }`;
-//   return await client.fetch(query, {}, { next: { revalidate: 60 } });
-// }
 
 export async function getSiteSettings() {
   const query = `*[_type == "siteSettings"][0]{
@@ -460,7 +469,6 @@ export async function getSiteSettings() {
       columnHeading,
       links[] { label, path }
     },
-    // ======= NAVBAR & EXTRA LINKS CONFIG =======
     bookingLabel,
     bookingUrl,
     resourcesLabel,
@@ -475,7 +483,11 @@ export async function getSiteSettings() {
       links[] { label, path } 
     }
   }`;
-  return await client.fetch(query, {}, { next: { revalidate: 60 } });
+  return await client.fetch(
+    query,
+    {},
+    { next: { revalidate: 3600, tags: ["settings"] } },
+  );
 }
 
 export async function getTeamMembers(limit = 100) {
@@ -494,13 +506,18 @@ export async function getTeamMembers(limit = 100) {
     tiktokVideo
   }`;
 
-  const results = await client.fetch(query);
+  const results = await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["team"] } },
+  );
   return results.slice(0, limit);
 }
+
 export async function getReviews(limit = null) {
   const range = limit ? `[0...${limit}]` : "";
   const query = `*[_type == "review"] | order(_createdAt desc) ${range} {
-_id,
+    _id,
     clientName,
     clientRole,
     clientImage,
@@ -510,11 +527,14 @@ _id,
     rating,
     videoUrl,
     videoThumbnail,
-    
     "muxPlaybackId": videoUpload.asset->playbackId, 
     "videoAspect": videoUpload.asset->data.aspect_ratio
   }`;
-  return await client.fetch(query);
+  return await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["reviews"] } },
+  );
 }
 
 export async function getHomepageReviews() {
@@ -549,18 +569,20 @@ export async function getHomepageReviews() {
     }
   }`;
 
-  const { videoReviews, textReviews } = await client.fetch(query);
+  const { videoReviews, textReviews } = await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["reviews"] } },
+  );
 
   const shuffle = (arr) => arr.sort(() => Math.random() - 0.5);
 
   const videos = shuffle(videoReviews).slice(0, 2);
   const texts = shuffle(textReviews).slice(0, 1);
 
-  // interleave: video, text, video, text
   return [videos[0], texts[0], videos[1], texts[1]].filter(Boolean);
 }
 
-// Query for the main Hub page (gets all regions)
 export const GET_REGIONS_QUERY = `*[_type == "region"] | order(_createdAt asc) {
   title,
   intro,
@@ -570,8 +592,6 @@ export const GET_REGIONS_QUERY = `*[_type == "region"] | order(_createdAt asc) {
   }
 }`;
 
-// Query for the individual city page
-// It looks for a custom cityPage first, then finds the region info as a fallback
 export const GET_CITY_PAGE_QUERY = `
   {
     "customData": *[_type == "cityPage" && slug.current == $citySlug][0],
@@ -581,100 +601,6 @@ export const GET_CITY_PAGE_QUERY = `
     }
   }
 `;
-
-// export async function getPageBySlug(slug) {
-//   const query = `*[_type == "page" && slug.current == $slug][0]{
-//     title,
-//     pageBuilder[] {
-//       _type,
-//       _type == "heroSection" => {
-//         heading,
-//         subheading,
-//         backgroundImage,
-//         infoLinks[] {
-//           title,
-//           url,
-//           icon,
-//           isActive
-//         }
-//       },
-//       _type == "ctaSection" => {
-//         heading,
-//         buttonText,
-//         buttonLink
-//       },
-//       _type == "practiceSection" => {
-//         displayLevel,
-//         header {
-//           sideHeader,
-//           mainHeader,
-//           subHeader,
-//           description
-//         }
-//       },
-//       _type == "teamSection" => {
-//         layoutType,
-//         header {
-//           sideHeader,
-//           mainHeader,
-//           subHeader,
-//           description
-//         },
-//         "members": members[]-> {
-//           name,
-//           "slug": slug.current,
-//           role,
-//           image,
-//           phone,
-//           email
-//         }
-//       },
-//       _type == "blogSection" => {
-//         postsCount,
-//         header {
-//           sideHeader,
-//           mainHeader,
-//           subHeader,
-//           description
-//         }
-//       },
-//       _type == "reviewSection" => {
-//         showLoadMore,
-//         header {
-//           sideHeader,
-//           mainHeader,
-//           subHeader,
-//           description
-//         }
-//       },
-//       // ======= NEW ABOUT PAGE ARCHITECTURE CONDITIONS =======
-//       _type == "aboutComponent" => {
-//         bio,
-//         image1,
-//         image2
-//       },
-//       _type == "ceoSection" => {
-//         subtitle,
-//         quoteText,
-//         description,
-//         portraitImage,
-//         ctaLabel,
-//         ctaUrl
-//       },
-//       _type == "visionMissionSection" => {
-//         cards[] {
-//           cardId,
-//           label,
-//           subtitle,
-//           text,
-//           wide
-//         }
-//       }
-//     }
-//   }`;
-
-//   return await client.fetch(query, { slug }, { next: { revalidate: 10 } });
-// }
 
 export async function getPageBySlug(slug) {
   const query = `*[_type == "page" && slug.current == $slug][0]{
@@ -741,7 +667,6 @@ export async function getPageBySlug(slug) {
           description
         }
       },
-      // ======= UPDATED INLINE BLOCK SECTIONS =======
       _type == "aboutComponent" => {
         title,
         subtitle,
@@ -768,7 +693,7 @@ export async function getPageBySlug(slug) {
         heading,
         subheading,
         formHeading,     
-  formSubheading,
+        formSubheading,
         officeImage,
         locationAddress,
         phone,
@@ -780,15 +705,19 @@ export async function getPageBySlug(slug) {
     }
   }`;
 
-  return await client.fetch(query, { slug }, { next: { revalidate: 10 } });
+  return await client.fetch(
+    query,
+    { slug },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`page-${slug}`] } },
+  );
 }
 
 export async function getGlobalContactInfo() {
   const query = `*[_type == "contactSection"][0]{
     heading,
-  subheading,
-  formHeading,      
-  formSubheading,
+    subheading,
+    formHeading,      
+    formSubheading,
     officeImage,
     locationAddress,
     phone,
@@ -798,5 +727,9 @@ export async function getGlobalContactInfo() {
     formImage
   }`;
 
-  return await client.fetch(query, {}, { next: { revalidate: 10 } });
+  return await client.fetch(
+    query,
+    {},
+    { next: { revalidate: REVALIDATE_TIME, tags: ["contact"] } },
+  );
 }
