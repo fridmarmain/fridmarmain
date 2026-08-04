@@ -10,7 +10,7 @@ const TrustRibbon = ({ logos }) => {
   if (!logos || logos.length === 0) return null;
 
   const sortedLogos = [...logos].sort((a, b) =>
-    (a.label || "").localeCompare(b.label || "")
+    (a.label || "").localeCompare(b.label || ""),
   );
 
   // We use a large multiplier to ensure the user can't easily drag to the "end"

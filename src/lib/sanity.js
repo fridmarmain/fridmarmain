@@ -2,12 +2,13 @@ import { createClient } from "next-sanity";
 import { createImageUrlBuilder } from "@sanity/image-url";
 
 export const client = createClient({
-  // This looks for the variable we just made in .env.local
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   apiVersion: "2026-01-07",
-  // Set to false temporarily if you need to bypass CDN quota limits right now:
-  useCdn: process.env.NODE_ENV === "production",
+  // Set useCdn to false if you are currently hit by a 402 CDN limit
+  // to route requests via the standard API endpoints temporarily.
+  // useCdn: process.env.NODE_ENV === "production",
+  useCdn: false,
 });
 
 const builder = createImageUrlBuilder(client);
@@ -16,7 +17,7 @@ export function urlFor(source) {
   return builder.image(source);
 }
 
-// Global cache duration for Next.js Data Cache (1 hour in seconds)
+// Default caching duration (1 hour) for Next.js Data Cache
 const REVALIDATE_TIME = 3600;
 
 export async function getPosts() {
@@ -69,10 +70,8 @@ export async function getPosts() {
     { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
   );
 
-  // Collect one of each format (skip silently if none exist)
   const formatPicks = [blog[0], video[0], podcast[0]].filter(Boolean);
 
-  // Add most recent only if it's not already in the format picks
   const latestPost = latest[0];
   const alreadyIncluded = latestPost
     ? formatPicks.some((p) => p.slug === latestPost.slug)
@@ -135,11 +134,9 @@ export async function getPostForHome() {
     { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
   );
 
-  // One of each format, skip silently if none exist
   const formatPicks = [blog[0], video[0], podcast[0]].filter(Boolean);
   const pickedSlugs = new Set(formatPicks.map((p) => p.slug));
 
-  // From the pool of recent posts, pick one at random that isn't already shown
   const pool = extras.filter((p) => !pickedSlugs.has(p.slug));
   if (pool.length > 0) {
     const randomPick = pool[Math.floor(Math.random() * pool.length)];
@@ -162,9 +159,7 @@ export async function getTermsOfUse() {
   return await client.fetch(
     query,
     {},
-    {
-      next: { revalidate: REVALIDATE_TIME, tags: ["termsOfUse"] },
-    },
+    { next: { revalidate: REVALIDATE_TIME, tags: ["termsOfUse"] } },
   );
 }
 
@@ -180,7 +175,6 @@ export async function getPaginatedPosts(
   if (searchTerm)
     filter += ` && (title match "*${searchTerm}*" || excerpt match "*${searchTerm}*")`;
 
-  // Use the order for pagination: if desc, we want < date; if asc, we want > date
   if (lastPublishedAt) {
     const comparison = order === "desc" ? "<" : ">";
     filter += ` && publishedAt ${comparison} "${lastPublishedAt}"`;
@@ -196,7 +190,7 @@ export async function getPaginatedPosts(
     "categoryTitles": categories[]->title
   }`;
 
-  // Shorter cache when searching so results stay relatively fresh
+  // Keep revalidation shorter (e.g., 60 seconds) when searching to keep active queries fresh
   const revalidate = searchTerm ? 60 : REVALIDATE_TIME;
 
   return await client.fetch(
@@ -209,27 +203,25 @@ export async function getPaginatedPosts(
 export async function getSinglePost(slug) {
   return await client.fetch(
     `*[_type == "post" && slug.current == $slug][0]{
-    ...,
-    "categories": categories[]->{_id, title, "slug": slug.current}
-  }`,
+      ...,
+      "categories": categories[]->{_id, title, "slug": slug.current}
+    }`,
     { slug },
     { next: { revalidate: REVALIDATE_TIME, tags: [`post-${slug}`] } },
   );
 }
 
 export async function getNextPost(currentSlug, format, categoryId) {
-  // Get current post's publishedAt date
   const currentPost = await client.fetch(
     `*[_type == "post" && slug.current == $slug][0] {
       publishedAt
     }`,
     { slug: currentSlug },
-    { next: { revalidate: REVALIDATE_TIME } },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`post-${currentSlug}`] } },
   );
 
   if (!currentPost?.publishedAt) return null;
 
-  // Get the next most recent post (older than current, same format & category)
   return await client.fetch(
     `*[
       _type == "post" && 
@@ -249,23 +241,21 @@ export async function getNextPost(currentSlug, format, categoryId) {
       categoryId,
       currentPublishedAt: currentPost.publishedAt,
     },
-    { next: { revalidate: REVALIDATE_TIME } },
+    { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
   );
 }
 
 export async function getPreviousPost(currentSlug, format, categoryId) {
-  // Get current post's publishedAt date
   const currentPost = await client.fetch(
     `*[_type == "post" && slug.current == $slug][0] {
       publishedAt
     }`,
     { slug: currentSlug },
-    { next: { revalidate: REVALIDATE_TIME } },
+    { next: { revalidate: REVALIDATE_TIME, tags: [`post-${currentSlug}`] } },
   );
 
   if (!currentPost?.publishedAt) return null;
 
-  // Get the next oldest post (newer than current, same format & category)
   return await client.fetch(
     `*[
       _type == "post" && 
@@ -285,7 +275,7 @@ export async function getPreviousPost(currentSlug, format, categoryId) {
       categoryId,
       currentPublishedAt: currentPost.publishedAt,
     },
-    { next: { revalidate: REVALIDATE_TIME } },
+    { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
   );
 }
 
@@ -302,7 +292,7 @@ export async function getRelatedPosts(format, currentSlug) {
   return await client.fetch(
     query,
     { format, currentSlug },
-    { next: { revalidate: REVALIDATE_TIME } },
+    { next: { revalidate: REVALIDATE_TIME, tags: ["posts"] } },
   );
 }
 
@@ -353,14 +343,14 @@ export async function getMegaMenuList() {
 export async function getMainPractices() {
   return await client.fetch(
     `*[_type == "practiceArea" && !defined(parentArea)] | order(title asc){
-    title,
-    "slug": slug.current,
-    description,
-    mainImage,
-    icon,
-    iconType,  
-    customSvg   
-  }`,
+      title,
+      "slug": slug.current,
+      description,
+      mainImage,
+      icon,
+      iconType,  
+      customSvg   
+    }`,
     {},
     { next: { revalidate: REVALIDATE_TIME, tags: ["practiceAreas"] } },
   );
@@ -486,7 +476,7 @@ export async function getSiteSettings() {
   return await client.fetch(
     query,
     {},
-    { next: { revalidate: 3600, tags: ["settings"] } },
+    { next: { revalidate: REVALIDATE_TIME, tags: ["settings"] } },
   );
 }
 
