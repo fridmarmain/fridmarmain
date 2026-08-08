@@ -30,10 +30,17 @@ import { generateSEO } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const practices = await getMainPractices();
-  // Return list of initial slugs to pre-render at build time
-  return practices.map((practice) => ({
-    slug: [practice.slug.current],
-  }));
+
+  return practices
+    .filter((practice) => Boolean(practice?.slug))
+    .map((practice) => ({
+      // practice.slug is already a string because of your GROQ projection
+      slug: [
+        typeof practice.slug === "string"
+          ? practice.slug
+          : practice.slug.current,
+      ],
+    }));
 }
 
 function isBotTrap(slug) {
