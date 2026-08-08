@@ -17,6 +17,25 @@ import "../../../styles/practiceArea.css";
 import { generateSEO } from "@/lib/seo";
 
 // Helper function to validate dynamic route slugs against bot traps
+// export async function generateStaticParams() {
+
+//   const practiceAreas = await client.fetch(
+//     `*[_type == "practiceArea" && defined(slug.current)]{ "slug": slug.current }`,
+//   );
+
+//   return practiceAreas.map((area) => ({
+//     slug: [area.slug],
+//   }));
+// }
+
+export async function generateStaticParams() {
+  const practices = await getMainPractices();
+  // Return list of initial slugs to pre-render at build time
+  return practices.map((practice) => ({
+    slug: [practice.slug.current],
+  }));
+}
+
 function isBotTrap(slug) {
   if (!slug) return false;
   const hasComma = slug.some(
