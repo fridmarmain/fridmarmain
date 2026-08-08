@@ -1,3 +1,6 @@
+export const revalidate = 3600;
+export const dynamicParams = true;
+
 import PageHero from "@/components/pageHero";
 import ResourceGrid from "@/components/ResourceGrid";
 import { getCategoryBySlug } from "@/lib/sanity";

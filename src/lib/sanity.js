@@ -7,8 +7,8 @@ export const client = createClient({
   apiVersion: "2026-01-07",
   // Set useCdn to false if you are currently hit by a 402 CDN limit
   // to route requests via the standard API endpoints temporarily.
-  // useCdn: process.env.NODE_ENV === "production",
-  useCdn: false,
+  useCdn: process.env.NODE_ENV === "production",
+  // useCdn: false,
 });
 
 const builder = createImageUrlBuilder(client);

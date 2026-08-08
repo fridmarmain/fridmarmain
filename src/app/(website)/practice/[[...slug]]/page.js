@@ -1,3 +1,6 @@
+export const revalidate = 3600;
+export const dynamicParams = true;
+
 import {
   getPracticeArea,
   urlFor,
